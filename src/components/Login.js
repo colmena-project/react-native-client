@@ -23,16 +23,6 @@ import ActionCreators from '../redux/actions';
 
 import Loader from './Loader';
 
-/*
-import {
-  LoginManager,
-  LoginButton,
-  AccessToken,
-  GraphRequest,
-  GraphRequestManager,
-} from 'react-native-fbsdk';
-*/
-
 import {SocialIcon} from 'react-native-elements';
 
 import InputField from './form/InputField';
@@ -43,14 +33,6 @@ import styles from '../styles/login';
 import {PropTypes} from 'prop-types';
 
 import emailCheck from '../utils/email';
-
-import Parse from 'parse/react-native';
-
-Parse.setAsyncStorage(AsyncStorage);
-
-Parse.initialize('F930d5lx5zXy8LNH1CpLa6AaLfMMFfZY');
-
-Parse.serverURL = 'http://vps262678.vps.ovh.ca/parse/';
 
 class Login extends Component {
   constructor(props) {
@@ -125,103 +107,9 @@ class Login extends Component {
       navigate('Profile');
     } else {
       this.setState({formValid: false, loadingVisible: false});
-      Alert.alert('error.. usuario o pass incorrecto');
     }
   }
 
-  /*
-  async loginFacebook() {
-    const {navigation} = this.props;
-    const {navigate} = navigation;
-
-    try {
-      Parse.User.enableUnsafeCurrentUser();
-      const result = await LoginManager.logInWithPermissions([
-        'public_profile',
-        'email',
-      ]);
-
-      if (result.isCancelled) {
-        throw new Error('Solicitud cancelada por el usuario');
-      }
-
-      const data = await AccessToken.getCurrentAccessToken();
-
-      if (!data) {
-        throw new Error(
-          'Se produjo un error al obtener el token de acceso del usuario.',
-        );
-      }
-
-      try {
-        const graphRequest = new GraphRequest(
-          '/me',
-          {
-            accessToken: data.accessToken,
-            parameters: {
-              fields: {
-                string:
-                  'first_name, middle_name, last_name, name, short_name, email, picture.type(large)',
-              },
-            },
-          },
-          (error, r) => {
-            if (error) {
-              Alert.alert(error);
-            } else {
-              Parse.User.currentAsync().then(async user => {
-                console.log(user);
-                user = await Parse.User.logInWith('facebook', {
-                  authData: {
-                    id: data.userID,
-                    access_token: data.accessToken,
-                    expiration_date: data.expirationTime,
-                  },
-                });
-
-                const account = await Parse.Cloud.run('getMyAccount');
-                if (!account) {
-                  await Parse.Cloud.run('createAccount', {
-                    firstName: r.first_name,
-                    middleName: r.middle_name,
-                    lastName: r.last_name,
-                    nickname: r.short_name,
-                    facebookProfilePhotoUrl: r.picture.data.url,
-                  });
-                  navigate('Profile');
-                } else {
-                  if (!account.account.get('firstName')) {
-                    account.set('firstName', r.first_name);
-                  }
-                  if (!account.account.get('middleName')) {
-                    account.account.set('middleName', r.middle_name);
-                  }
-                  if (!account.account.get('lastName')) {
-                    account.account.set('lastName', r.last_name);
-                  }
-                  if (!account.account.get('nickname')) {
-                    account.account.set('nickname', r.short_name);
-                  }
-                  account.account.set(
-                    'facebookProfilePhotoUrl',
-                    r.picture.data.url,
-                  );
-                  await account.account.save();
-                  return navigate('Profile');
-                }
-              });
-            }
-          },
-        );
-        new GraphRequestManager().addRequest(graphRequest).start();
-      } catch (error) {
-        console.error(error);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }
-*/
   render() {
     const {formValid, loadingVisible, validEmail, validPassword} = this.state;
 
