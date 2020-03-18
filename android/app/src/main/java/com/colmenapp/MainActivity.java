@@ -1,4 +1,4 @@
-package com.colmenapp;
+package com.colmena.colmenapp;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "colmenApp";
+    return "react-native-client";
   }
 }

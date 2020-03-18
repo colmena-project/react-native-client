@@ -1,4 +1,5 @@
 <resources>
-    <string name="app_name">colmenApp</string>
-    <string name="facebook_app_id"></string>
+    <string name="app_name">ColmenApp</string>
+
+    <string name="facebook_app_id">625165908050782</string>
 </resources>

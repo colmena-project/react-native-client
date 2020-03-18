@@ -128,9 +128,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.colmenapp"
+        applicationId "com.colmena.colmenapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
     }
@@ -181,6 +183,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.android.support:multidex:1.0.3'
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
@@ -199,4 +202,3 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
