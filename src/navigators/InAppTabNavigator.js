@@ -7,11 +7,14 @@ import Profile from '../components/Profile';
 
 import MyWaste from '../components/MyWaste';
 
+import HomeFeed from '../components/posts/HomeFeed';
+
 import {createStackNavigator} from 'react-navigation-stack';
 
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+
 import colors from '../styles/colors';
 
 const CustomIcon = (name, size) => {
@@ -41,6 +44,13 @@ const MiColmenaTab = createStackNavigator(
 
 const InAppTabNavigator = createBottomTabNavigator(
   {
+    HomeFeed: {
+      screen: HomeFeed,
+      navigationOptions: {
+        tabBarLabel: 'HOME',
+        tabBarIcon: CustomIcon('ios-home', 28),
+      },
+    },
     Profile: {
       screen: Profile,
       navigationOptions: {
@@ -52,7 +62,7 @@ const InAppTabNavigator = createBottomTabNavigator(
       screen: MiColmenaTab,
       navigationOptions: {
         tabBarLabel: 'MI BARRIO',
-        tabBarIcon: CustomIcon('ios-home', 28),
+        tabBarIcon: CustomIcon('ios-people', 28),
       },
     },
     MyWaste: {
