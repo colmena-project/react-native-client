@@ -96,7 +96,7 @@ const HomeFeed = props => {
                     <Text style={styles.colmenaHeaderSubtitle}>Novedades</Text>
                 </View>
 
-                <View style={{ flex: 1, width: '100%' }}>
+                <View style={styles.feedList}>
                     {data === null || isLoading === true ? <ActivityIndicator size={'large'} color={colors.colmenaGreen} /> :
 
                         <FlatList style={styles.mainFeed}
@@ -109,7 +109,6 @@ const HomeFeed = props => {
                 <TouchableOpacity style={styles.floatingIcon} onPress={() => setIsAddMode(true)}>
                     <Image
                         style={styles.addPostIcon}
-                        // resizeMode='stretch'
                         source={require('../../../assets/new-post-icon.png')}
                     />
                 </TouchableOpacity>
@@ -139,6 +138,10 @@ const styles = StyleSheet.create({
         paddingRight: 30,
         paddingBottom: 10,
         paddingTop: 20,
+    },
+    feedList: {
+        flex: 1,
+        width: '100%',
     },
     mainFeed: {
         width: '100%',
