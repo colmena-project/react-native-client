@@ -6,8 +6,56 @@ import Feed from './Feed';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Parse } from 'parse/react-native';
 import stylesCommon from '../../styles/login';
+import { AsyncStorage } from 'react-native';
 
 const HomeFeed = props => {
+
+
+    const getToken = async () => {
+        
+        const FCMToken = await AsyncStorage.getItem('FCMToken');
+
+        if(!FCMToken) throw new Error('No tiene token.');
+        
+        return FCMToken;
+    };
+
+    const getInstallation = async () => {
+        try {
+            const FCMToken = await getToken();
+            const session = await Parse.Session.current();
+            const installationId = session.get('installationId');
+            // const installation = new Parse.Query(Parse.Installation);
+            // installation.equalTo('installationId', installationId);
+            // const result = await installation.first();
+            
+            const newInstallation = new Parse.Installation();
+            newInstallation.set('deviceType', 'android');
+            newInstallation.set('installationId', installationId);
+            newInstallation.set('timeZone', 'America/Argentina/Buenos_Aires');
+            newInstallation.set('appName', 'ColmenaApp');
+            newInstallation.set('appIdentifier', 'com.colmena.colmenapp');
+            newInstallation.set('deviceToken', FCMToken);
+
+            await newInstallation.save();
+
+            // if (!result) {
+            //     const Installation = Parse.Object.extend('Installation');
+            //     const newInstallation = new Installation();
+            //     newInstallation.set('installationId', installationId);
+            //     newInstallation.set('timeZone', 'America/Argentina/Buenos_Aires');
+            //     newInstallation.set('appName', 'ColmenaApp');
+            //     newInstallation.set('appIdentifier', 'com.colmena.colmenapp');
+            //     newInstallation.set('deviceToken', FCMToken);
+
+            //     await newInstallation.save();
+            // }
+        } catch (err) {
+            console.log('Error!! ' + err);
+        }
+    };
+
+    getInstallation();
 
     const [isAddMode, setIsAddMode] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -15,18 +63,9 @@ const HomeFeed = props => {
 
     const loadData = async () => {
         try {
-            const Post = Parse.Object.extend('Post');
-            const posts = new Parse.Query(Post);
-
+            const posts = new Parse.Query('Post');
+            posts.descending("createdAt");
             const result = await posts.find();
-
-            result.sort((a, b) => {
-                if (a.createdAt > b.createdAt) {
-                    return -1
-                } else {
-                    return 1
-                }
-            });
 
             setData(result);
         } catch (err) {
@@ -183,7 +222,7 @@ const styles = StyleSheet.create({
         right: 10,
         bottom: 10,
     },
-    addPostIcon: { 
+    addPostIcon: {
         width: '100%',
         height: '100%'
     },
