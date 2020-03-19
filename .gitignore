@@ -61,4 +61,5 @@ typings/
 .next
 
 # custom colmena
-android
+android/
+src/config/
