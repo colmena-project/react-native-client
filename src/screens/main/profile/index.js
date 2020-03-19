@@ -10,17 +10,17 @@ import {
 
 import {Input} from 'react-native-elements';
 
-import emailCheck from '../utils/email';
+import emailCheck from '../../../utils/email';
 
-import InputField from './form/InputField';
+import InputField from '../../../components/form/InputField';
 
 import {Avatar} from 'react-native-elements';
 
-import Loader from './Loader';
+import Loader from '../../../components/Loader';
 
-import colors from '../styles/colors';
+import colors from '../../../styles/colors';
 
-import styles from '../styles/login';
+import styles from '../../../styles/login';
 
 import Parse from 'parse/react-native';
 
@@ -88,7 +88,7 @@ class Profile extends Component {
               <Text style={styles.brandText}>Mi Perfil</Text>
               <Image
                 style={styles.colmenaLogo}
-                source={require('../../assets/colmena-app-ico.png')}
+                source={require('../../../../assets/colmena-app-ico.png')}
               />
             </View>
             {picture ? (

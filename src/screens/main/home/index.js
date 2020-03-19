@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, FlatList, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import PostModal from './PostModal';
-import colors from '../../styles/colors';
-import Feed from './Feed';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Parse } from 'parse/react-native';
-import stylesCommon from '../../styles/login';
 import { AsyncStorage } from 'react-native';
+import { Parse } from 'parse/react-native';
+
+import colors from '../../../styles/colors';
+import stylesCommon from '../../../styles/login';
+
+import PostModal from '../../../components/posts/PostModal';
+import Feed from '../../../components/posts/Feed';
 
 const HomeFeed = props => {
 
-
-    const getToken = async () => {
-        
+    const getToken = async () => {        
         const FCMToken = await AsyncStorage.getItem('FCMToken');
-
         if(!FCMToken) throw new Error('No tiene token.');
         
         return FCMToken;
@@ -25,10 +23,8 @@ const HomeFeed = props => {
             const FCMToken = await getToken();
             const session = await Parse.Session.current();
             const installationId = session.get('installationId');
-            // const installation = new Parse.Query(Parse.Installation);
-            // installation.equalTo('installationId', installationId);
-            // const result = await installation.first();
             
+            //FIXME: Add dynamic data
             const newInstallation = new Parse.Installation();
             newInstallation.set('deviceType', 'android');
             newInstallation.set('installationId', installationId);
@@ -38,18 +34,6 @@ const HomeFeed = props => {
             newInstallation.set('deviceToken', FCMToken);
 
             await newInstallation.save();
-
-            // if (!result) {
-            //     const Installation = Parse.Object.extend('Installation');
-            //     const newInstallation = new Installation();
-            //     newInstallation.set('installationId', installationId);
-            //     newInstallation.set('timeZone', 'America/Argentina/Buenos_Aires');
-            //     newInstallation.set('appName', 'ColmenaApp');
-            //     newInstallation.set('appIdentifier', 'com.colmena.colmenapp');
-            //     newInstallation.set('deviceToken', FCMToken);
-
-            //     await newInstallation.save();
-            // }
         } catch (err) {
             console.log('Error!! ' + err);
         }
@@ -127,7 +111,7 @@ const HomeFeed = props => {
                     <Text style={{ ...stylesCommon.brandText, color: colors.colmenaGreen }}>Colmena</Text>
                     <Image
                         style={stylesCommon.colmenaLogo}
-                        source={require('../../../assets/colmena-app-ico.png')}
+                        source={require('../../../../assets/colmena-app-ico.png')}
                     />
                 </View>
 
@@ -148,7 +132,7 @@ const HomeFeed = props => {
                 <TouchableOpacity style={styles.floatingIcon} onPress={() => setIsAddMode(true)}>
                     <Image
                         style={styles.addPostIcon}
-                        source={require('../../../assets/new-post-icon.png')}
+                        source={require('../../../../assets/new-post-icon.png')}
                     />
                 </TouchableOpacity>
 

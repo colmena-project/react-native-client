@@ -1,20 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MiColmenaContainer from '../containers/MiColmenaContainer';
-
-import Profile from '../components/Profile';
-
-import MyWaste from '../components/MyWaste';
-
-import HomeFeed from '../components/posts/HomeFeed';
-
 import {createStackNavigator} from 'react-navigation-stack';
-
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
+import Home from '../screens/main/home';
+import Profile from '../screens/main/profile';
+import MiColmenaContainer from '../containers/MiColmenaContainer';
+import MyWaste from '../screens/main/waste';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import colors from '../styles/colors';
 
 const CustomIcon = (name, size) => {
@@ -44,8 +38,8 @@ const MiColmenaTab = createStackNavigator(
 
 const InAppTabNavigator = createBottomTabNavigator(
   {
-    HomeFeed: {
-      screen: HomeFeed,
+    Home: {
+      screen: Home,
       navigationOptions: {
         tabBarLabel: 'HOME',
         tabBarIcon: CustomIcon('ios-home', 28),

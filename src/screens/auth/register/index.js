@@ -19,24 +19,24 @@ import {
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import ActionCreators from '../redux/actions';
+import ActionCreators from '../../../redux/actions';
 
-import NavBarButton from './buttons/NavBarButton';
+import NavBarButton from '../../../components/buttons/NavBarButton';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Parse from 'parse/react-native';
 
-import Config from '../config';
+import Config from '../../../config';
 
-import InputField from './form/InputField';
+import InputField from '../../../components/form/InputField';
 
-import colors from '../styles/colors';
-import styles from '../styles/login';
+import colors from '../../../styles/colors';
+import styles from '../../../styles/login';
 
 import {PropTypes} from 'prop-types';
 
-import emailCheck from '../utils/email';
+import emailCheck from '../../../utils/email';
 
 Parse.setAsyncStorage(AsyncStorage);
 
@@ -190,7 +190,7 @@ class Register extends Component {
               <Text style={styles.brandText}>Registrarse</Text>
               <Image
                 style={styles.colmenaLogo}
-                source={require('../../assets/colmena-app-ico.png')}
+                source={require('../../../../assets/colmena-app-ico.png')}
               />
             </View>
 

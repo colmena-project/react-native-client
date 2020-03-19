@@ -6,18 +6,15 @@ import {
   ScrollView,
   Alert,
   TouchableOpacity,
-  TouchableHighlightBase,
 } from 'react-native';
-
-import InputField from './form/InputField';
-
+import InputSpinner from 'react-native-input-spinner';
 import {CheckBox, Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import colors from '../styles/colors';
-import styles from '../styles/waste';
+import colors from '../../../styles/colors';
+import styles from '../../../styles/waste';
 
-import InputSpinner from 'react-native-input-spinner';
+import InputField from '../../../components/form/InputField';
 
 class MyWaste extends Component {
   constructor(props) {
@@ -60,7 +57,7 @@ class MyWaste extends Component {
             ) : (
               <Image
                 style={styles.colmenaLogo}
-                source={require('../../assets/colmena-app-ico.png')}
+                source={require('../../../../assets/colmena-app-ico.png')}
               />
             )}
           </View>
@@ -68,7 +65,7 @@ class MyWaste extends Component {
             <View>
               <Image
                 style={styles.boxImage}
-                source={require('../../assets/water-bottle-color-icon.png')}
+                source={require('../../../../assets/water-bottle-color-icon.png')}
               />
             </View>
             <View>
@@ -95,7 +92,7 @@ class MyWaste extends Component {
             <View>
               <Image
                 style={styles.boxImage}
-                source={require('../../assets/glass-bottle-icon.png')}
+                source={require('../../../../assets/glass-bottle-icon.png')}
               />
             </View>
             <View>

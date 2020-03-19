@@ -1,38 +1,28 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import {
   View,
   Text,
   Image,
-  Button,
   ScrollView,
   KeyboardAvoidingView,
-  Keyboard,
-  keyboardType,
-  TextInput,
-  TouchableHighlight,
   TouchableOpacity,
-  StyleSheet,
   Alert,
-  AsyncStorage,
 } from 'react-native';
+import { SocialIcon } from 'react-native-elements';
 
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import ActionCreators from '../redux/actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import ActionCreators from '../../../redux/actions';
 
-import Loader from './Loader';
+import { PropTypes } from 'prop-types';
 
-import {SocialIcon} from 'react-native-elements';
+import colors from '../../../styles/colors';
+import styles from '../../../styles/login';
 
-import InputField from './form/InputField';
-
-import colors from '../styles/colors';
-import styles from '../styles/login';
-
-import {PropTypes} from 'prop-types';
-
-import emailCheck from '../utils/email';
+import InputField from '../../../components/form/InputField';
+import Loader from '../../../components/Loader';
+import emailCheck from '../../../utils/email';
 
 class Login extends Component {
   constructor(props) {
@@ -52,69 +42,69 @@ class Login extends Component {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
-  static navigationOptions = ({navigation}) => ({
+  static navigationOptions = ({ navigation }) => ({
     header: null,
   });
 
   handleEmailChange(email) {
-    const {validEmail} = this.state;
-    this.setState({email: email});
+    const { validEmail } = this.state;
+    this.setState({ email: email });
 
     if (!validEmail) {
       if (emailCheck(email)) {
-        this.setState({validEmail: true});
+        this.setState({ validEmail: true });
       }
     } else if (!emailCheck(email)) {
-      this.setState({validEmail: false});
+      this.setState({ validEmail: false });
     }
   }
 
   handlePasswordChange(password) {
-    const {validPassword} = this.state;
+    const { validPassword } = this.state;
 
-    this.setState({password});
+    this.setState({ password });
 
     if (!validPassword) {
       if (password.length > 4) {
-        this.setState({validPassword: true});
+        this.setState({ validPassword: true });
       }
     } else if (password <= 4) {
-      this.setState({validPassword: false});
+      this.setState({ validPassword: false });
     }
   }
 
   async loginColmena() {
-    this.setState({loadingVisible: true});
-    const {login, navigation} = this.props;
-    const {navigate} = navigation;
-    const {email, password} = this.state;
+    this.setState({ loadingVisible: true });
+    const { login, navigation } = this.props;
+    const { navigate } = navigation;
+    const { email, password } = this.state;
     const isLoginOk = await login(email, password);
 
     if (isLoginOk) {
-      this.setState({formValid: true, loadingVisible: false});
+      this.setState({ formValid: true, loadingVisible: false });
       navigate('MyWaste');
     } else {
-      this.setState({formValid: false, loadingVisible: false});
+      this.setState({ formValid: false, loadingVisible: false });
       Alert.alert('error.. usuario o pass incorrecto');
     }
   }
   async loginFacebook() {
-    const {loginFb, navigation} = this.props;
-    const {navigate} = navigation;
+    const { loginFb, navigation } = this.props;
+    const { navigate } = navigation;
     const isLoginFbOk = await loginFb();
     if (isLoginFbOk) {
-      this.setState({formValid: true, loadingVisible: false});
+      this.setState({ formValid: true, loadingVisible: false });
       navigate('Profile');
     } else {
-      this.setState({formValid: false, loadingVisible: false});
+      this.setState({ formValid: false, loadingVisible: false });
     }
   }
 
   render() {
-    const {formValid, loadingVisible, validEmail, validPassword} = this.state;
+    const { formValid, loadingVisible, validEmail, validPassword } = this.state;
 
-    const {navigation} = this.props;
-    const {navigate} = navigation;
+    const { navigation } = this.props;
+    const { navigate } = navigation;
 
     return (
       <KeyboardAvoidingView style={styles.wrapper} behavior="padding">
@@ -126,7 +116,7 @@ class Login extends Component {
               <Text style={styles.brandText}>Ingreso</Text>
               <Image
                 style={styles.colmenaLogo}
-                source={require('../../assets/colmena-app-ico.png')}
+                source={require('../../../../assets/colmena-app-ico.png')}
               />
             </View>
             <InputField
@@ -137,7 +127,7 @@ class Login extends Component {
               borderBottomColor={colors.colmenaLightGrey}
               borderFocusColor={colors.colmenaGreen}
               inputType="email"
-              customStyle={{marginBottom: 30}}
+              customStyle={{ marginBottom: 30 }}
               onChangeText={this.handleEmailChange}
               showCheckmark={validEmail}
               autoFocus
@@ -150,7 +140,7 @@ class Login extends Component {
               borderBottomColor={colors.colmenaLightGrey}
               borderFocusColor={colors.colmenaGreen}
               inputType="password"
-              customStyle={{marginBottom: 20}}
+              customStyle={{ marginBottom: 20 }}
               onChangeText={this.handlePasswordChange}
               showCheckmark={false}
             />
