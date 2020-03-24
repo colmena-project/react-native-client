@@ -45,13 +45,6 @@ const InAppTabNavigator = createBottomTabNavigator(
         tabBarIcon: CustomIcon('ios-home', 28),
       },
     },
-    Profile: {
-      screen: Profile,
-      navigationOptions: {
-        tabBarLabel: 'MI PERFIL',
-        tabBarIcon: CustomIcon('ios-person', 28),
-      },
-    },
     MiColmena: {
       screen: MiColmenaTab,
       navigationOptions: {
@@ -64,6 +57,13 @@ const InAppTabNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'MIS RESIDUOS',
         tabBarIcon: CustomIcon('ios-archive', 28),
+      },
+    },
+    Profile: {
+      screen: Profile,
+      navigationOptions: {
+        tabBarLabel: 'MI PERFIL',
+        tabBarIcon: CustomIcon('ios-person', 28),
       },
     },
   },

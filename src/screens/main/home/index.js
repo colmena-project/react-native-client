@@ -7,14 +7,14 @@ import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/login';
 
 import PostModal from '../../../components/posts/PostModal';
-import Feed from '../../../components/posts/Feed';
+import FeedList from '../../../components/posts/FeedList';
 
 const HomeFeed = props => {
 
-    const getToken = async () => {        
+    const getToken = async () => {
         const FCMToken = await AsyncStorage.getItem('FCMToken');
-        if(!FCMToken) throw new Error('No tiene token.');
-        
+        if (!FCMToken) throw new Error('No tiene token.');
+
         return FCMToken;
     };
 
@@ -23,7 +23,7 @@ const HomeFeed = props => {
             const FCMToken = await getToken();
             const session = await Parse.Session.current();
             const installationId = session.get('installationId');
-            
+
             //FIXME: Add dynamic data
             const newInstallation = new Parse.Installation();
             newInstallation.set('deviceType', 'android');
@@ -42,7 +42,6 @@ const HomeFeed = props => {
     getInstallation();
 
     const [isAddMode, setIsAddMode] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState(null);
 
     const loadData = async () => {
@@ -82,21 +81,6 @@ const HomeFeed = props => {
         console.log('OPEN CAMERA!!')
     };
 
-    const fillFeedWithPosts = post => {
-
-        const createdBy = post.item.get('createdBy');
-        const username = createdBy.get('username');
-
-        return (
-            <View style={styles.feedContainer}>
-                <View style={styles.feedItem}>
-                    <Feed userName={'@' + username} feed={post.item.get("text")}
-                        hashTags={post.item.createdAt.toString()} likes={'134'} image={''} />
-                </View>
-            </View>
-        );
-    };
-
     return (
         <View style={styles.screen}>
             <View style={styles.container}>
@@ -119,15 +103,7 @@ const HomeFeed = props => {
                     <Text style={styles.colmenaHeaderSubtitle}>Novedades</Text>
                 </View>
 
-                <View style={styles.feedList}>
-                    {data === null || isLoading === true ? <ActivityIndicator size={'large'} color={colors.colmenaGreen} /> :
-
-                        <FlatList style={styles.mainFeed}
-                            keyExtractor={(item, index) => item.id}
-                            data={data}
-                            renderItem={fillFeedWithPosts} />
-                    }
-                </View>
+                <FeedList />
 
                 <TouchableOpacity style={styles.floatingIcon} onPress={() => setIsAddMode(true)}>
                     <Image
@@ -161,21 +137,6 @@ const styles = StyleSheet.create({
         paddingRight: 30,
         paddingBottom: 10,
         paddingTop: 20,
-    },
-    feedList: {
-        flex: 1,
-        width: '100%',
-    },
-    mainFeed: {
-        width: '100%',
-        flex: 1,
-    },
-    feedContainer: {
-        width: '100%',
-        alignItems: 'center'
-    },
-    feedItem: {
-        width: '90%',
     },
     topNavigator: {
         width: '100%',
