@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useState, useReducer } from 'react';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import { Parse } from 'parse/react-native';
 
@@ -8,8 +8,27 @@ import stylesCommon from '../../../styles/login';
 
 import PostModal from '../../../components/posts/PostModal';
 import FeedList from '../../../components/posts/FeedList';
+import { useEffect } from 'react';
 
 const HomeFeed = props => {
+
+    const [isAddMode, setIsAddMode] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState(null);
+
+    const loadData = async () => {
+        try {
+            setIsLoading(true);
+            const posts = new Parse.Query('Post');
+            posts.descending("createdAt");
+            const result = await posts.find();
+
+            setData(result);
+            setIsLoading(false);
+        } catch (err) {
+            console.log('Error!! ' + err);
+        }
+    };
 
     const getToken = async () => {
         const FCMToken = await AsyncStorage.getItem('FCMToken');
@@ -39,40 +58,16 @@ const HomeFeed = props => {
         }
     };
 
-    getInstallation();
-
-    const [isAddMode, setIsAddMode] = useState(false);
-    const [data, setData] = useState(null);
-
-    const loadData = async () => {
-        try {
-            const posts = new Parse.Query('Post');
-            posts.descending("createdAt");
-            const result = await posts.find();
-
-            setData(result);
-        } catch (err) {
-            console.log('Error!! ' + err);
-        }
-    };
-
-    if (data === null) {
-        loadData();
-    }
-
     const handleOnSendButton = async (text) => {
         try {
             setIsAddMode(false);
-            setIsLoading(true);
             const Post = Parse.Object.extend('Post');
             const post = new Post();
 
             post.set("text", text);
             await post.save();
             loadData();
-            setIsLoading(false);
         } catch (err) {
-            setIsLoading(false);
             console.log('Error!! ' + err);
         };
     };
@@ -80,6 +75,11 @@ const HomeFeed = props => {
     const handleOnCameraButton = async () => {
         console.log('OPEN CAMERA!!')
     };
+
+    useEffect(() => {
+        loadData();
+        getInstallation();
+    }, []);
 
     return (
         <View style={styles.screen}>
@@ -103,7 +103,9 @@ const HomeFeed = props => {
                     <Text style={styles.colmenaHeaderSubtitle}>Novedades</Text>
                 </View>
 
-                <FeedList />
+                {isLoading ? <ActivityIndicator style={{ flex:1 }} size={'large'} color={colors.colmenaGreen} /> :
+                    <FeedList data={data} />
+                }
 
                 <TouchableOpacity style={styles.floatingIcon} onPress={() => setIsAddMode(true)}>
                     <Image

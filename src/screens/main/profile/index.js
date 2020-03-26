@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { Text, View, Image, ScrollView, StyleSheet, Button, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, Image, StyleSheet, Button, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Parse } from 'parse/react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 
 import Animated from 'react-native-reanimated';
 
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
@@ -14,9 +13,35 @@ import FeedList from '../../../components/posts/FeedList';
 
 const MyProfile = props => {
 
+    const [userAccount, setUserAccount] = useState(null);
+    const [stock, setStock] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [data, setData] = useState(null);
 
+    const fetchData = async () => {
+        try {
+            setIsLoading(true);
 
-    
+            const account = await Parse.Cloud.run("getMyAccount");
+            setUserAccount(account);
+            setStock(account.stock);
+
+            const posts = new Parse.Query('Post');
+            posts.descending("createdAt");
+            const result = await posts.find();
+
+            setData(result);
+            setIsLoading(false);
+        } catch (err) {
+            console.log('Error!! ' + err);
+        }
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     /******************************************************
      * TABS VIEW 
      *****************************************************/
@@ -25,13 +50,13 @@ const MyProfile = props => {
         { key: 'posts', title: 'Posts (23)' },
         { key: 'metrics', title: 'Métricas' },
     ]);
-    
+
     const postsTab = () => {
-        return <FeedList />
+        return <FeedList data={data} />
     };
 
     const metricsTab = () => {
-        return <View style={{ ...styles.scene, backgroundColor: colors.colmenaGreenDisabled }} />
+        return <View style={{ ...styles.scene, backgroundColor: colors.colmenaGreyDisabled }} />
     };
 
     const initialLayout = {
@@ -42,17 +67,15 @@ const MyProfile = props => {
         posts: postsTab,
         metrics: metricsTab,
     });
-    
-    //PREGUNTAR SI ESTA BIEN LA LISTA DE POSTS
-    console.disableYellowBox = true;
-    
+
     const renderTabBar = props => {
         return (
             <View style={styles.tabBar}>
                 {props.navigationState.routes.map((route, i) => {
                     return (
                         <TouchableOpacity
-                            style={{ ...styles.tabItem, borderBottomColor: index === i ? colors.colmenaGreen : '#ccc'}}
+                            key={i}
+                            style={{ ...styles.tabItem, borderBottomColor: index === i ? colors.colmenaGreen : '#ccc' }}
                             onPress={() => setIndex(i)}>
                             <Animated.Text style={{ fontSize: 16, color: index === i ? colors.colmenaGrey : '#ccc' }}>{route.title}</Animated.Text>
                         </TouchableOpacity>
@@ -67,109 +90,117 @@ const MyProfile = props => {
 
     return (
         <View style={stylesCommon.scrollViewWrapper}>
-            <ScrollView style={stylesCommon.scrollView}>
-
-                <View style={styles.container}>
-                    <View style={styles.headerIcons}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={{ ...stylesCommon.brandText, fontSize: 24, paddingLeft: 10 }}>
-                                Guille Colotti
-                            </Text>
-                        </View>
-                        <EvilIcons name={'cart'} size={30} color={colors.colmenaGrey} />
-                    </View>
-                    <View style={styles.profileHeader}>
-
-                        <View style={styles.profilePicture}>
-                            <Image
-                                style={styles.avatar}
-                                source={require('../../../../assets/default_user_2.png')}
-                            />
-                            <Text style={styles.name}>
-                                @gcolotti
-                            </Text>
-                        </View>
-
-                        <View style={{ ...styles.headerExtraInfo, flex: 2, paddingRight: 7 }}>
-                            <View style={{ flex: 1, }}>
-                                <Text style={{ ...styles.headerExtraInfoText, fontWeight: 'bold' }}>Impacto</Text>
-                                <Text style={{ ...styles.headerExtraInfoText, fontSize: 14 }}>Redujiste 12kg la emisión de CO2</Text>
+            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                <View style={styles.scrollView}>
+                    <View style={styles.container}>
+                        <View style={styles.headerIcons}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ ...stylesCommon.brandText, fontSize: 24, paddingLeft: 10 }}>
+                                    {userAccount.firstName} {userAccount.lastName}
+                                </Text>
                             </View>
-                            <View style={{ flexDirection: 'row', }}>
+                            <EvilIcons name={'cart'} size={30} color={colors.colmenaGrey} />
+                        </View>
+                        <View style={styles.profileHeader}>
+
+                            <View style={styles.profilePicture}>
                                 <Image
-                                    style={{ width: 40, height: 40, resizeMode: 'contain' }}
-                                    source={require('../../../../assets/icons/icon-co2.png')}
+                                    style={styles.avatar}
+                                    source={require('../../../../assets/default_user_2.png')}
                                 />
-                            </View>
-                        </View>
-
-                        <View style={{ ...styles.headerExtraInfo, flex: 3, borderLeftWidth: 1, borderLeftColor: colors.colmenaGreen }}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ ...styles.headerExtraInfoText, paddingRight: 10, fontWeight: 'bold' }}>Mis Residuos</Text>
-                                <Image
-                                    style={{ width: 16, height: 16, resizeMode: 'contain' }}
-                                    source={require('../../../../assets/icons/icon-pencil.png')}
-                                />
+                                <Text style={styles.name}>
+                                    @{userAccount.createdBy.get('username')}
+                                </Text>
                             </View>
 
-                            <View style={{ flex: 1, flexDirection: 'row', paddingLeft: 7 }}>
-                                <View style={{ flex: 1, alignItems: 'flex-start', }}>
-                                    <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>PET</Text>
-                                    <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>Orgánico</Text>
+                            <View style={{ ...styles.headerExtraInfo, flex: 2, paddingRight: 7 }}>
+                                <View style={{ flex: 1, }}>
+                                    <Text style={{ ...styles.headerExtraInfoText, fontWeight: 'bold' }}>Impacto</Text>
+                                    <Text style={{ ...styles.headerExtraInfoText, fontSize: 14 }}>Redujiste 12kg la emisión de CO2</Text>
                                 </View>
-                                <View style={{ flex: 1, alignItems: 'flex-end', }}>
-                                    <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>200 bolsas</Text>
-                                    <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>100 bolsas</Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Image
+                                        style={{ width: 40, height: 40, resizeMode: 'contain' }}
+                                        source={require('../../../../assets/icons/icon-co2.png')}
+                                    />
                                 </View>
                             </View>
 
-                            <View style={{ flexDirection: 'row', }}>
-                                <Image
-                                    style={{ width: 40, height: 40, resizeMode: 'contain' }}
-                                    source={require('../../../../assets/icons/icon-residuo-pet.png')}
-                                />
-                                <Image
-                                    style={{ width: 40, height: 40, resizeMode: 'contain' }}
-                                    source={require('../../../../assets/icons/icon-residuo-organico.png')}
-                                />
+                            <View style={{ ...styles.headerExtraInfo, flex: 2, borderLeftWidth: 1, paddingLeft: 7, borderLeftColor: colors.colmenaGreen }}>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Text style={{ ...styles.headerExtraInfoText, paddingRight: 10, fontWeight: 'bold' }}>Mis Residuos</Text>
+                                    <Image
+                                        style={{ width: 16, height: 16, resizeMode: 'contain' }}
+                                        source={require('../../../../assets/icons/icon-pencil.png')}
+                                    />
+                                </View>
+
+                                <View style={{ flex: 1, width: '100%' }}>
+                                    {stock.map(item => {
+                                        return (
+                                            <View key={item.objectId} style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                                                <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>{item.wasteType.name}</Text>
+                                                <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>
+                                                    {item.ammount} {item.ammount > 1 ? item.wasteType.containerPlural : item.wasteType.container}
+                                                </Text>
+                                            </View>
+                                        );
+                                    })}
+                                </View>
+
+                                <View style={{ flexDirection: 'row', }}>
+                                    <Image
+                                        style={{ width: 40, height: 40, resizeMode: 'contain' }}
+                                        source={require('../../../../assets/icons/icon-residuo-pet.png')}
+                                    />
+                                    <Image
+                                        style={{ width: 40, height: 40, resizeMode: 'contain' }}
+                                        source={require('../../../../assets/icons/icon-residuo-organico.png')}
+                                    />
+                                </View>
+
                             </View>
 
                         </View>
 
+                        <View style={styles.locationInfo}>
+                            <EvilIcons name={'location'} size={25} color={colors.colmenaGrey} />
+                            <Text style={styles.titleTexts}>{userAccount.city}, {userAccount.state}</Text>
+                        </View>
+
+                        <View style={styles.aboutMeInfo}>
+                            <Text style={styles.aboutMeText}>
+                                {userAccount.aboutMe}
+                            </Text>
+                        </View>
+                        <View style={styles.editButton}>
+                            <Button title={'Editar perfil'} color={colors.colmenaGreen} onPress={() => console.log('Editar perfil')} />
+                        </View>
                     </View>
 
-                    <View style={styles.locationInfo}>
-                        <EvilIcons name={'location'} size={25} color={colors.colmenaGrey} />
-                        <Text style={styles.titleTexts}>Oberá, Misiones</Text>
-                    </View>
-
-                    <View style={styles.aboutMeInfo}>
-                        <Text style={styles.aboutMeText}>
-                            I'm a 24 years old Embedded Systems Engineer.... currently working as a Frelance designer. I love pizza and to recycle waste! Viva colmena!!
-                        </Text>
-                    </View>
-                    <View style={styles.editButton}>
-                        <Button title={'Editar perfil'} color={colors.colmenaGreen} onPress={() => console.log('Editar perfil')} />
+                    <View style={styles.tabBarContainer}>
+                        <TabView
+                            navigationState={{ index, routes }}
+                            renderScene={renderScene}
+                            onIndexChange={setIndex}
+                            initialLayout={initialLayout}
+                            renderTabBar={renderTabBar}
+                        />
                     </View>
                 </View>
-
-                <View style={styles.container}>
-                    <TabView
-                        navigationState={{ index, routes }}
-                        renderScene={renderScene}
-                        onIndexChange={setIndex}
-                        initialLayout={initialLayout}
-                        renderTabBar={renderTabBar}
-                    />
-                </View>
-
-            </ScrollView>
+            }
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingTop: 10,
+        flex: 5,
+    },
+    scrollView: {
         flex: 1,
     },
     headerIcons: {
@@ -242,9 +273,14 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 200,
     },
+    tabBarContainer: {
+        flex: 4,
+    },
     tabBar: {
         flexDirection: 'row',
         marginTop: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
     },
     tabItem: {
         flex: 1,

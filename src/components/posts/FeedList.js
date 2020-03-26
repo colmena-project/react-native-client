@@ -1,29 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, FlatList, ActivityIndicator, RefreshControl } from 'react-native';
 import { Parse } from 'parse/react-native';
 
 import colors from '../posts/FeedList';
 import Feed from './Feed';
+import { useEffect } from 'react';
 
 const FeedList = props => {
 
     const [data, setData] = useState(null);
-
-    const loadData = async () => {
-        try {
-            const posts = new Parse.Query('Post');
-            posts.descending("createdAt");
-            const result = await posts.find();
-
-            setData(result);
-        } catch (err) {
-            console.log('Error!! ' + err);
-        }
-    };
-
-    if (data === null) {
-        loadData();
-    }
 
     const fillFeedWithPosts = post => {
 
@@ -40,15 +25,18 @@ const FeedList = props => {
         );
     };
 
+    useEffect(() => {
+        setData(props.data);
+    }, []);
+
     return (
         <View style={styles.feedList}>
-            {data === null ? <ActivityIndicator style={{marginTop: 50}}size={'large'} color={colors.colmenaGreen} /> :
                 <FlatList style={styles.mainFeed}
                     nestedScrollEnabled={true}
                     keyExtractor={(item, index) => item.id}
                     data={data}
-                    renderItem={fillFeedWithPosts} />
-            }
+                    renderItem={fillFeedWithPosts}
+                />
         </View>
     );
 };
