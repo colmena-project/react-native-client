@@ -13,11 +13,11 @@ const AppRouteConfigs = createStackNavigator({
   Logout: {screen: Logout},
   ForgotPassword: {screen: ForgotPassword},
   Register: {screen: Register},
-  InApp: {
+  Home: {
     screen: InAppTabNavigator,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false,
+      gesturesEnabled: true,
     },
   },
 });

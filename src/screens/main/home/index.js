@@ -81,6 +81,10 @@ const HomeFeed = props => {
         getInstallation();
     }, []);
 
+    const handleOthersProfile = () => {
+        props.navigation.navigate('OthersProfile');
+    };
+
     return (
         <View style={styles.screen}>
             <View style={styles.container}>
@@ -104,7 +108,7 @@ const HomeFeed = props => {
                 </View>
 
                 {isLoading ? <ActivityIndicator style={{ flex:1 }} size={'large'} color={colors.colmenaGreen} /> :
-                    <FeedList data={data} />
+                    <FeedList onPress={handleOthersProfile} data={data} />
                 }
 
                 <TouchableOpacity style={styles.floatingIcon} onPress={() => setIsAddMode(true)}>

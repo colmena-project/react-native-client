@@ -52,7 +52,7 @@ const MyProfile = props => {
     ]);
 
     const postsTab = () => {
-        return <FeedList data={data} />
+        return <FeedList onPress={handleOthersProfile} data={data} />
     };
 
     const metricsTab = () => {
@@ -67,6 +67,14 @@ const MyProfile = props => {
         posts: postsTab,
         metrics: metricsTab,
     });
+
+    const handleOthersProfile = () => {
+        props.navigation.navigate('OthersProfile');
+    };
+
+    const handleEditProfile = () => {
+        props.navigation.navigate('EditProfile');
+    };
 
     const renderTabBar = props => {
         return (
@@ -174,7 +182,7 @@ const MyProfile = props => {
                             </Text>
                         </View>
                         <View style={styles.editButton}>
-                            <Button title={'Editar perfil'} color={colors.colmenaGreen} onPress={() => console.log('Editar perfil')} />
+                            <Button title={'Editar perfil'} color={colors.colmenaGreen} onPress={handleEditProfile} />
                         </View>
                     </View>
 

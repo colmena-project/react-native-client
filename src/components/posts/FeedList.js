@@ -10,6 +10,10 @@ const FeedList = props => {
 
     const [data, setData] = useState(null);
 
+    const handleOnPress = () => {
+        props.onPress();
+    };
+
     const fillFeedWithPosts = post => {
 
         const createdBy = post.item.get('createdBy');
@@ -18,7 +22,7 @@ const FeedList = props => {
         return (
             <View style={styles.feedContainer}>
                 <View style={styles.feedItem}>
-                    <Feed userName={'@' + username} feed={post.item.get("text")}
+                    <Feed onPress={handleOnPress} userName={'@' + username} feed={post.item.get("text")}
                         hashTags={post.item.createdAt.toString()} likes={'134'} image={''} />
                 </View>
             </View>

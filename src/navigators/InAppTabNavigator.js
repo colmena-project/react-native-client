@@ -6,6 +6,8 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 import Home from '../screens/main/home';
 import Profile from '../screens/main/profile';
+import EditProfile from '../screens/main/profile/edit';
+import OthersProfile from '../screens/main/profile/othersProfile';
 import MiColmenaContainer from '../containers/MiColmenaContainer';
 import MyWaste from '../screens/main/waste';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -36,7 +38,7 @@ const MiColmenaTab = createStackNavigator(
   },
 );
 
-const InAppTabNavigator = createBottomTabNavigator(
+const HomeNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: Home,
@@ -83,5 +85,29 @@ const InAppTabNavigator = createBottomTabNavigator(
     tabBarPosition: 'bottom',
   },
 );
+
+const InAppTabNavigator = createStackNavigator({
+  InApp: {
+    screen: HomeNavigator,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: true,
+    },
+  },
+  EditProfile: {
+    screen: EditProfile,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: true,
+    }
+  },
+  OthersProfile: {
+    screen: OthersProfile,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: true,
+    }
+  },
+});
 
 export default InAppTabNavigator;

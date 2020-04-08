@@ -3,11 +3,16 @@ import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Feed = props => {
+
+    const handleOnPress = () => {
+        props.onPress();
+    };
+
     return (
         <View style={styles.feed}>
             <View style={styles.userName}>
                 <View>
-                    <Text style={styles.userNameText}>
+                    <Text onPress={handleOnPress} style={styles.userNameText}>
                         {props.userName}
                     </Text>
                 </View>
