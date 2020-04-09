@@ -1,16 +1,11 @@
 import {createStackNavigator} from 'react-navigation-stack';
 
 import Intro from '../components/Intro';
-// import Login from '../components/Login';
-import Logout from '../components/Logout';
+import Login from '../screens/auth/login';
+import Logout from '../screens/auth/logout';
 import ForgotPassword from '../components/ForgotPassword';
+import Register from '../screens/auth/register';
 import InAppTabNavigator from './InAppTabNavigator';
-import Home from '../components/Home';
-
-import Login from '../components/Login';
-import MyColmena from '../components/MyColmena';
-import MyWallet from '../components/MyWallet';
-import Register from '../components/Register';
 
 const AppRouteConfigs = createStackNavigator({
   Intro: {screen: Intro},
@@ -18,11 +13,11 @@ const AppRouteConfigs = createStackNavigator({
   Logout: {screen: Logout},
   ForgotPassword: {screen: ForgotPassword},
   Register: {screen: Register},
-  InApp: {
+  Home: {
     screen: InAppTabNavigator,
     navigationOptions: {
       header: null,
-      gesturesEnabled: false,
+      gesturesEnabled: true,
     },
   },
 });

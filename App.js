@@ -16,6 +16,6 @@ class App extends Component {
   }
 }
 
-AppRegistry.registerComponent('App', () => App);
+AppRegistry.registerComponent('react-native-client', () => App);
 
 export default App;

@@ -1,20 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import MiColmenaContainer from '../containers/MiColmenaContainer';
-
-import Profile from '../components/Profile';
-
-import MyWaste from '../components/MyWaste';
-
-import HomeFeed from '../components/posts/HomeFeed';
-
 import {createStackNavigator} from 'react-navigation-stack';
-
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 
+import Home from '../screens/main/home';
+import Profile from '../screens/main/profile';
+import EditProfile from '../screens/main/profile/edit';
+import OthersProfile from '../screens/main/profile/othersProfile';
+import MiColmenaContainer from '../containers/MiColmenaContainer';
+import MyWaste from '../screens/main/waste';
 import Icon from 'react-native-vector-icons/Ionicons';
-
 import colors from '../styles/colors';
 
 const CustomIcon = (name, size) => {
@@ -42,20 +38,13 @@ const MiColmenaTab = createStackNavigator(
   },
 );
 
-const InAppTabNavigator = createBottomTabNavigator(
+const HomeNavigator = createBottomTabNavigator(
   {
-    HomeFeed: {
-      screen: HomeFeed,
+    Home: {
+      screen: Home,
       navigationOptions: {
         tabBarLabel: 'HOME',
         tabBarIcon: CustomIcon('ios-home', 28),
-      },
-    },
-    Profile: {
-      screen: Profile,
-      navigationOptions: {
-        tabBarLabel: 'MI PERFIL',
-        tabBarIcon: CustomIcon('ios-person', 28),
       },
     },
     MiColmena: {
@@ -70,6 +59,13 @@ const InAppTabNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'MIS RESIDUOS',
         tabBarIcon: CustomIcon('ios-archive', 28),
+      },
+    },
+    Profile: {
+      screen: Profile,
+      navigationOptions: {
+        tabBarLabel: 'MI PERFIL',
+        tabBarIcon: CustomIcon('ios-person', 28),
       },
     },
   },
@@ -89,5 +85,29 @@ const InAppTabNavigator = createBottomTabNavigator(
     tabBarPosition: 'bottom',
   },
 );
+
+const InAppTabNavigator = createStackNavigator({
+  InApp: {
+    screen: HomeNavigator,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: true,
+    },
+  },
+  EditProfile: {
+    screen: EditProfile,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: true,
+    }
+  },
+  OthersProfile: {
+    screen: OthersProfile,
+    navigationOptions: {
+      header: null,
+      gesturesEnabled: true,
+    }
+  },
+});
 
 export default InAppTabNavigator;

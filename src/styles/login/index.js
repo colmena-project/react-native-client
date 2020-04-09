@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   brand: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 40,

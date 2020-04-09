@@ -3,11 +3,16 @@ import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Feed = props => {
+
+    const handleOnPress = () => {
+        props.onPress();
+    };
+
     return (
         <View style={styles.feed}>
             <View style={styles.userName}>
                 <View>
-                    <Text style={styles.userNameText}>
+                    <Text onPress={handleOnPress} style={styles.userNameText}>
                         {props.userName}
                     </Text>
                 </View>
@@ -18,24 +23,24 @@ const Feed = props => {
             <Text>
                 {props.feed}
             </Text>
-            <Text style={styles.actionButtons}>
+            {/* <Text style={styles.actionButtons}>
                 <Icon name={'ios-heart'} size={18} color={'#fe87a5'} />  {props.likes} Me gusta
             </Text>
             <Text style={styles.hashTag}>
                 {props.hashTags}
-            </Text>
+            </Text> */}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     feed: {
-        marginVertical: 15,
+        marginVertical: 7,
     },
     userName: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 10,
+        marginBottom: 5,
     },
     userNameText: {
         fontWeight: 'bold',
