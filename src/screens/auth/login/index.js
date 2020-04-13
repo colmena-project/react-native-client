@@ -82,7 +82,7 @@ class Login extends Component {
 
     if (isLoginOk) {
       this.setState({ formValid: true, loadingVisible: false });
-      navigate('Profile');
+      navigate('EditProfile');
     } else {
       this.setState({ formValid: false, loadingVisible: false });
       Alert.alert('error.. usuario o pass incorrecto');

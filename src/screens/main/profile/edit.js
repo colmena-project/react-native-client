@@ -7,6 +7,9 @@ import Input from '../../../components/form/Input';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import MapPicker from '../../../components/address/MapPicker';
+import Geolocation from '@react-native-community/geolocation';
+
 import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
 import validate from '../../../utils/Validate';
@@ -19,7 +22,8 @@ const EditProfile = props => {
         nickname: '',
         email: '',
         aboutMe: '',
-        address: ''
+        address: '',
+        coords: { latitude: -27.3715333, longitude: -55.9170078 }
     };
 
     const [inputs, setInputs] = useState(fields);
@@ -33,6 +37,7 @@ const EditProfile = props => {
             const account = await Parse.Cloud.run("getMyAccount");
             setUserAccount(account);
             setInputs({
+                ...inputs,
                 firstName: account.firstName,
                 lastName: account.lastName,
                 nickname: account.nickname,
@@ -51,9 +56,8 @@ const EditProfile = props => {
     }, []);
 
     const hasErrors = errors => {
-        for (item in errors) {
-            if (errors[item] !== null) {
-                console.log(item + ' => ' + errors[item]);
+        for (const [key, value] of Object.entries(errors)) {
+            if (errors[key] !== null) {
                 return true;
             }
         }
@@ -92,11 +96,43 @@ const EditProfile = props => {
             });
     };
 
+    const handleChangeAddress = async () => {
+        try {
+            const result = await Parse.Cloud.run("geocodeAddress", { address: inputs.address });
+            const newCoords = { latitude: result.geocode.lat, longitude: result.geocode.lng };
+            handleField('coords', newCoords);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const getAddressFromLatLng = async (latLng) => {
+        try {
+            const result = await Parse.Cloud.run("getAddress", { lat: latLng.latitude, lng: latLng.longitude });
+            setInputs({
+                ...inputs,
+                address: result.formatted_address,
+                coords: latLng,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const getCurrentPosition = async () => {
+        try {
+            Geolocation.getCurrentPosition(value => getAddressFromLatLng(value.coords), error => console.log(error), { enableHighAccuracy: true, timeout: 5000 });
+        } catch (ex) {
+            console.log(ex);
+        }
+    };
+
     const handleSaveButton = async () => {
         try {
             let errors = { ...errorMessages };
-            for (asd in inputs) {
-                errors[asd] = validate(asd, inputs[asd]);
+            for (const [key, value] of Object.entries(inputs)) {
+                console.log('KEY: ', key, 'VALUE ', value)
+                errors[key] = validate(value, inputs[key]);
                 setErrorMessages(errors);
             }
             if (hasErrors(errors)) {
@@ -108,6 +144,9 @@ const EditProfile = props => {
                 parseAccount.set('nickname', inputs.nickname);
                 parseAccount.set('aboutMe', inputs.aboutMe);
                 await parseAccount.save();
+
+                //TODO: Logica para salvar dirección
+
                 Alert.alert('', 'Datos guardados!');
             }
         } catch (error) {
@@ -208,7 +247,22 @@ const EditProfile = props => {
                             value={inputs.address}
                             error={errorMessages.address}
                             onChangeText={value => handleInput('address', value)}
+                            onEndEditing={handleChangeAddress}
                         />
+                        <View>
+                            <MapPicker coords={inputs.coords} getCoords={value => getAddressFromLatLng(value)} />
+                            <TouchableOpacity onPress={getCurrentPosition} style={{
+                                position: 'absolute',
+                                width: 50,
+                                height: 50,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                right: 10,
+                                bottom: 10,
+                            }}>
+                                <Ionicons name={'md-locate'} size={36} color={colors.colmenaGreen} />
+                            </TouchableOpacity>
+                        </View>
                         <TouchableOpacity onPress={handleChangePassword} style={styles.changePassword}>
                             <Text>Cambiar contraseña</Text>
                             <MaterialIcons name={'chevron-right'} size={36} color={colors.colmenaGreen} />

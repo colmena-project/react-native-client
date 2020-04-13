@@ -10,7 +10,6 @@ import EditProfile from '../screens/main/profile/edit';
 import OthersProfile from '../screens/main/profile/othersProfile';
 import MiColmenaContainer from '../containers/MiColmenaContainer';
 import MyWaste from '../screens/main/waste';
-import Address from '../screens/main/address';
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../styles/colors';
 
@@ -46,13 +45,6 @@ const HomeNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'HOME',
         tabBarIcon: CustomIcon('ios-home', 28),
-      },
-    },
-    Address: {
-      screen: Address,
-      navigationOptions: {
-        tabBarLabel: 'MI BARRIO',
-        tabBarIcon: CustomIcon('ios-people', 28),
       },
     },
     MyWaste: {

@@ -2,7 +2,7 @@ import messaging from '@react-native-firebase/messaging';
 import { AsyncStorage } from 'react-native';
 
 async function registerAppWithFCM() {
-  await messaging().registerForRemoteNotifications();
+  await messaging().registerDeviceForRemoteMessages();
 }
 
 async function requestPermission() {

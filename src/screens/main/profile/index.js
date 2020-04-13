@@ -3,8 +3,6 @@ import { Text, View, Image, StyleSheet, Button, Dimensions, TouchableOpacity, Ac
 import { Parse } from 'parse/react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 
-import Animated from 'react-native-reanimated';
-
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import colors from '../../../styles/colors';
@@ -85,7 +83,7 @@ const MyProfile = props => {
                             key={i}
                             style={{ ...styles.tabItem, borderBottomColor: index === i ? colors.colmenaGreen : '#ccc' }}
                             onPress={() => setIndex(i)}>
-                            <Animated.Text style={{ fontSize: 16, color: index === i ? colors.colmenaGrey : '#ccc' }}>{route.title}</Animated.Text>
+                            <Text style={{ fontSize: 16, color: index === i ? colors.colmenaGrey : '#ccc' }}>{route.title}</Text>
                         </TouchableOpacity>
                     );
                 })}
