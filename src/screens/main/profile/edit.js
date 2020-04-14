@@ -13,6 +13,7 @@ import Geolocation from '@react-native-community/geolocation';
 import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
 import validate from '../../../utils/Validate';
+import { parse } from 'react-native-svg';
 
 const EditProfile = props => {
 
@@ -23,27 +24,50 @@ const EditProfile = props => {
         email: '',
         aboutMe: '',
         address: '',
+        street: '',
+        city: '',
+        state: '',
+        country: '',
+        addressDescription: '',
         coords: { latitude: -27.3715333, longitude: -55.9170078 }
     };
 
     const [inputs, setInputs] = useState(fields);
     const [errorMessages, setErrorMessages] = useState(fields);
     const [userAccount, setUserAccount] = useState(null);
+    const [userAddress, setUserAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     const fetchData = async () => {
         try {
             setIsLoading(true);
-            const account = await Parse.Cloud.run("getMyAccount");
-            setUserAccount(account);
+            
+            const parseAddress = new Parse.Query('Address');
+            parseAddress.equalTo('default', true);
+            const userAddress = await parseAddress.first();
+            const parseAccount = await userAddress.get('account').fetch();
+
+            setUserAccount(parseAccount);
+            setUserAddress(userAddress);
+
+            console.log('USER ADDRESS', userAddress);
+
             setInputs({
                 ...inputs,
-                firstName: account.firstName,
-                lastName: account.lastName,
-                nickname: account.nickname,
-                email: account.createdBy.get('email'),
-                aboutMe: account.aboutMe,
+                firstName: parseAccount.get('firstName'),
+                lastName: parseAccount.get('lastName'),
+                nickname: parseAccount.get('nickname'),
+                email: parseAccount.get('user').get('email'),
+                aboutMe: parseAccount.get('aboutMe'),
+                street: userAddress.get('street'),
+                city: userAddress.get('city'),
+                state: userAddress.get('state'),
+                country: userAddress.get('country'),
+                addressDescription: userAddress.get('description'),
+                address: `${userAddress.get('street')}, ${userAddress.get('city')}, ${userAddress.get('state')}`,
+                coords: userAddress.get('latLng').toJSON()
             });
+
             setIsLoading(false);
         } catch (err) {
             console.log('Error!! ' + err);
@@ -54,6 +78,10 @@ const EditProfile = props => {
     useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        console.log('USE EFFECT INPUTS', inputs);
+    }, [inputs]);
 
     const hasErrors = errors => {
         for (const [key, value] of Object.entries(errors)) {
@@ -109,8 +137,39 @@ const EditProfile = props => {
     const getAddressFromLatLng = async (latLng) => {
         try {
             const result = await Parse.Cloud.run("getAddress", { lat: latLng.latitude, lng: latLng.longitude });
+            let calcStreet = undefined;
+            let calcCity = undefined;
+            let calcState = undefined;
+            let calcCountry = undefined;
+            let calcStreetNumber = undefined;
+           
+            result.address_components.forEach(field => {
+                if(field.types[0] == 'route'){
+                    calcStreet = field.long_name;
+                };
+                if(field.types[0] == 'street_number'){
+                    calcStreetNumber = field.long_name;
+                };
+                if(field.types[0] == 'administrative_area_level_2'){
+                    calcCity = field.long_name;
+                };
+                if(field.types[0] == 'locality'){
+                    calcCity = field.long_name;
+                };
+                if(field.types[0] == 'administrative_area_level_1'){
+                    calcState = field.long_name;
+                };
+                if(field.types[0] == 'country'){
+                    calcCountry = field.long_name;
+                };
+            });
+
             setInputs({
                 ...inputs,
+                street: `${calcStreet} ${calcStreetNumber}`,
+                city: calcCity,
+                state: calcState, 
+                country: calcCountry,
                 address: result.formatted_address,
                 coords: latLng,
             });
@@ -138,14 +197,20 @@ const EditProfile = props => {
             if (hasErrors(errors)) {
                 Alert.alert('', 'Revise los datos!');
             } else {
-                const parseAccount = await new Parse.Query('Account').get(userAccount.objectId);
-                parseAccount.set('firstName', inputs.firstName);
-                parseAccount.set('lastName', inputs.lastName);
-                parseAccount.set('nickname', inputs.nickname);
-                parseAccount.set('aboutMe', inputs.aboutMe);
-                await parseAccount.save();
+                userAccount.set('firstName', inputs.firstName);
+                userAccount.set('lastName', inputs.lastName);
+                userAccount.set('nickname', inputs.nickname);
+                userAccount.set('aboutMe', inputs.aboutMe);
+               
+                userAddress.set('street', inputs.street);
+                userAddress.set('city', inputs.city);
+                userAddress.set('state', inputs.state);
+                userAddress.set('country', inputs.country);
+                userAddress.set('description', inputs.addressDescription);
+                userAddress.set('latLng',  new Parse.GeoPoint(inputs.coords));
+                // await userAddress.save();
 
-                //TODO: Logica para salvar dirección
+                await Parse.Object.saveAll([userAccount, userAddress]);
 
                 Alert.alert('', 'Datos guardados!');
             }
@@ -168,7 +233,7 @@ const EditProfile = props => {
                             </View>
                         </View>
                         <View style={styles.saveIcon}>
-                            <Ionicons onPress={handleSaveButton} name={'md-checkmark'} size={26} color={colors.colmenaGreen} />
+                            <Ionicons onPress={handleSaveButton} name={'md-checkmark'} size={30} color={colors.colmenaGreen} />
                         </View>
                     </View>
                     <View style={{ marginBottom: 120, }}>
@@ -219,6 +284,7 @@ const EditProfile = props => {
                             label={'Email'}
                             style={styles.input}
                             blurOnSubmit
+                            editable={false}
                             keyboardType={'email-address'}
                             autoCapitalize={'none'}
                             autoCorrect={false}
@@ -248,6 +314,17 @@ const EditProfile = props => {
                             error={errorMessages.address}
                             onChangeText={value => handleInput('address', value)}
                             onEndEditing={handleChangeAddress}
+                        />
+                        <Input
+                            label={'Info extra de tu ubicación'}
+                            style={styles.input}
+                            blurOnSubmit
+                            keyboardType={'default'}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            value={inputs.addressDescription}
+                            error={errorMessages.addressDescription}
+                            onChangeText={value => handleInput('addressDescription', value)}
                         />
                         <View>
                             <MapPicker coords={inputs.coords} getCoords={value => getAddressFromLatLng(value)} />
@@ -296,8 +373,8 @@ const styles = StyleSheet.create({
     saveIcon: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 34,
-        height: 34,
+        width: 40,
+        height: 40,
         borderRadius: 50,
         backgroundColor: '#e8e8e8',
     },
