@@ -47,13 +47,6 @@ const HomeNavigator = createBottomTabNavigator(
         tabBarIcon: CustomIcon('ios-home', 28),
       },
     },
-    MiColmena: {
-      screen: MiColmenaTab,
-      navigationOptions: {
-        tabBarLabel: 'MI BARRIO',
-        tabBarIcon: CustomIcon('ios-people', 28),
-      },
-    },
     MyWaste: {
       screen: MyWaste,
       navigationOptions: {

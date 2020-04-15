@@ -31,6 +31,7 @@ export default class InputField extends Component {
       toValue: value,
       duration: 400,
       easing: Easing.easeOutBack,
+      useNativeDriver: true,
     }).start();
   }
 

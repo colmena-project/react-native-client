@@ -47,6 +47,8 @@ const HomeFeed = props => {
             const newInstallation = new Parse.Installation();
             newInstallation.set('deviceType', 'android');
             newInstallation.set('installationId', installationId);
+            newInstallation.set('channels', ["All"]);
+            newInstallation.set('pushType', 'gcm');
             newInstallation.set('timeZone', 'America/Argentina/Buenos_Aires');
             newInstallation.set('appName', 'ColmenaApp');
             newInstallation.set('appIdentifier', 'com.colmena.colmenapp');
