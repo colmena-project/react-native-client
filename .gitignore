@@ -29,8 +29,17 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
+# Android/IntelliJ
+build/
+.idea
+.gradle
+local.properties
+*.iml
+
+# BUCK
+buck-out/
+\.buckd/
+*.keystore
 
 # Dependency directories
 node_modules/
@@ -62,4 +71,9 @@ typings/
 
 # custom colmena
 android/
-src/config/
+android/app/build/
+android/app/google-services.json
+android/app/src/main/res/values/strings.xml
+
+# exclude ios
+ios
