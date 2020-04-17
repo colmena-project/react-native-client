@@ -8,8 +8,11 @@ import Home from '../screens/main/home';
 import Profile from '../screens/main/profile';
 import EditProfile from '../screens/main/profile/edit';
 import OthersProfile from '../screens/main/profile/othersProfile';
-import MiColmenaContainer from '../containers/MiColmenaContainer';
-import MyWaste from '../screens/main/waste';
+
+import Waste from '../screens/main/waste';
+import WasteCheckInfo from '../screens/main/waste/check';
+import WasteSuccess from '../screens/main/waste/success';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../styles/colors';
 
@@ -24,19 +27,11 @@ const CustomIcon = (name, size) => {
   return icon;
 };
 
-const MiColmenaTab = createStackNavigator(
-  {
-    ComunidadContainer: {
-      screen: MiColmenaContainer,
-      navigationOptions: {
-        header: null,
-      },
-    },
-  },
-  {
-    mode: 'modal',
-  },
-);
+const WasteNav = createStackNavigator({
+  Waste: {screen: Waste, navigationOptions: {header: null}},
+  WasteCheckInfo: {screen: WasteCheckInfo},
+  WasteSuccess: {screen: WasteSuccess},
+});
 
 const HomeNavigator = createBottomTabNavigator(
   {
@@ -47,8 +42,8 @@ const HomeNavigator = createBottomTabNavigator(
         tabBarIcon: CustomIcon('ios-home', 28),
       },
     },
-    MyWaste: {
-      screen: MyWaste,
+    Waste: {
+      screen: WasteNav,
       navigationOptions: {
         tabBarLabel: 'MIS RESIDUOS',
         tabBarIcon: CustomIcon('ios-archive', 28),
