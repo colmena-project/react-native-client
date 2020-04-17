@@ -35,7 +35,6 @@ const myStock = () => {
   };
   return action;
 };
-
 // ChangeStock
 const setChangeStock = changeStockInState => ({
   type: types.CHANGE_STOCK,

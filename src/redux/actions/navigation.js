@@ -1,7 +1,5 @@
 import * as types from './types';
 
-import {AsyncStorage} from 'react-native';
-
 import {
   LoginManager,
   AccessToken,
@@ -10,12 +8,6 @@ import {
 } from 'react-native-fbsdk';
 
 import Parse from 'parse/react-native';
-
-Parse.setAsyncStorage(AsyncStorage);
-
-Parse.initialize(Config.parseConnect);
-
-Parse.serverURL = Config.parseUrl;
 
 const setLoggedInState = loggedInState => ({
   type: types.SET_LOGGED_IN_STATE,
