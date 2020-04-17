@@ -4,33 +4,80 @@ import {
   Text,
   Image,
   ScrollView,
-  Alert,
   TouchableOpacity,
+  TouchableHighlightBase,
+  Button,
 } from 'react-native';
-import InputSpinner from 'react-native-input-spinner';
-import {CheckBox, Button} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-import colors from '../../../styles/colors';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import ActionCreators from '../../../redux/actions';
+
+import WasteBox from '../../../components/waste/WasteBox';
+
 import styles from '../../../styles/waste';
 
-import InputField from '../../../components/form/InputField';
-
-class MyWaste extends Component {
+class index extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      plastic: 0,
-      plasticCoin: 0,
-      glass: 0,
-      glassCoin: 0,
+      account: null,
       checked: false,
+      containers: [],
+      stock: null,
+      next: false,
     };
+
     this.wasteSubmit = this.wasteSubmit.bind(this);
   }
 
+  limpiarWastes = async () => {
+    const keys = await AsyncStorage.getAllKeys();
+    const wastesRemove = keys.filter(item => item.includes('wastes_'));
+    await AsyncStorage.multiRemove(wastesRemove);
+    this.setState({next: false});
+  };
+
+  displayStorage = async () => {
+    const keys = await AsyncStorage.getAllKeys();
+    const items = await AsyncStorage.multiGet(keys);
+    const res = items.filter(item => item[0].includes('wastes_'));
+    return res;
+  };
+
   wasteSubmit() {
-    Alert.alert('Tus residuos fueron registrados!');
+    this.props.navigation.navigate('WasteCheckInfo');
+  }
+
+  wasteTypesList() {
+    const {wasteTypeStatus} = this.props;
+
+    return wasteTypeStatus.data.map((waste, index) => {
+      return <WasteBox key={index} waste={waste} value={0} min={0} max={30} />;
+    });
+  }
+
+  checkInitial = async () => {
+    const keys = await AsyncStorage.getAllKeys();
+    const items = await AsyncStorage.multiGet(keys);
+    const res = items.filter(item => item[0].includes('wastes_'));
+    if (res.length > 0) {
+      this.setState({next: true});
+    } else {
+      this.setState({next: false});
+    }
+  };
+
+  componentDidMount() {
+    this.checkInitial();
+    this.props.wasteTypes();
+  }
+
+  componentDidUpdate() {
+    this.checkInitial();
   }
 
   render() {
@@ -38,117 +85,45 @@ class MyWaste extends Component {
       <View style={styles.scrollViewWrapper}>
         <ScrollView style={styles.scrollView}>
           <View style={styles.brand}>
-            <Text style={styles.brandText}>Mis residuos</Text>
-
-            {this.state.plastic > 0 || this.state.glass > 0 ? (
-              <Button
-                title="Generar QR"
-                type="outline"
-                iconLeft
-                icon={
-                  <Icon
-                    style={{margin: 5}}
-                    name="print"
-                    size={15}
-                    color="black"
-                  />
-                }
-              />
-            ) : (
-              <Image
-                style={styles.colmenaLogo}
-                source={require('../../../../assets/colmena-app-ico.png')}
-              />
-            )}
+            <Text style={styles.brandText}>Registrar residuos</Text>
           </View>
-          <View style={styles.box}>
-            <View>
-              <Image
-                style={styles.boxImage}
-                source={require('../../../../assets/water-bottle-color-icon.png')}
-              />
-            </View>
-            <View>
-              <InputSpinner
-                max={20}
-                min={0}
-                step={1}
-                colorMax={'#f04048'}
-                colorMin={'#b3b3b3'}
-                color={colors.colmenaGreen}
-                value={this.state.plastic}
-                onChange={num => {
-                  this.setState({plastic: num, plasticCoin: num * 20});
-                  console.log(num);
-                }}
-              />
-            </View>
-            <View style={styles.amount}>
-              <Text style={styles.amountText}>$ {this.state.plasticCoin}</Text>
-            </View>
-          </View>
-
-          <View style={styles.box}>
-            <View>
-              <Image
-                style={styles.boxImage}
-                source={require('../../../../assets/glass-bottle-icon.png')}
-              />
-            </View>
-            <View>
-              <InputSpinner
-                max={30}
-                min={0}
-                step={1}
-                colorMax={'#f04048'}
-                colorMin={'#b3b3b3'}
-                color={colors.colmenaGreen}
-                value={this.state.glass}
-                onChange={num => {
-                  this.setState({glass: num, glassCoin: num * 30});
-                }}
-              />
-            </View>
-
-            <View style={styles.amount}>
-              <Text style={styles.amountText}>$ {this.state.glassCoin}</Text>
-            </View>
-          </View>
-
-          <CheckBox
-            containerStyle={{borderColor: colors.colmenaBackground}}
-            title="Visible para recolector"
-            checked={this.state.checked}
-            onPress={() => this.setState({checked: !this.state.checked})}
-            checkedColor={colors.colmenaGreen}
-          />
-          <View style={{marginTop: 30}}>
-            <InputField
-              labelText="Dirección para retirar"
-              placeholder="Calle 85 y 172b, barrio Acaragua"
-              labelTextSize={12}
-              labelColor={colors.colmenaLightGrey}
-              textColor={colors.colmenaGrey}
-              borderBottomColor={colors.colmenaLightGrey}
-              borderFocusColor={colors.colmenaGreen}
-              inputType="text"
-              onChangeText={() => {}}
-              customStyle={{marginBottom: 10}}
-              showCheckmark={false}
+          {/*
+          <View>
+            <Button
+              title="terminar lo q quedo"
+              onPress={() => {
+                this.props.navigation.navigate('WasteSuccess');
+              }}
             />
           </View>
-          {this.state.plastic > 0 || this.state.glass > 0 ? (
+          <View>
+            <Button title="Limpiar wastes" onPress={this.limpiarWastes} />
+          </View>
+          */}
+          <View style={styles.headerBox}>
+            <Text style={styles.title}>TIPO</Text>
+            <Text style={styles.title}>Cant. Aprox.</Text>
+            <Text style={styles.title}>Retribución</Text>
+          </View>
+
+          {this.props.wasteTypeStatus.data ? (
+            this.wasteTypesList()
+          ) : (
+            <View>
+              <Text style={styles.text}>Cargando residuos...</Text>
+            </View>
+          )}
+          {this.state.next ? (
             <TouchableOpacity
               style={styles.btnSubmit}
               onPress={this.wasteSubmit}>
-              <Text style={styles.submitText}>Solicitar recolector</Text>
+              <Text style={styles.submitText}>Continuar</Text>
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
               style={styles.btnSubmitDisabled}
-              onPress={this.wasteSubmit}
-              disabled={true}>
-              <Text style={styles.submitText}>Solicitar recolector</Text>
+              onPress={this.wasteSubmit}>
+              <Text style={styles.submitText}>Continuar</Text>
             </TouchableOpacity>
           )}
         </ScrollView>
@@ -156,4 +131,15 @@ class MyWaste extends Component {
     );
   }
 }
-export default MyWaste;
+const mapStateToProps = state => ({
+  myStockStatus: state.myStockStatus,
+  wasteTypeStatus: state.wasteTypeStatus,
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(ActionCreators, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(index);
