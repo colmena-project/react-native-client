@@ -27,8 +27,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Parse from 'parse/react-native';
 
-import Config from '../../../config';
-
 import InputField from '../../../components/form/InputField';
 
 import colors from '../../../styles/colors';
@@ -37,12 +35,6 @@ import styles from '../../../styles/login';
 import {PropTypes} from 'prop-types';
 
 import emailCheck from '../../../utils/email';
-
-Parse.setAsyncStorage(AsyncStorage);
-
-Parse.initialize(Config.parseConnect);
-
-Parse.serverURL = Config.parseUrl;
 
 class Register extends Component {
   constructor(props) {

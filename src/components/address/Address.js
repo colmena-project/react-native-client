@@ -4,7 +4,7 @@ import { TextInput, View, Text, StyleSheet, TouchableOpacity } from 'react-nativ
 import MapPicker from './MapPicker';
 import Input from '../form/Input';
 
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Parse } from 'parse/react-native';
