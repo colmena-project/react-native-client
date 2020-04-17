@@ -13,8 +13,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   StyleSheet,
-  Alert,
-  AsyncStorage,
+  Alert
 } from 'react-native';
 
 import {connect} from 'react-redux';

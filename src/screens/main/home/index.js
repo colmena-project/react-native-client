@@ -1,6 +1,8 @@
 import React, { useState, useReducer } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { AsyncStorage } from 'react-native';
+
+import AsyncStorage from '@react-native-community/async-storage';
+
 import { Parse } from 'parse/react-native';
 
 import colors from '../../../styles/colors';
