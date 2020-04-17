@@ -128,14 +128,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.colmenapp"
+        applicationId "com.colmena.colmenapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-
-        manifestPlaceholders = [FACEBOOK_APP_ID: "$System.env.FACEBOOK_APP_ID"]
-        manifestPlaceholders = [GOOGLEMAPS_API_KEY: "$System.env.GOOGLEMAPS_API_KEY"]
     }
     splits {
         abi {
@@ -165,9 +162,6 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-
-            manifestPlaceholders = [GOOGLEMAPS_API_KEY: "$System.env.GOOGLEMAPS_API_KEY"]
-            manifestPlaceholders = [FACEBOOK_APP_ID: "$System.env.FACEBOOK_APP_ID"]
         }
     }
     // applicationVariants are e.g. debug, release
