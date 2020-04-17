@@ -1,5 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 async function registerAppWithFCM() {
   await messaging().registerDeviceForRemoteMessages();
