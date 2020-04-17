@@ -133,6 +133,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -153,8 +154,6 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            manifestPlaceholders = [GOOGLEMAPS_API_KEY: "$System.env.GOOGLEMAPS_API_KEY"]
-            manifestPlaceholders = [FACEBOOK_APP_ID: "$System.env.FACEBOOK_APP_ID"]
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
