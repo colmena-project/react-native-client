@@ -1,16 +1,8 @@
 import * as types from './types';
 
-import Config from '../../config';
-
 import AsyncStorage from '@react-native-community/async-storage';
 
 import Parse from 'parse/react-native';
-
-Parse.setAsyncStorage(AsyncStorage);
-
-Parse.initialize(Config.parseConnect);
-
-Parse.serverURL = Config.parseUrl;
 
 // LocalStock
 const getLocalStock = data => ({

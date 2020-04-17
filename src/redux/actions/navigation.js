@@ -1,7 +1,5 @@
 import * as types from './types';
 
-import Config from '../../config';
-
 import {AsyncStorage} from 'react-native';
 
 import {
