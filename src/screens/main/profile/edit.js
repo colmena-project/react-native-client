@@ -13,7 +13,6 @@ import Geolocation from 'react-native-geolocation-service';
 import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
 import validate from '../../../utils/Validate';
-import { parse } from 'react-native-svg';
 
 const EditProfile = props => {
 
@@ -49,8 +48,6 @@ const EditProfile = props => {
 
             setUserAccount(parseAccount);
             setUserAddress(userAddress);
-
-            console.log('USER ADDRESS', userAddress);
 
             setInputs({
                 ...inputs,

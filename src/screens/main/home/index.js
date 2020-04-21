@@ -111,7 +111,7 @@ const HomeFeed = props => {
                     <Text style={styles.colmenaHeaderSubtitle}>Novedades</Text>
                 </View>
 
-                {isLoading ? <ActivityIndicator style={{ flex:1 }} size={'large'} color={colors.colmenaGreen} /> :
+                {isLoading ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
                     <FeedList onPress={handleOthersProfile} data={data} />
                 }
 
