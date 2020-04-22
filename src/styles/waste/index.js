@@ -249,6 +249,10 @@ const styles = StyleSheet.create({
     padding: 3,
     marginBottom: 6,
   },
+  activityIndicator: {
+    flex: 1,
+    alignItems: 'center',
+  },
 });
 
 export default styles;
