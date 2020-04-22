@@ -10,7 +10,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
-import TabIcon from '../../../components/tabsIcons/TabIcon';
 import FeedList from '../../../components/posts/FeedList';
 
 const MyProfile = props => {
@@ -150,19 +149,19 @@ const MyProfile = props => {
     };
 
     const wasteTab = () => {
-        return <View style={{ ...styles.scene, backgroundColor: 'red' }} />
+        return <View style={{ flex: 1, backgroundColor: 'red' }} />
     };
 
     const listTab = () => {
-        return <View style={{ ...styles.scene, backgroundColor: 'yellow' }} />
+        return <View style={{ flex: 1, backgroundColor: 'yellow' }} />
     };
 
     const cartTab = () => {
-        return <View style={{ ...styles.scene, backgroundColor: colors.colmenaGreyDisabled }} />
+        return <View style={{ flex: 1, backgroundColor: colors.colmenaGreyDisabled }} />
     };
 
     const metricsTab = () => {
-        return <View style={{ ...styles.scene, backgroundColor: 'black' }} />
+        return <View style={{ flex: 1, backgroundColor: 'black' }} />
     };
 
     const initialLayout = {
