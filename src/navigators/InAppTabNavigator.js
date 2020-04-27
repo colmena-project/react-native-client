@@ -23,7 +23,6 @@ import colors from '../styles/colors';
 
 import SvgUri from 'react-native-svg-uri';
 
-
 const CustomIcon = (name, size) => {
   const icon = ({ tintColor }) => (
     <Icon name={name} size={size} color={tintColor} />
@@ -36,11 +35,12 @@ const CustomIcon = (name, size) => {
 };
 
 const CustomSvgIcon = (image, focused) => {
+  const size = focused ? 25 : 20;
   const color = focused ? colors.colmenaGreen : colors.colmenaGrey;
-  return <View style={{ width: 20, height: 20 }}>
+  return <View style={{ width: size, height: size }}>
     <SvgUri
-      width="20"
-      height="20"
+      width={size}
+      height={size}
       source={image}
       fill={color}
     />
@@ -70,28 +70,44 @@ const HomeNavigator = createBottomTabNavigator(
       screen: WasteNav,
       navigationOptions: {
         tabBarLabel: 'MIS RESIDUOS',
-        tabBarIcon: CustomIcon('ios-archive', 28),
+        tabBarIcon: ({ focused }) => {
+          return (
+            CustomSvgIcon(require('../../assets/icons/svg/arrow-back.svg'), focused)
+          );
+        }
       },
     },
     Menu1: {
       screen: Menu1,
       navigationOptions: {
         tabBarLabel: 'MENU 1',
-        tabBarIcon: CustomIcon('ios-rocket', 28),
+        tabBarIcon: ({ focused }) => {
+          return (
+            CustomSvgIcon(require('../../assets/icons/svg/arrow-back.svg'), focused)
+          );
+        }
       },
     },
     Menu2: {
       screen: Menu2,
       navigationOptions: {
         tabBarLabel: 'MENU 2',
-        tabBarIcon: CustomIcon('ios-jet', 28),
+        tabBarIcon: ({ focused }) => {
+          return (
+            CustomSvgIcon(require('../../assets/icons/svg/arrow-back.svg'), focused)
+          );
+        }
       },
     },
     Profile: {
       screen: Profile,
       navigationOptions: {
         tabBarLabel: 'MI PERFIL',
-        tabBarIcon: CustomIcon('ios-person', 28),
+        tabBarIcon: ({ focused }) => {
+          return (
+            CustomSvgIcon(require('../../assets/icons/svg/arrow-back.svg'), focused)
+          );
+        }
       },
     },
   },

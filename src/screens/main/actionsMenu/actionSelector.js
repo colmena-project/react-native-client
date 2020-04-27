@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 
 import colors from '../../../styles/colors';
@@ -7,6 +7,8 @@ import stylesCommon from '../../../styles/login';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const ActionSelector = props => {
+
+    const [isEnabled, setIsEnabled] = useState(false);
 
     const handleRegisterWaste = () => {
         console.log('REGISTER WASTE');
@@ -38,15 +40,15 @@ const ActionSelector = props => {
                             source={require('../../../../assets/icons/png/icon-registrar-gestionar.png')}
                         />
                         <Text style={styles.actionButtonText}>Registrar mis residuos</Text>
-                        <MaterialIcons name={'chevron-right'} size={36} color={'#e8e8e8'} />
+                        <View style={styles.actionButtonIcon}></View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleTransport} style={styles.actionButton}>
+                    <TouchableOpacity disabled={!isEnabled} onPress={handleTransport} style={styles.actionButton}>
                         <Image
                             style={styles.actionButtonIcon}
                             source={require('../../../../assets/icons/png/icon-transportar.png')}
                         />
-                        <Text style={styles.actionButtonText}>Transportar de otros</Text>
-                        <MaterialIcons name={'chevron-right'} size={36} color={'#e8e8e8'} />
+                        <Text style={isEnabled ? styles.actionButtonText : styles.actionButtonTextInactive}>Transportar de otros</Text>
+                        <View style={styles.actionButtonIcon}></View>
                     </TouchableOpacity>
                 </View>
 
@@ -101,10 +103,14 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingLeft: 10,
         borderRadius: 5,
-        backgroundColor: '#e8e8e8',
+        backgroundColor: '#eeeeee',
     },
     actionButtonText: {
         fontSize: 18,
+    },
+    actionButtonTextInactive: {
+        fontSize: 18,
+        color: '#d8d8d8',
     },
     actionButtonIcon: {
         width: 36,

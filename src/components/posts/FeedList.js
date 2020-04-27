@@ -35,12 +35,12 @@ const FeedList = props => {
 
     return (
         <View style={styles.feedList}>
-                <FlatList style={styles.mainFeed}
-                    nestedScrollEnabled={true}
-                    keyExtractor={(item, index) => item.id}
-                    data={data}
-                    renderItem={fillFeedWithPosts}
-                />
+            <FlatList style={styles.mainFeed}
+                nestedScrollEnabled={false}
+                keyExtractor={(item, index) => item.id}
+                data={data}
+                renderItem={fillFeedWithPosts}
+            />
         </View>
     );
 };

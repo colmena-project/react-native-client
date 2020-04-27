@@ -10,7 +10,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
-import FeedList from '../../../components/posts/FeedList';
+import FeedList from '../../../components/posts/FeedListU';
+import Activity from '../../../components/pendants/Activity';
+
 
 const MyProfile = props => {
 
@@ -18,6 +20,7 @@ const MyProfile = props => {
     const [stock, setStock] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState(null);
+    const [transactions, setTransactions] = useState(null);
 
     const fetchData = async () => {
         try {
@@ -29,9 +32,16 @@ const MyProfile = props => {
 
             const posts = new Parse.Query('Post');
             posts.descending("createdAt");
-            const result = await posts.find();
+            const postsResult = await posts.find();
 
-            setData(result);
+            const transactions = new Parse.Query('Transaction');
+            transactions.equalTo('type', 'TRANSPORT');
+            const transactionsResult = await transactions.find();
+
+            console.log('*** TRANSACTIONS ***', transactionsResult);
+
+            setTransactions(transactionsResult);
+            setData(postsResult);
             setIsLoading(false);
         } catch (err) {
             console.log('Error!! ' + err);
@@ -58,7 +68,7 @@ const MyProfile = props => {
     const [routes] = useState([
         { key: 'user', title: (<Feather name={'user'} size={30} color={colors.colmenaGrey} />) },
         { key: 'waste', title: (<MaterialCommunityIcons name={'recycle'} size={30} color={colors.colmenaGrey} />) },
-        { key: 'list', title: (<MaterialCommunityIcons name={'clipboard-text-outline'} size={30} color={colors.colmenaGrey} />) },
+        { key: 'pendantsList', title: (<MaterialCommunityIcons name={'clipboard-text-outline'} size={30} color={colors.colmenaGrey} />) },
         { key: 'cart', title: (<EvilIcons name={'cart'} size={30} color={colors.colmenaGrey} />) },
         { key: 'metrics', title: (<Ionicons name={'md-stats'} size={30} color={colors.colmenaGrey} />) },
     ]);
@@ -106,12 +116,12 @@ const MyProfile = props => {
                             <Text style={{ ...styles.headerExtraInfoText, fontSize: 14 }}>30 actividades</Text>
                         </View>
                         <View style={{ marginTop: 15, width: '80%', justifyContent: 'flex-end' }} >
-                            <Button title={'Editar'} color={colors.colmenaGreen}/>
+                            <Button title={'Editar'} color={colors.colmenaGreen} />
                         </View>
                     </View>
 
                     <View style={{ ...styles.headerExtraInfo, flex: 1, borderLeftWidth: 1, borderLeftColor: colors.colmenaGreen, justifyContent: 'space-between' }}>
-                        <View style={{margin: 0, padding: 0, paddingLeft: 10, alignItems: 'stretch'}}>
+                        <View style={{ margin: 0, padding: 0, paddingLeft: 10, alignItems: 'stretch' }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ ...styles.headerExtraInfoText, paddingRight: 10, fontWeight: 'bold' }}>Mis Residuos</Text>
                                 <Image
@@ -134,26 +144,36 @@ const MyProfile = props => {
                             </View>
                         </View>
                         <View style={{ marginTop: 15, width: '80%', justifyContent: 'flex-end' }} >
-                            <Button title={'Editar'} color={colors.colmenaGreen}/>
+                            <Button title={'Editar'} color={colors.colmenaGreen} />
                         </View>
                     </View>
                 </View>
 
-                <View style={{marginTop: 20}}>
+                <View style={{ marginTop: 20 }}>
                     <Text style={{ fontSize: 16, color: colors.colmenaGrey }}>Actividad</Text>
-
-                    <FeedList onPress={handleOthersProfile} data={data} />
+                    {data == null ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
+                        <FeedList onPress={handleOthersProfile} data={data} />
+                    }
                 </View>
             </View>
-        )
+        );
     };
+
 
     const wasteTab = () => {
         return <View style={{ flex: 1, backgroundColor: 'red' }} />
     };
 
     const listTab = () => {
-        return <View style={{ flex: 1, backgroundColor: 'yellow' }} />
+        return (
+            <View>
+                {data == null ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
+                    transactions.map((transaction, index) => {
+                        return <Activity key={index}/>
+                    })
+                }
+            </View>
+        );
     };
 
     const cartTab = () => {
@@ -171,7 +191,7 @@ const MyProfile = props => {
     const renderScene = SceneMap({
         user: userTab,
         waste: wasteTab,
-        list: listTab,
+        pendantsList: listTab,
         cart: cartTab,
         metrics: metricsTab,
     });

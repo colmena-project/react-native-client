@@ -50,7 +50,7 @@ const wastesActionSelector = props => {
                             source={require('../../../../assets/icons/png/icon-transferir.png')}
                         />
                         <Text style={styles.actionButtonText}>Transferir</Text>
-                        <MaterialIcons name={'chevron-right'} size={36} color={'#e8e8e8'} />
+                        <View style={styles.actionButtonIcon}></View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={handleTransport} style={styles.actionButton}>
                         <Image
@@ -58,7 +58,7 @@ const wastesActionSelector = props => {
                             source={require('../../../../assets/icons/png/icon-transportar.png')}
                         />
                         <Text style={styles.actionButtonText}>Transportar</Text>
-                        <MaterialIcons name={'chevron-right'} size={36} color={'#e8e8e8'} />
+                        <View style={styles.actionButtonIcon}></View>
                     </TouchableOpacity>
                 </View>
 
