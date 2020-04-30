@@ -34,6 +34,7 @@
     "react-native-input-spinner": "^1.2.10",
     "react-native-maps": "0.27.1",
     "react-native-paper": "^3.8.0",
+    "react-native-push-notification": "^3.3.0",
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.6.2",
     "react-native-screens": "^2.0.0-alpha.31",

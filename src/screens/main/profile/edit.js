@@ -63,7 +63,6 @@ const EditProfile = props => {
                 address: `${userAddress.get('street')}, ${userAddress.get('city')}, ${userAddress.get('state')}`,
                 coords: userAddress.get('latLng').toJSON()
             });
-            setSourceImage({ uri: parseAccount.get('avatar')._url });
             setIsLoading(false);
         } catch (err) {
             console.log('Error!! ' + err);
@@ -227,7 +226,6 @@ const EditProfile = props => {
                     const avatarImage = new Parse.File(response.fileName, { base64: response.data });
                     userAccount.set('avatar', avatarImage);
                     await userAccount.save();
-                    setSourceImage({ uri: userAccount.get('avatar')._url });
                 } catch (ex) {
                     console.log(ex);
                 }
@@ -254,7 +252,7 @@ const EditProfile = props => {
                     </View>
                     <View style={styles.inputsContainer}>
                         <View style={styles.avatarContainer}>
-                            {sourceImage == null ?
+                            {!(userAccount && userAccount.get('avatar')) ?
                                 <Avatar
                                     size={120}
                                     rounded
@@ -270,7 +268,7 @@ const EditProfile = props => {
                                     onPress={showImagePicker}
                                     activeOpacity={0.5}
                                     showEditButton
-                                    source={sourceImage}
+                                    source={{ uri: userAccount.get('avatar')._url }}
                                 />
                             }
                         </View>
