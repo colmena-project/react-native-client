@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import MapPicker from '../../../components/address/MapPicker';
 import Geolocation from 'react-native-geolocation-service';
+import ImagePicker from 'react-native-image-picker';
 
 import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
@@ -36,19 +37,17 @@ const EditProfile = props => {
     const [userAccount, setUserAccount] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [sourceImage, setSourceImage] = useState(null);
 
     const fetchData = async () => {
         try {
             setIsLoading(true);
-
             const parseAddress = new Parse.Query('Address');
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();
             const parseAccount = await userAddress.get('account').fetch();
-
             setUserAccount(parseAccount);
             setUserAddress(userAddress);
-
             setInputs({
                 ...inputs,
                 firstName: parseAccount.get('firstName'),
@@ -64,7 +63,7 @@ const EditProfile = props => {
                 address: `${userAddress.get('street')}, ${userAddress.get('city')}, ${userAddress.get('state')}`,
                 coords: userAddress.get('latLng').toJSON()
             });
-
+            setSourceImage({ uri: parseAccount.get('avatar')._url });
             setIsLoading(false);
         } catch (err) {
             console.log('Error!! ' + err);
@@ -135,7 +134,6 @@ const EditProfile = props => {
             let calcState = undefined;
             let calcCountry = undefined;
             let calcStreetNumber = undefined;
-
             address_components.forEach(field => {
                 if (field.types[0] == 'route') {
                     calcStreet = field.long_name;
@@ -156,7 +154,6 @@ const EditProfile = props => {
                     calcCountry = field.long_name;
                 };
             });
-
             setInputs({
                 ...inputs,
                 street: `${calcStreet} ${calcStreetNumber}`,
@@ -193,21 +190,49 @@ const EditProfile = props => {
                 userAccount.set('lastName', inputs.lastName);
                 userAccount.set('nickname', inputs.nickname);
                 userAccount.set('aboutMe', inputs.aboutMe);
-
                 userAddress.set('street', inputs.street);
                 userAddress.set('city', inputs.city);
                 userAddress.set('state', inputs.state);
                 userAddress.set('country', inputs.country);
                 userAddress.set('description', inputs.addressDescription);
                 userAddress.set('latLng', new Parse.GeoPoint(inputs.coords));
-
                 await Parse.Object.saveAll([userAccount, userAddress]);
-
                 Alert.alert('', 'Datos guardados!');
             }
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const options = {
+        title: 'Nuevo avatar',
+        takePhotoButtonTitle: 'Tomar foto',
+        chooseFromLibraryButtonTitle: 'Seleccionar desde galería',
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+    };
+
+    const showImagePicker = () => {
+        ImagePicker.showImagePicker(options, async (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                try {
+                    const avatarImage = new Parse.File(response.fileName, { base64: response.data });
+                    userAccount.set('avatar', avatarImage);
+                    await userAccount.save();
+                    setSourceImage({ uri: userAccount.get('avatar')._url });
+                } catch (ex) {
+                    console.log(ex);
+                }
+            }
+        });
     };
 
     return (
@@ -229,14 +254,25 @@ const EditProfile = props => {
                     </View>
                     <View style={styles.inputsContainer}>
                         <View style={styles.avatarContainer}>
-                            <Avatar
-                                size={120}
-                                rounded
-                                icon={{ name: 'user', type: 'font-awesome' }}
-                                onPress={() => console.log('Subir foto...')}
-                                activeOpacity={0.5}
-                                showEditButton
-                            />
+                            {sourceImage == null ?
+                                <Avatar
+                                    size={120}
+                                    rounded
+                                    icon={{ name: 'user', type: 'font-awesome' }}
+                                    onPress={showImagePicker}
+                                    activeOpacity={0.5}
+                                    showEditButton
+                                />
+                                :
+                                <Avatar
+                                    size={120}
+                                    rounded
+                                    onPress={showImagePicker}
+                                    activeOpacity={0.5}
+                                    showEditButton
+                                    source={sourceImage}
+                                />
+                            }
                         </View>
                         <Input
                             label={'Nombre/s'}

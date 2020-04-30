@@ -1,5 +1,5 @@
 export default {
-  colmenaGreen: '#8de28d',
+  colmenaGreen: '#79d379',
   //colmenaGreen: '#5EBFA5',
   colmenaOtherGreen: '#9cbfb6',
   colmenaGreenDisabled: '#cfe7e0',

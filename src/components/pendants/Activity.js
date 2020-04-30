@@ -21,7 +21,7 @@ const Activity = props => {
                         <Text style={styles.actionButtonTextSecondary}>Ayer 5:39pm</Text>
                         <Image
                             style={styles.actionButtonSecondary}
-                            source={require('../../../assets/default_user_2.png')}
+                            source={require('../../../assets/icons/svg/arrow-out.svg')}
                         />
                     </View>
                 </View>

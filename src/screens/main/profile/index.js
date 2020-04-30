@@ -13,6 +13,7 @@ import stylesCommon from '../../../styles/waste';
 import FeedList from '../../../components/posts/FeedListU';
 import Activity from '../../../components/pendants/Activity';
 
+import CustomSvgIcon from '../../../components/icons/CustomSvgIcon';
 
 const MyProfile = props => {
 
@@ -37,8 +38,6 @@ const MyProfile = props => {
             const transactions = new Parse.Query('Transaction');
             transactions.equalTo('type', 'TRANSPORT');
             const transactionsResult = await transactions.find();
-
-            console.log('*** TRANSACTIONS ***', transactionsResult);
 
             setTransactions(transactionsResult);
             setData(postsResult);
@@ -66,11 +65,11 @@ const MyProfile = props => {
     *****************************************************/
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-        { key: 'user', title: (<Feather name={'user'} size={30} color={colors.colmenaGrey} />) },
-        { key: 'waste', title: (<MaterialCommunityIcons name={'recycle'} size={30} color={colors.colmenaGrey} />) },
-        { key: 'pendantsList', title: (<MaterialCommunityIcons name={'clipboard-text-outline'} size={30} color={colors.colmenaGrey} />) },
-        { key: 'cart', title: (<EvilIcons name={'cart'} size={30} color={colors.colmenaGrey} />) },
-        { key: 'metrics', title: (<Ionicons name={'md-stats'} size={30} color={colors.colmenaGrey} />) },
+        { key: 'user', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-in.svg'), false)) },
+        { key: 'waste', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-out.svg'), false)) },
+        { key: 'pendantsList', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-in.svg'), false)) },
+        { key: 'cart', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-out.svg'), false)) },
+        { key: 'metrics', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-in.svg'), false)) },
     ]);
 
     const userTab = () => {
@@ -169,7 +168,7 @@ const MyProfile = props => {
             <View>
                 {data == null ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
                     transactions.map((transaction, index) => {
-                        return <Activity key={index}/>
+                        return <Activity data={transaction} key={index} />
                     })
                 }
             </View>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { createStackNavigator } from 'react-navigation-stack';
@@ -17,35 +17,9 @@ import Menu2 from '../screens/main/actionsMenu/wastesActionSelector';
 import Waste from '../screens/main/waste';
 import WasteCheckInfo from '../screens/main/waste/check';
 import WasteSuccess from '../screens/main/waste/success';
-
-import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../styles/colors';
 
-import SvgUri from 'react-native-svg-uri';
-
-const CustomIcon = (name, size) => {
-  const icon = ({ tintColor }) => (
-    <Icon name={name} size={size} color={tintColor} />
-  );
-
-  icon.propTypes = {
-    tintColor: PropTypes.string.isRequired,
-  };
-  return icon;
-};
-
-const CustomSvgIcon = (image, focused) => {
-  const size = focused ? 25 : 20;
-  const color = focused ? colors.colmenaGreen : colors.colmenaGrey;
-  return <View style={{ width: size, height: size }}>
-    <SvgUri
-      width={size}
-      height={size}
-      source={image}
-      fill={color}
-    />
-  </View>
-};
+import CustomSvgIcon from '../components/icons/CustomSvgIcon';
 
 const WasteNav = createStackNavigator({
   Waste: { screen: Waste, navigationOptions: { header: null } },
@@ -61,7 +35,7 @@ const HomeNavigator = createBottomTabNavigator(
         tabBarLabel: 'HOME',
         tabBarIcon: ({ focused }) => {
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/arrow-back.svg'), focused)
+            CustomSvgIcon(require('../../assets/icons/svg/0-home.svg'), focused)
           );
         }
       },
@@ -72,7 +46,7 @@ const HomeNavigator = createBottomTabNavigator(
         tabBarLabel: 'MIS RESIDUOS',
         tabBarIcon: ({ focused }) => {
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/arrow-back.svg'), focused)
+            CustomSvgIcon(require('../../assets/icons/svg/teste.svg'), focused)
           );
         }
       },
@@ -83,7 +57,7 @@ const HomeNavigator = createBottomTabNavigator(
         tabBarLabel: 'MENU 1',
         tabBarIcon: ({ focused }) => {
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/arrow-back.svg'), focused)
+            CustomSvgIcon(require('../../assets/icons/svg/2-actions.svg'), focused)
           );
         }
       },
@@ -94,7 +68,7 @@ const HomeNavigator = createBottomTabNavigator(
         tabBarLabel: 'MENU 2',
         tabBarIcon: ({ focused }) => {
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/arrow-back.svg'), focused)
+            CustomSvgIcon(require('../../assets/icons/svg/3-heart.svg'), focused)
           );
         }
       },
@@ -105,7 +79,7 @@ const HomeNavigator = createBottomTabNavigator(
         tabBarLabel: 'MI PERFIL',
         tabBarIcon: ({ focused }) => {
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/arrow-back.svg'), focused)
+            CustomSvgIcon(require('../../assets/icons/svg/4-perfil.svg'), focused)
           );
         }
       },
