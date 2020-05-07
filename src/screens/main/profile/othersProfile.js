@@ -124,7 +124,7 @@ const OthersProfile = props => {
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image
                                         style={{ width: 40, height: 40, resizeMode: 'contain' }}
-                                        source={require('../../../../assets/icons/icon-co2.png')}
+                                        source={require('../../../../assets/icons/png/icon-co2.png')}
                                     />
                                 </View>
                             </View>
@@ -150,11 +150,11 @@ const OthersProfile = props => {
                                 <View style={{ flexDirection: 'row', }}>
                                     <Image
                                         style={{ width: 40, height: 40, resizeMode: 'contain' }}
-                                        source={require('../../../../assets/icons/icon-residuo-pet.png')}
+                                        source={require('../../../../assets/icons/png/icon-residuo-pet.png')}
                                     />
                                     <Image
                                         style={{ width: 40, height: 40, resizeMode: 'contain' }}
-                                        source={require('../../../../assets/icons/icon-residuo-organico.png')}
+                                        source={require('../../../../assets/icons/png/icon-residuo-organico.png')}
                                     />
                                 </View>
 

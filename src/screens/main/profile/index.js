@@ -65,12 +65,14 @@ const MyProfile = props => {
     *****************************************************/
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-        { key: 'user', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-in.svg'), false)) },
-        { key: 'waste', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-out.svg'), false)) },
-        { key: 'pendantsList', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-in.svg'), false)) },
-        { key: 'cart', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-out.svg'), false)) },
-        { key: 'metrics', title: (CustomSvgIcon(require('../../../../assets/icons/svg/arrow-in.svg'), false)) },
+        { key: 'user', title: (<Feather name={'user'} size={25}/>) },
+        { key: 'waste', title: (<MaterialCommunityIcons name={'recycle'} size={25}/>) },
+        { key: 'pendantsList', title: (<Feather name={'clipboard'} size={25}/>) },
+        { key: 'cart', title: (<EvilIcons name={'cart'} size={25}/>) },
+        { key: 'metrics', title: (<Ionicons name={'ios-stats'} size={25}/>) },
     ]);
+
+    // signal  bar-chart FontAwesome
 
     const userTab = () => {
         return (
@@ -125,7 +127,7 @@ const MyProfile = props => {
                                 <Text style={{ ...styles.headerExtraInfoText, paddingRight: 10, fontWeight: 'bold' }}>Mis Residuos</Text>
                                 <Image
                                     style={{ width: 16, height: 16, resizeMode: 'contain' }}
-                                    source={require('../../../../assets/icons/icon-pencil.png')}
+                                    source={require('../../../../assets/icons/png/icon-pencil.png')}
                                 />
                             </View>
 

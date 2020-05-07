@@ -19,8 +19,6 @@ import WasteCheckInfo from '../screens/main/waste/check';
 import WasteSuccess from '../screens/main/waste/success';
 import colors from '../styles/colors';
 
-import CustomSvgIcon from '../components/icons/CustomSvgIcon';
-
 const WasteNav = createStackNavigator({
   Waste: { screen: Waste, navigationOptions: { header: null } },
   WasteCheckInfo: { screen: WasteCheckInfo },
@@ -34,8 +32,9 @@ const HomeNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'HOME',
         tabBarIcon: ({ focused }) => {
+          const img = focused ? require('../../assets/icons/png/menu-home-active.png') : require('../../assets/icons/png/menu-home-gray.png')
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/0-home.svg'), focused)
+            <Image style={{ width: 40, height: 40 }} source={img} />
           );
         }
       },
@@ -45,8 +44,9 @@ const HomeNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'MIS RESIDUOS',
         tabBarIcon: ({ focused }) => {
+          const img = focused ? require('../../assets/icons/png/menu-search-active.png') : require('../../assets/icons/png/menu-search-gray.png')
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/teste.svg'), focused)
+            <Image style={{ width: 40, height: 40 }} source={img} />
           );
         }
       },
@@ -56,8 +56,9 @@ const HomeNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'MENU 1',
         tabBarIcon: ({ focused }) => {
+          const img = focused ? require('../../assets/icons/png/menu-actions-gray.png') : require('../../assets/icons/png/menu-actions-gray.png')
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/2-actions.svg'), focused)
+            <Image style={{ width: 40, height: 40 }} source={img} />
           );
         }
       },
@@ -67,8 +68,9 @@ const HomeNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'MENU 2',
         tabBarIcon: ({ focused }) => {
+          const img = focused ? require('../../assets/icons/png/menu-impact-active.png') : require('../../assets/icons/png/menu-home-gray.png')
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/3-heart.svg'), focused)
+            <Image style={{ width: 40, height: 40 }} source={img} />
           );
         }
       },
@@ -78,8 +80,9 @@ const HomeNavigator = createBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: 'MI PERFIL',
         tabBarIcon: ({ focused }) => {
+          const img = focused ? require('../../assets/icons/png/menu-burger-active.png') : require('../../assets/icons/png/menu-home-gray.png')
           return (
-            CustomSvgIcon(require('../../assets/icons/svg/4-perfil.svg'), focused)
+            <Image style={{ width: 40, height: 40 }} source={img} />
           );
         }
       },

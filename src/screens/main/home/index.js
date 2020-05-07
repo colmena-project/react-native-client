@@ -1,5 +1,5 @@
 import React, { useState, useReducer } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -19,6 +19,7 @@ const HomeFeed = props => {
     const [data, setData] = useState(null);
 
     const loadData = async () => {
+
         try {
             setIsLoading(true);
             const posts = new Parse.Query('Post');
@@ -44,19 +45,22 @@ const HomeFeed = props => {
             const FCMToken = await getToken();
             const session = await Parse.Session.current();
             const installationId = session.get('installationId');
+            const deviceType = Platform.OS == 'android' ? 'android' : 'ios';
+            const pushType = Platform.OS == 'android' ? 'gcm' : '';
+            const localeIdentifier = 'es-es';
 
-            //FIXME: Add dynamic data
             const newInstallation = new Parse.Installation();
-            newInstallation.set('deviceType', 'android');
+            newInstallation.set('deviceType', deviceType);
             newInstallation.set('installationId', installationId);
             newInstallation.set('channels', ["All"]);
-            newInstallation.set('pushType', 'gcm');
+            newInstallation.set('pushType', pushType);
             newInstallation.set('timeZone', 'America/Argentina/Buenos_Aires');
             newInstallation.set('appName', 'ColmenaApp');
             newInstallation.set('appIdentifier', 'com.colmena.colmenapp');
             newInstallation.set('deviceToken', FCMToken);
-
+            newInstallation.set('localeIdentifier', localeIdentifier);
             await newInstallation.save();
+
         } catch (err) {
             console.log('Error!! ' + err);
         }
