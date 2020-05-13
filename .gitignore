@@ -77,5 +77,6 @@ android/app/build/
 android/app/google-services.json
 android/app/src/main/res/values/strings.xml
 android/.settings/
+android/.settings/org.eclipse.buildship.core.prefs
 # exclude ios
 ios
