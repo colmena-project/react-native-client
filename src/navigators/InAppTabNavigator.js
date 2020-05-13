@@ -10,8 +10,17 @@ import EditProfile from '../screens/main/profile/edit';
 import OthersProfile from '../screens/main/profile/othersProfile';
 
 import Waste from '../screens/main/waste';
+import WasteAddress from '../screens/main/waste/location';
 import WasteCheckInfo from '../screens/main/waste/check';
 import WasteSuccess from '../screens/main/waste/success';
+
+import Transport from '../screens/main/transport';
+import TransportAddress from '../screens/main/transport/location';
+import TransportCheckInfo from '../screens/main/transport/check';
+import TransportSuccess from '../screens/main/transport/success';
+
+import wastesSelect from '../screens/main/manageWaste';
+import WastesEdit from '../screens/main/manageWaste/edit';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import colors from '../styles/colors';
@@ -29,8 +38,21 @@ const CustomIcon = (name, size) => {
 
 const WasteNav = createStackNavigator({
   Waste: {screen: Waste, navigationOptions: {header: null}},
+  WasteAddress: {screen: WasteAddress},
   WasteCheckInfo: {screen: WasteCheckInfo},
   WasteSuccess: {screen: WasteSuccess},
+});
+
+const TransportNav = createStackNavigator({
+  Transport: {screen: Transport, navigationOptions: {header: null}},
+  TransportAddress: {screen: TransportAddress},
+  TransportCheckInfo: {screen: TransportCheckInfo},
+  TransportSuccess: {screen: TransportSuccess},
+});
+
+const ManageWasteNav = createStackNavigator({
+  wastesSelect: {screen: wastesSelect, navigationOptions: {header: null}},
+  WastesEdit: {screen: WastesEdit},
 });
 
 const HomeNavigator = createBottomTabNavigator(
@@ -46,7 +68,21 @@ const HomeNavigator = createBottomTabNavigator(
       screen: WasteNav,
       navigationOptions: {
         tabBarLabel: 'MIS RESIDUOS',
-        tabBarIcon: CustomIcon('ios-archive', 28),
+        tabBarIcon: CustomIcon('ios-download', 28),
+      },
+    },
+    Transport: {
+      screen: TransportNav,
+      navigationOptions: {
+        tabBarLabel: 'TRANSPORTAR MIS RESIDUOS',
+        tabBarIcon: CustomIcon('ios-subway', 28),
+      },
+    },
+    ManageWaste: {
+      screen: ManageWasteNav,
+      navigationOptions: {
+        tabBarLabel: 'GESTIONAR RESIDUOS',
+        tabBarIcon: CustomIcon('ios-create', 28),
       },
     },
     Profile: {
