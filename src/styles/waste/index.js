@@ -42,6 +42,14 @@ const styles = StyleSheet.create({
     fontSize: headingTextSize,
     color: colors.colmenaGrey,
   },
+  brandTextCenter: {
+    fontFamily: 'Montserrat-Medium',
+    fontWeight: '300',
+    fontSize: 22,
+    margin: 5,
+    color: colors.colmenaGrey,
+    alignItems: 'center',
+  },
   colmenaLogo: {
     resizeMode: 'stretch',
     marginRight: 10,
@@ -249,6 +257,16 @@ const styles = StyleSheet.create({
     padding: 3,
     marginBottom: 6,
   },
+  totalize: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.colmenaUltraLightGrey,
+    paddingLeft: 20,
+    paddingRight: 30,
+    paddingTop: 12,
+    paddingBottom: 12,
+  }
 });
 
 export default styles;
