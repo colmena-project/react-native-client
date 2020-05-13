@@ -1,77 +1,203 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextInput, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import MapPicker from './MapPicker';
 import Input from '../form/Input';
 
-import Geolocation from 'react-native-geolocation-service';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Parse } from 'parse/react-native';
+import colors from '../../styles/colors';
+
+import validate from '../../utils/Validate';
 
 const Address = () => {
 
-    const [regionCoords, setRegionCoords] = useState({ latitude: -27.3715333, longitude: -55.9170078 });
-    const [address, setAddress] = useState(null);
-
-    let timeout = null;
-
-    const handleChangeAddress = newAddress => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-            getCoordsFromAddress(newAddress)
-        }, 1000);;
+    const fields = {
+        address: '',
+        street: '',
+        city: '',
+        state: '',
+        country: '',
+        addressDescription: '',
+        coords: { latitude: -27.3715333, longitude: -55.9170078 }
     };
 
-    const getAddressFromLatLng = async (latLng) => {
+    const [inputs, setInputs] = useState(fields);
+    const [errorMessages, setErrorMessages] = useState(fields);
+    const [userAddress, setUserAddress] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const fetchData = async () => {
         try {
-            const result = await Parse.Cloud.run("getAddress", { lat: latLng.latitude, lng: latLng.longitude });
-            props.pickedAddress(result.formatted_address);
-            setAddress(result.formatted_address);
+            setIsLoading(true);
+            
+            const parseAddress = new Parse.Query('Address');
+            parseAddress.equalTo('default', true);
+            const userAddress = await parseAddress.first();
+
+            setUserAddress(userAddress);
+
+            console.log('USER ADDRESS', userAddress);
+
+            setInputs({
+                ...inputs,
+                street: userAddress.get('street'),
+                city: userAddress.get('city'),
+                state: userAddress.get('state'),
+                country: userAddress.get('country'),
+                addressDescription: userAddress.get('description'),
+                address: `${userAddress.get('street')}, ${userAddress.get('city')}, ${userAddress.get('state')}`,
+                coords: userAddress.get('latLng').toJSON()
+            });
+
+            setIsLoading(false);
+        } catch (err) {
+            console.log('Error!! ' + err);
+        }
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        console.log('USE EFFECT INPUTS', inputs);
+    }, [inputs]);
+
+    const hasErrors = errors => {
+        for (const [key, value] of Object.entries(errors)) {
+            if (errors[key] !== null) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    const handleError = (field, value) => {
+        const errors = { ...errorMessages };
+        errors[field] = validate(field, value);
+        setErrorMessages(errors);
+    };
+
+    const handleField = (field, value) => {
+        const updateData = { ...inputs };
+        updateData[field] = value;
+        setInputs(updateData);
+    };
+
+    const handleInput = (field, value) => {
+        handleError(field, value);
+        handleField(field, value);
+    };
+
+    const handleBackButton = () => {
+        props.navigation.goBack();
+    };
+
+    const handleChangePassword = () => {
+        Parse.User.requestPasswordReset(inputs.email)
+            .then(() => {
+                setIsLoading(false);
+                Alert.alert('Cambio de contraseña.', 'Se envió un link a su correo, con las instrucciones para cambiar su contraseña.');
+            }).catch((error) => {
+                setIsLoading(false);
+                alert("Error: " + error.code + " " + error.message);
+            });
+    };
+
+    const handleChangeAddress = async () => {
+        try {
+            const result = await Parse.Cloud.run("geocodeAddress", { address: inputs.address });
+            const newCoords = { latitude: result.geocode.lat, longitude: result.geocode.lng };
+            handleField('coords', newCoords);
         } catch (err) {
             console.log(err);
         }
     };
 
-    const getCoordsFromAddress = async (newAddress) => {
-        if (newAddress != '') {
-            try {
-                const result = await Parse.Cloud.run("geocodeAddress", { address: newAddress });
-                setRegionCoords(result.geocode);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-    };
+    const getAddressFromLatLng = async (latLng) => {
+        try {
+            const result = await Parse.Cloud.run("getAddress", { lat: latLng.latitude, lng: latLng.longitude });
+            let calcStreet = undefined;
+            let calcCity = undefined;
+            let calcState = undefined;
+            let calcCountry = undefined;
+            let calcStreetNumber = undefined;
+           
+            result.address_components.forEach(field => {
+                if(field.types[0] == 'route'){
+                    calcStreet = field.long_name;
+                };
+                if(field.types[0] == 'street_number'){
+                    calcStreetNumber = field.long_name;
+                };
+                if(field.types[0] == 'administrative_area_level_2'){
+                    calcCity = field.long_name;
+                };
+                if(field.types[0] == 'locality'){
+                    calcCity = field.long_name;
+                };
+                if(field.types[0] == 'administrative_area_level_1'){
+                    calcState = field.long_name;
+                };
+                if(field.types[0] == 'country'){
+                    calcCountry = field.long_name;
+                };
+            });
 
-    const getAddress = () => {
-        const address = `${config.googleApiUrl}${inputs.street}+${inputs.streetNumber}+${inputs.city}+${inputs.neighbourhood}+Misiones+Argentina${config.googleApiKey}`;
-        console.log(address);
-        fetch(address)
-            .then(response => response.json())
-            .then(response => {
-                handleField('coords', { latitude: response.results[0].geometry.location.lat, longitude: response.results[0].geometry.location.lng });
-            })
-            .catch(error => console.log(error));
-    };
-
-    const handleNewLocation = newCoords => {
-        if ('latitude' in newCoords && 'longitude' in newCoords) {
-            try {
-                setRegionCoords({ latitude: newCoords.latitude, longitude: newCoords.longitude });
-                getAddressFromLatLng(newCoords);
-            } catch (ex) {
-                console.log(ex);
-            }
+            setInputs({
+                ...inputs,
+                street: `${calcStreet} ${calcStreetNumber}`,
+                city: calcCity,
+                state: calcState, 
+                country: calcCountry,
+                address: result.formatted_address,
+                coords: latLng,
+            });
+        } catch (err) {
+            console.log(err);
         }
     };
 
     const getCurrentPosition = async () => {
-        Geolocation.getCurrentPosition(value => handleNewLocation(value.coords), error => console.log(error), { enableHighAccuracy: true, timeout: 5000 });
+        try {
+            Geolocation.getCurrentPosition(value => getAddressFromLatLng(value.coords), error => console.log(error), { enableHighAccuracy: true, timeout: 5000 });
+        } catch (ex) {
+            console.log(ex);
+        }
+    };
+
+    const handleSaveButton = async () => {
+        try {
+            let errors = { ...errorMessages };
+            for (const [key, value] of Object.entries(inputs)) {
+                console.log('KEY: ', key, 'VALUE ', value)
+                errors[key] = validate(value, inputs[key]);
+                setErrorMessages(errors);
+            }
+            if (hasErrors(errors)) {
+                Alert.alert('', 'Revise los datos!');
+            } else {
+                userAddress.set('street', inputs.street);
+                userAddress.set('city', inputs.city);
+                userAddress.set('state', inputs.state);
+                userAddress.set('country', inputs.country);
+                userAddress.set('description', inputs.addressDescription);
+                userAddress.set('latLng',  new Parse.GeoPoint(inputs.coords));
+                await userAddress.save();
+
+                // await Parse.Object.saveAll([userAddress]);
+
+                Alert.alert('', 'Datos guardados!');
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ marginBottom: 120, }}>
             <Input
                 label={'Dirección'}
                 style={styles.input}
@@ -79,13 +205,24 @@ const Address = () => {
                 keyboardType={'default'}
                 autoCapitalize={'none'}
                 autoCorrect={false}
-                value={address}
-                error={''}
-                onChangeText={newAddress => setAddress(newAddress)}
+                value={inputs.address}
+                error={errorMessages.address}
+                onChangeText={value => handleInput('address', value)}
                 onEndEditing={handleChangeAddress}
             />
+            <Input
+                label={'Info extra de tu ubicación'}
+                style={styles.input}
+                blurOnSubmit
+                keyboardType={'default'}
+                autoCapitalize={'none'}
+                autoCorrect={false}
+                value={inputs.addressDescription}
+                error={errorMessages.addressDescription}
+                onChangeText={value => handleInput('addressDescription', value)}
+            />
             <View>
-                <MapPicker coords={regionCoords} getCoords={coords => handleNewLocation(coords)} />
+                <MapPicker coords={inputs.coords} getCoords={value => getAddressFromLatLng(value)} />
                 <TouchableOpacity onPress={getCurrentPosition} style={{
                     position: 'absolute',
                     width: 50,
@@ -95,28 +232,50 @@ const Address = () => {
                     right: 10,
                     bottom: 10,
                 }}>
-                    <Ionicons name={'md-locate'} size={36} color={'blue'} />
+                    <Ionicons name={'md-locate'} size={36} color={colors.colmenaGreen} />
                 </TouchableOpacity>
             </View>
-            {/* <Text>
-                Latitude: {regionCoords.latitude}
-            </Text>
-            <Text>
-                Longitude: {regionCoords.longitude}
-            </Text>
-            <Text>
-                Address: {address}
-            </Text> */}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingTop: 10,
+        flex: 2,
+    },
+    scrollView: {
+        flex: 1,
+    },
+    headerIcons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
     input: {
         flex: 1,
         textAlign: 'center',
     },
+    saveIcon: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 40,
+        height: 40,
+        borderRadius: 50,
+        backgroundColor: '#e8e8e8',
+    },
+    changePassword: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 20,
+        padding: 5,
+        paddingLeft: 10,
+        borderRadius: 5,
+        backgroundColor: '#e8e8e8',
+    }
 });
 
 export default Address;
