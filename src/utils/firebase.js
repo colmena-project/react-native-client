@@ -6,14 +6,55 @@ async function registerAppWithFCM() {
   await messaging().registerDeviceForRemoteMessages();
 }
 
-async function requestPermission() {
-  const granted = messaging().requestPermission();
-  if (granted) {
-    console.log('User permission ok');
-  } else {
-    console.log('User declined messaging permissions');
+const getToken = async () => {
+  let fcmToken = await AsyncStorage.getItem('FCMToken');
+  if (!fcmToken) {
+    fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      await AsyncStorage.setItem('FCMToken', fcmToken);
+    }
   }
-}
+};
+
+const requestPermission = async () => {
+  messaging()
+    .requestPermission()
+    .then(() => {
+      getToken();
+    })
+    .catch(error => {
+      console.warn(`${error} permission rejected`);
+    });
+};
+
+export const checkPermission = async () => {
+  const enabled = await messaging().hasPermission();
+  if (enabled) {
+    getToken();
+  } else {
+    requestPermission();
+  }
+};
+
+const configurePushNotifications = () => {
+  PushNotification.configure({
+    onRegister: function (token) {
+      console.log("TOKEN:", token);
+    },
+    onNotification: function (notification) {
+      console.log("NOTIFICATION:", notification);
+      // required on iOS only (see fetchCompletionHandler docs: https://github.com/react-native-community/react-native-push-notification-ios)
+      //notification.finish(PushNotificationIOS.FetchResult.NoData);
+    },
+    // permissions: {
+    //   alert: true,
+    //   badge: true,
+    //   sound: true,
+    // },
+    popInitialNotification: true,
+    requestPermissions: true,
+  });
+};
 
 const pushNotification = data => {
   try {
@@ -21,7 +62,6 @@ const pushNotification = data => {
     const { title = "ColmenaApp", message = "Mensaje", subText = "Notificación", bigText = "Seguí reciclando con Colmena!" } = formattedData;
 
     PushNotification.localNotification({
-      ticker: "My Notification Ticker", // (optional)
       autoCancel: true, // (optional) default: true
       largeIcon: "ic_launcher", // (optional) default: "ic_launcher"
       smallIcon: "ic_launcher", // (optional) default: "ic_notification" with fallback for "ic_launcher"
@@ -33,20 +73,20 @@ const pushNotification = data => {
       vibrate: true, // (optional) default: true
       vibration: 300, // vibration length in milliseconds, ignored if vibrate=false, default: 1000
       tag: "some_tag", // (optional) add tag to message
-      group: "group", // (optional) add group to message
+      group: "ColmenApp", // (optional) add group to message
       ongoing: true, // (optional) set whether this is an "ongoing" notification
       priority: "high", // (optional) set notification priority, default: high
-      visibility: "public", // (optional) set notification visibility, default: private
+      visibility: "private", // (optional) set notification visibility, default: private
       importance: "high", // (optional) set notification importance, default: high
       allowWhileIdle: true, // (optional) set notification to work while on doze, default: false
-      ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear)
+      //ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear)
 
       /* iOS and Android properties */
       playSound: true, // (optional) default: true
       soundName: "default", // (optional) Sound to play when the notification is shown. Value of 'default' plays the default sound. It can be set to a custom sound such as 'android.resource://com.xyz/raw/my_sound'. It will look for the 'my_sound' audio file in 'res/raw' directory and play it. default: 'default' (default sound is played)
-      number: 5, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
+      number: 10, // (optional) Valid 32 bit integer specified as string. default: none (Cannot be zero)
       repeatType: "day", // (optional) Repeating interval. Check 'Repeating Notifications' section for more info.
-      actions: '["Gracias!"]', // (Android only) See the doc for notification actions to know more
+      // actions: '["Gracias!"]', // (Android only) See the doc for notification actions to know more
     });
   } catch (ex) {
     console.log(ex);
@@ -55,19 +95,16 @@ const pushNotification = data => {
 
 async function init() {
   await registerAppWithFCM();
-  await requestPermission();
-  const token = await messaging().getToken();
-  await AsyncStorage.setItem('FCMToken', token);
+  await checkPermission();
+  //configurePushNotifications();
 
   messaging().onMessage(async remoteMessage => {
     const { data } = remoteMessage.data;
-    console.log('MessageHandler', data);
     pushNotification(data);
 
   });
 
   messaging().setBackgroundMessageHandler(async remoteMessage => {
-    console.log('Message handled in the background!', remoteMessage);
     const { data } = remoteMessage.data;
     pushNotification(data);
   });
