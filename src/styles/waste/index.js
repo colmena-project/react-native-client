@@ -266,7 +266,27 @@ const styles = StyleSheet.create({
     paddingRight: 30,
     paddingTop: 12,
     paddingBottom: 12,
-  }
+  },
+  input: {
+    flex: 1,
+    textAlign: 'center',
+  },
+  btnSubmit: {
+    width: '100%',
+    backgroundColor: colors.colmenaGreen,
+    borderRadius: 5,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  submitText: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Montserrat-Medium',
+    fontWeight: '900',
+  },
 });
 
 export default styles;
