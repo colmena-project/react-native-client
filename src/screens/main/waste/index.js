@@ -92,7 +92,6 @@ class index extends Component {
             <Text style={styles.title}>Cant. Aprox.</Text>
             <Text style={styles.title}>Retribución</Text>
           </View>
-
           {this.props.wasteTypeStatus.data ? (
             this.wasteTypesList()
           ) : (
@@ -107,11 +106,9 @@ class index extends Component {
               <Text style={styles.submitText}>Continuar</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity
-              style={styles.btnSubmitDisabled}
-              onPress={this.wasteSubmit}>
+            <View style={styles.btnSubmitDisabled}>
               <Text style={styles.submitText}>Continuar</Text>
-            </TouchableOpacity>
+            </View>
           )}
         </ScrollView>
       </View>

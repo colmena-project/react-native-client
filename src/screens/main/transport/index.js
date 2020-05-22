@@ -27,7 +27,6 @@ class index extends Component {
     this.state = {
       account: null,
       checks: 0,
-      next: false,
     };
     this.handleChecked = this.handleChecked.bind(this);
     this.submit = this.submit.bind(this);
@@ -38,12 +37,10 @@ class index extends Component {
   }
 
   componentDidMount() {
+    this.limpiar();
     this.props.wasteTypes();
     this.props.myAccount();
   }
-  
-
-  
 
   listHeader = () => {
     const {myAccountStatus} = this.props;
@@ -61,57 +58,59 @@ class index extends Component {
     );
   };
 
+  removeItem = async(wasteID) => {
+    await AsyncStorage.removeItem('containers_' + wasteID);
+  };
+
+  addItem = async(wasteID,code) => {
+    await AsyncStorage.setItem(
+      'containers_' + wasteID,
+      JSON.stringify({id: wasteID, code: code}),
+    );
+  };
+
   handleChecked(wasteID, code, check) {
-    console.log('WasteID: ' + wasteID);
-    console.log('code: ' + code);
     if (!check) {
       this.setState({checks: this.state.checks - 1 });
-      AsyncStorage.removeItem('containers_' + wasteID);
+      this.removeItem(wasteID);
     } else {
       this.setState({checks: this.state.checks + 1 });
-      AsyncStorage.setItem(
-        'containers_' + wasteID,
-        JSON.stringify({id: wasteID, code: code}),
-      );
+      this.addItem(wasteID,code);
     }
   }
 
-  /*
-  limpiar = async ()=>{
+  limpiar = async()=> {
     console.log('limpiando...');
     const keys = await AsyncStorage.getAllKeys();
-    const wastesRemove = keys.filter(item => item.includes('containers_'));
-    await AsyncStorage.multiRemove(wastesRemove);
+    const containersRemove = keys.filter(item => item.includes('containers_'));
+    await AsyncStorage.multiRemove(containersRemove);
     console.log('limpieza completa!');
-  }
-  */
+  };
 
   render() {
+    const {checks} = this.state;
     const {myAccountStatus} = this.props;
     const accountData = myAccountStatus.data;
-
     return (
-      <View style={styles.wrapper}>
-
+        <View style={styles.wrapper}>
           <View style={styles.brand, { padding: 10}}>
             <Text style={styles.brandText}>Elija los contenedores</Text>
           </View>
           <View>
-          {
-            this.props.myAccountStatus.data ? (
-              <FlatList
-                style={{ height: '78%'}}
-                data={ accountData.containers } 
-                keyExtractor={(item, index) => item.key}
-                renderItem={({item}) => <WasteCheck waste={item} action={this.handleChecked} />} 
-                ListHeaderComponent={this.listHeader} 
-                stickyHeaderIndices={[0]}
-              />
-            ) : (
-              <Text style={styles.text}>Cargando...</Text>
-            )
-          }
+            { this.props.myAccountStatus.data ? (
+                <FlatList
+                  style={{ height: '78%'}}
+                  data={ accountData.containers } 
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={({item}) => <WasteCheck waste={item} action={this.handleChecked} />} 
+                  ListHeaderComponent={this.listHeader} 
+                  stickyHeaderIndices={[0]}
+                />
+              ) : (
+                <Text style={styles.text}>Cargando...</Text>
+              )}
           </View>
+          {checks > 0 ? 
           <View style={{ width:'80%', alignSelf: 'center'}}>
             <TouchableOpacity
                 style={styles.btnSubmit}
@@ -119,6 +118,13 @@ class index extends Component {
                 <Text style={styles.submitText}>Continuar</Text>
             </TouchableOpacity>
           </View>
+          :
+          <View style={{ width:'80%', alignSelf: 'center'}}>
+            <View style={styles.btnSubmitDisabled}>
+              <Text style={styles.submitText}>Continuar</Text>
+            </View>
+          </View>
+          }
       </View>
     );
   }

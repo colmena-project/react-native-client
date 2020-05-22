@@ -1,5 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, StyleSheet, Picker } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from 'react-native';
+
+import {ActivityIndicator, List} from 'react-native-paper';
 
 import { Caption } from 'react-native-paper';
 
@@ -8,7 +10,6 @@ import Geolocation from 'react-native-geolocation-service';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-import Input from '../../../components/form/Input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import RecyclingCenterIcon from '../../../../assets/icons/png/recycling-center-marker256b.png';
@@ -17,18 +18,11 @@ import MapView, { Marker } from 'react-native-maps';
 
 import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
-// import validate from '../../../utils/Validate';
+
+import NavBarButton from '../../../components/buttons/NavBarButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Location = (props) => {
-    /*
-    const region = {
-        latitude: -27.425292,
-        longitude: -55.935824,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005
-    };
-    const [mapRegion, setMapRegion] = useState(region);
-    */
 
     const fields = {
         address: '',
@@ -46,7 +40,6 @@ const Location = (props) => {
     const [destinationAddress, setDestinationAddress] = useState(null);
     const [centerAddress, setCenterAddress] = useState(null); // Centro de reciclado
     const [isLoading, setIsLoading] = useState(true);
-
     const fetchData = async () => {
         try {
             setIsLoading(true);
@@ -79,6 +72,7 @@ const Location = (props) => {
             await AsyncStorage.setItem(
                 'RecyclingCenter',
                 JSON.stringify({
+                    id: firstRCAddress.id,
                     name: firstRCAddress.get('name'), 
                     description: firstRCAddress.get('description'),
                     latitude: firstRCAddress.get('latLng').latitude,
@@ -101,50 +95,11 @@ const Location = (props) => {
         console.log('USE EFFECT INPUTS', inputs);
     }, [inputs]);
 
-    /*
-    const hasErrors = errors => {
-        for (const [key, value] of Object.entries(errors)) {
-            if (errors[key] !== null) {
-                return true;
-            }
-        }
-        return false;
-    };
-
-    const handleError = (field, value) => {
-        const errors = { ...errorMessages };
-        errors[field] = validate(field, value);
-        setErrorMessages(errors);
-    };
-
-    const handleField = (field, value) => {
-        const updateData = { ...inputs };
-        updateData[field] = value;
-        setInputs(updateData);
-    };
-
-    
-    const handleInput = (field, value) => {
-        handleError(field, value);
-        handleField(field, value);
-    };
-    */
 
     const handleBackButton = () => {
         props.navigation.goBack();
     };
 
-    /*
-    const handleChangeAddress = async () => {
-        try {
-            const result = await Parse.Cloud.run("geocodeAddress", { address: inputs.address });
-            const newCoords = { latitude: result.geocode.lat, longitude: result.geocode.lng };
-            handleField('coords', newCoords);
-        } catch (err) {
-            console.log(err);
-        }
-    };
-    */
 
     const getAddressFromLatLng = async (latLng) => {
         try {
@@ -232,7 +187,14 @@ const Location = (props) => {
         <Fragment>
             <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
                 {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
-                    <ScrollView style={stylesCommon.scrollView}>
+                <ScrollView style={stylesCommon.scrollView}>
+                    <View style={stylesCommon.headerMsg}>
+                        <Text style={stylesCommon.headerText}>Elija el lugar</Text>
+                        <Image
+                            style={stylesCommon.headerIcon}
+                            source={require('../../../../assets/icons/png/icon-transportar.png')}
+                        />
+                    </View>
                     <View style={{ marginBottom: 5, }}>
                         {/* 
                         <Input
@@ -248,13 +210,11 @@ const Location = (props) => {
                             onEndEditing={handleChangeAddress}
                         />
                         */}
-                        <Caption>Centro de Reciclado:</Caption>
-                        <Picker
-                            selectedValue={centerAddress.get('name')}
-                            style={{ width: '100%' }}
-                            >
-                            <Picker.Item label={centerAddress.get('name')} value={centerAddress.get('name')} />
-                        </Picker>   
+                        <List.Item 
+                            title={centerAddress.get('name')}
+                            description={centerAddress.get('description')} 
+                            left={props => <List.Icon icon="map-marker-outline" />} 
+                        />
                         <View>
                             <MapView
                                 initialRegion={{
@@ -303,6 +263,23 @@ const Location = (props) => {
         </Fragment>
     );
 }
+
+Location.navigationOptions = ({navigation}) => ({
+    headerLeft: (
+        <NavBarButton
+        icon={
+            <Icon name="angle-left" color={colors.colmenaLightGrey} size={30} />
+        }
+        handleButtonPress={() => navigation.goBack()}
+        location="left"
+        />
+    ),
+    headerStyle: {
+        borderBottomWidth: 0,
+        elevation: 0,
+    },
+    headerTransparent: true,
+});
 
 const styles = StyleSheet.create({
     map: {

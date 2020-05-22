@@ -8,10 +8,14 @@ import {
 } from 'react-native';
 
 import { Parse } from 'parse/react-native';
-
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {List} from 'react-native-paper';
+import NavBarButton from '../../../components/buttons/NavBarButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import colors from '../../../styles/colors';
+
+import { ActivityIndicator, List} from 'react-native-paper';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -30,10 +34,28 @@ class check extends Component {
       totalTransport: null,
       distance: null,
       RecyclingCenter: null,
+      loadingVisible: true,
     };
 
-    this.submit = this.submit.bind(this);
+    // this.submit = this.submit.bind(this);
   }
+
+  static navigationOptions = ({navigation}) => ({
+    headerLeft: (
+      <NavBarButton
+        icon={
+          <Icon name="angle-left" color={colors.colmenaLightGrey} size={30} />
+        }
+        handleButtonPress={() => navigation.goBack()}
+        location="left"
+      />
+    ),
+    headerStyle: {
+      borderBottomWidth: 0,
+      elevation: 0,
+    },
+    headerTransparent: true,
+  });
 
   componentDidMount() {
     this.props.myAccount();
@@ -43,17 +65,17 @@ class check extends Component {
   estimateTransportDistance = async() =>{
     const {myAccountStatus} = this.props;
     const latLong = myAccountStatus.data.addresses[0].latLng;
-
-    const rc = await AsyncStorage.getItem('RecyclingCenter');
+    const sRc = await AsyncStorage.getItem('RecyclingCenter');
+    const rc = JSON.parse(sRc);
     let retributionDistance = await Parse.Cloud.run('estimateRetribution', {
       'type': 'transport',
       'elements': [
         { latitude: latLong.latitude, longitude: latLong.longitude}, 
-        { latitude: JSON.parse(rc).latitude, longitude: JSON.parse(rc).longitude}]
+        { latitude: rc.latitude, longitude: rc.longitude}]
     });
 
-    this.setState({ RecyclingCenter: { name: JSON.parse(rc).name, description: JSON.parse(rc).description }});
-    this.setState({ rcName: JSON.parse(rc).name});
+    this.setState({ RecyclingCenter: { id: rc.id, name: rc.name, description: rc.description }});
+
     return retributionDistance.transport;
   };
 
@@ -92,25 +114,42 @@ class check extends Component {
       totalAcopio: retribution['material']['total'], 
       totalTransport: jcDistance.total, 
       distance: '...',
+      loadingVisible: false,
     });
   };
+  
+  saveTransport = async () =>{
+    this.setState({loadingVisible: true});
+    const containers = this.state.localContainers.map(item => {
+      return JSON.parse(item[1]).id;
+    });
+    const respRegister = await Parse.Cloud.run('registerTransport', {
+      'containers': containers,
+      'to': this.state.RecyclingCenter.id
+    });
+    console.log('RESPUESTA');
+    console.log(respRegister);
+    console.log('FIN RESPUESTA');
+    this.setState({loadingVisible: false});
+  };
 
-  submit() {
+  submit = () => {
+    this.saveTransport();
     this.props.navigation.navigate('TransportSuccess');
-  }
+  };
 
   render() {
-    const {loadingVisible} = this.state;
-    
+    const {loadingVisible} = this.state;    
     return (
       <View style={styles.scrollViewWrapper}>
+        { loadingVisible ? <ActivityIndicator animating={loadingVisible} style={{ flex: 1, alignItems: 'center' }} color={colors.colmenaGreen} /> :
         <ScrollView style={styles.scrollView}>
           <View style={styles.headerMsg}>
+            <Text style={styles.headerText}>Verificar info de Transporte</Text>
             <Image
-              style={styles.colmenaLogo}
+              style={styles.headerIcon}
               source={require('../../../../assets/icons/png/icon-transportar.png')}
             />
-            <Text style={styles.brandTextCenter}>Verificar info de Transporte</Text>
           </View>
           <View>
             {this.state.RecyclingCenter && 
@@ -158,8 +197,8 @@ class check extends Component {
               <Text style={styles.submitText}>TRANSPORTAR</Text>
             </TouchableOpacity>
           </View>
-
         </ScrollView>
+        }
       </View>
     )
   }

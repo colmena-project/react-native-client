@@ -13,6 +13,9 @@ import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
 import validate from '../../../utils/Validate';
 
+import NavBarButton from '../../../components/buttons/NavBarButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 const Location = (props) => {
     const fields = {
         address: '',
@@ -236,5 +239,22 @@ const Location = (props) => {
         </Fragment>
     );
 }
+
+Location.navigationOptions = ({navigation}) => ({
+    headerLeft: (
+        <NavBarButton
+        icon={
+            <Icon name="angle-left" color={colors.colmenaLightGrey} size={30} />
+        }
+        handleButtonPress={() => navigation.goBack()}
+        location="left"
+        />
+    ),
+    headerStyle: {
+        borderBottomWidth: 0,
+        elevation: 0,
+    },
+    headerTransparent: true,
+});
 
 export default Location;
