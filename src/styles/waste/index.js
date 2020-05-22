@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
     textAlign: 'center',
     fontWeight: '900',
-    margin: 10,
+    margin: 5,
     color: colors.colmenaOtherGreen,
   },
   footTotal: {
