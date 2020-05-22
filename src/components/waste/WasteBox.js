@@ -9,9 +9,9 @@ import InputSpinner from 'react-native-input-spinner';
 import colors from '../../styles/colors';
 import styles from '../../styles/waste';
 
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import ActionCreators from '../../redux/actions';
+// import {connect} from 'react-redux';
+// import {bindActionCreators} from 'redux';
+// import ActionCreators from '../../redux/actions';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -124,7 +124,7 @@ class WasteBox extends Component {
     );
   }
 }
-
+/*
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch =>
@@ -134,3 +134,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(WasteBox);
+*/
+export default WasteBox;
