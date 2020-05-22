@@ -9,9 +9,13 @@ import {
   FlatList
 } from 'react-native';
 
+import Parse from 'parse/react-native';
+
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ActionCreators from '../../../redux/actions';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 import WasteCheck from '../../../components/waste/WasteCheck';
 
@@ -20,13 +24,12 @@ import styles from '../../../styles/waste';
 class index extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       account: null,
-      checks: 2,
+      checks: 0,
       next: false,
     };
-
+    this.handleChecked = this.handleChecked.bind(this);
     this.submit = this.submit.bind(this);
   }
 
@@ -34,47 +37,54 @@ class index extends Component {
     this.props.navigation.navigate('TransportAddress');
   }
 
-
   componentDidMount() {
+    this.props.wasteTypes();
     this.props.myAccount();
-    this._retrieveData();
   }
-  componentDidUpdate() {
-    this._retrieveData();
-  }
+  
 
- _retrieveData = async () => {
-    try {
-      const keys = await AsyncStorage.getAllKeys();
-      const items = await AsyncStorage.multiGet(keys);
-      const elegidas = items.filter(item => item[0].includes('containers_'));
-      let c = 0;
-      elegidas.forEach((el) => {
-        c += 1;
-      });
-      console.log(c);
-      this.setState({checks: c});
-    } catch (error) {
-    }
-  };
+  
 
   listHeader = () => {
     const {myAccountStatus} = this.props;
     const accountData = myAccountStatus.data;
     let total = 0;
-    let elegidas = 0;
     let containers = accountData.containers.filter(item => item.status == 'RECOVERED');
     containers.forEach((el) => {
       total += 1;
     });
-    var header = (
+    return (
       <View style={styles.totalize}>
         <Text>Total {total}</Text>
         <Text>Elegidas {this.state.checks}</Text>
       </View>
     );
-    return header;
   };
+
+  handleChecked(wasteID, code, check) {
+    console.log('WasteID: ' + wasteID);
+    console.log('code: ' + code);
+    if (!check) {
+      this.setState({checks: this.state.checks - 1 });
+      AsyncStorage.removeItem('containers_' + wasteID);
+    } else {
+      this.setState({checks: this.state.checks + 1 });
+      AsyncStorage.setItem(
+        'containers_' + wasteID,
+        JSON.stringify({id: wasteID, code: code}),
+      );
+    }
+  }
+
+  /*
+  limpiar = async ()=>{
+    console.log('limpiando...');
+    const keys = await AsyncStorage.getAllKeys();
+    const wastesRemove = keys.filter(item => item.includes('containers_'));
+    await AsyncStorage.multiRemove(wastesRemove);
+    console.log('limpieza completa!');
+  }
+  */
 
   render() {
     const {myAccountStatus} = this.props;
@@ -82,6 +92,7 @@ class index extends Component {
 
     return (
       <View style={styles.wrapper}>
+
           <View style={styles.brand, { padding: 10}}>
             <Text style={styles.brandText}>Elija los contenedores</Text>
           </View>
@@ -89,13 +100,13 @@ class index extends Component {
           {
             this.props.myAccountStatus.data ? (
               <FlatList
-              style={{ height: '78%'}}
-              data={ accountData.containers.filter(item => item.status == 'RECOVERED') } 
-              keyExtractor={(item, index) => item.key}
-              renderItem={({item}) => <WasteCheck waste={item} />} 
-              ListHeaderComponent={this.listHeader} 
-              stickyHeaderIndices={[0]}
-            />
+                style={{ height: '78%'}}
+                data={ accountData.containers } 
+                keyExtractor={(item, index) => item.key}
+                renderItem={({item}) => <WasteCheck waste={item} action={this.handleChecked} />} 
+                ListHeaderComponent={this.listHeader} 
+                stickyHeaderIndices={[0]}
+              />
             ) : (
               <Text style={styles.text}>Cargando...</Text>
             )

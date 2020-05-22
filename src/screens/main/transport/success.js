@@ -37,7 +37,8 @@ export default function success(props) {
         </View>
         <View>
           <Text style={styles.headerSubtitle}>
-            Tu petición de transporte está siendo evaluada. Se te enviará un mensaje con los avances
+          Tu informe de inicio del transporte de Residuos ya fue recibido por el Centro de Reciclaje, 
+          asi como llegues al centro de reciclaje elejido podes usar la funcion Entregar Residuos. 
           </Text>
         </View>
 

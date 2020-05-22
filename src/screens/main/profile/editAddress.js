@@ -14,6 +14,7 @@ import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
 import validate from '../../../utils/Validate';
 
+
 export default EditAddress = props => {
 
     const fields = {
@@ -185,8 +186,8 @@ export default EditAddress = props => {
                 // await userAddress.save();
 
                 await Parse.Object.saveAll([userAddress]);
-
-                Alert.alert('', 'Datos guardados!');
+                
+                // Alert.alert('', 'Datos guardados!');
             }
         } catch (error) {
             console.log(error);
@@ -214,7 +215,7 @@ export default EditAddress = props => {
                         </View>
                     </View>
                     */}
-                    <View style={{ marginBottom: 120, }}>
+                    <View style={{ marginBottom: 10, }}>
 
                         <Input
                             label={'Dirección'}
@@ -255,6 +256,14 @@ export default EditAddress = props => {
                                 <Ionicons name={'md-locate'} size={36} color={colors.colmenaGreen} />
                             </TouchableOpacity>
                         </View>
+                    </View>
+
+                    <View>
+                        <TouchableOpacity
+                            style={styles.btnSubmit}
+                            onPress={handleSaveButton(props.next)}>
+                            <Text style={styles.submitText}>Continuar</Text>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
             }
@@ -298,5 +307,20 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         borderRadius: 5,
         backgroundColor: '#e8e8e8',
-    }
+    },
+    btnSubmit: {
+        backgroundColor: colors.colmenaGreen,
+        borderRadius: 5,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    submitText: {
+        color: colors.white,
+        fontSize: 16,
+        fontFamily: 'Montserrat-Medium',
+        fontWeight: '900',
+    },
 });

@@ -13,8 +13,6 @@ export default class WasteCheck extends Component {
     this.state = {
       active: false
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.initData = this.initData.bind(this);
   }
 
   async initData() {
@@ -23,6 +21,7 @@ export default class WasteCheck extends Component {
     );
     if (localWaste) {
       this.setState({active: true});
+      this.props.action(this.props.waste.objectId, this.props.waste.code, true);
     }
   }
 
@@ -30,48 +29,102 @@ export default class WasteCheck extends Component {
     this.initData();
   }
 
-  handleChange(wasteID, code, check) {
-    this.setState({active: check });
-    if (!check) {
-      AsyncStorage.removeItem('containers_' + wasteID);
-    } else {
-      AsyncStorage.setItem(
-        'containers_' + wasteID,
-        JSON.stringify({id: wasteID, code: code}),
-      );
-    }
+  handleAction(){
+    this.setState({active: !this.state.active});
+    this.props.action(this.props.waste.objectId, this.props.waste.code, !this.state.active);
   }
 
   render() {
-    return (
-    <TouchableOpacity onPress={()=> this.handleChange(this.props.waste.objectId, this.props.waste.code, !this.state.active)}>
-      <View key={this.props.waste.objectId} style={{ width: '90%', alignSelf: 'center' }}>
-        <Image style={styles.boxImage} source={this.state.img} />
-        <Text style={this.state.active ? styles.active: styles.item}>
-        {this.props.waste.code}
-        </Text>
-      </View>
-      </TouchableOpacity>
-    );
+    //let img = Object.values(this.props.waste.type.get('iconFile'))[3];
+    if(this.props.waste.status !== 'RECOVERED'){
+      return (
+          <View key={this.props.waste.objectId} style={styles.boxDisabled}>
+            <View style={styles.boxImage}>
+              {/* <Image style={styles.boxImage} source={{ uri: img }} /> */}
+            </View>
+            <View style={styles.boxCode}>
+              <Text style={styles.text}>
+              {this.props.waste.code} ({this.props.waste.status})
+              </Text>
+            </View>
+          </View>
+        );
+    }else{
+      return (
+        <TouchableOpacity onPress={()=>{this.handleAction()}}>
+          <View key={this.props.waste.objectId} style={this.state.active ? styles.boxActive : styles.box}>
+            <View style={styles.boxImage}>
+              {/* <Image style={styles.image} source={{ uri: img }} />*/}
+            </View>
+            <View style={styles.boxCode}>
+              <Text style={this.state.active ? styles.textActive : styles.text}>
+              {this.props.waste.code}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      );
+    }
   }
 }
 
 const styles = StyleSheet.create({
+    box: {
+      width: '90%',
+      flex: 1, 
+      flexDirection: 'row',
+      alignSelf: 'center',
+      borderColor: '#000',
+      borderWidth: 1,
+      borderRadius: 10,
+      marginBottom: 10,
+    },
+    boxActive: {
+      width: '90%',
+      flex: 1, 
+      flexDirection: 'row',
+      alignSelf: 'center',
+      borderColor: '#000',
+      borderColor: colors.colmenaBackground,
+      backgroundColor: colors.colmenaOtherGreen,
+      borderWidth: 1,
+      borderRadius: 10,
+      marginBottom: 10,
+    },
+    boxDisabled: {
+      padding: 15,
+      borderColor: '#bbb',
+      borderWidth: 1,
+      borderRadius: 10,
+      color: colors.colmenaGrey02, 
+      backgroundColor: colors.colmenaGreyDisabled,
+      textAlign: 'center'
+    },
+    boxCode:{
+      width: '70%',
+      height: 60,
+      justifyContent: 'center', 
+      alignItems: 'center',
+    },
     boxImage:{
-      padding: 10,
+      width: 60,
+      height: 60,
+      justifyContent: 'center', 
+      alignItems: 'center',
     },
-    item: {
-        padding: 15,
-        borderColor: '#bbb',
-        borderWidth: 1,
-        borderRadius: 10,
+    image:{
+      width: 60,
+      height: 60,
+      resizeMode: 'contain',
+      padding: 5,
+      backgroundColor: 'blue'
     },
-    active: {
-        padding: 15,
-        borderColor: colors.colmenaBackground,
-        borderWidth: 1,
-        borderRadius: 10,
-        backgroundColor: colors.colmenaGreen,
-        color: 'white'
+    text: {
+      textAlign: 'center',
+      color: colors.black,
+    },
+    textActive: {
+      textAlign: 'center',
+      color: colors.white,
     }
 });
