@@ -35,16 +35,21 @@ export default class WasteCheck extends Component {
   }
 
   render() {
-    //let img = Object.values(this.props.waste.type.get('iconFile'))[3];
+    let img = Object.values(this.props.waste.type.get('iconFile'))[3];
     if(this.props.waste.status !== 'RECOVERED'){
+      let stateDesc = '';
+      if(this.props.waste.status === 'IN_TRANSIT')
+        stateDesc = 'En transito...';
+      else
+        stateDesc = this.props.waste.status;
       return (
-          <View key={this.props.waste.objectId} style={styles.boxDisabled}>
+          <View key={this.props.waste.id} style={styles.boxDisabled}>
             <View style={styles.boxImage}>
-              {/* <Image style={styles.boxImage} source={{ uri: img }} /> */}
+              <Image style={styles.image} source={{ uri: img }} />
             </View>
             <View style={styles.boxCode}>
-              <Text style={styles.text}>
-              {this.props.waste.code} ({this.props.waste.status})
+              <Text style={styles.textDisabled}>
+              {this.props.waste.code} ({stateDesc})
               </Text>
             </View>
           </View>
@@ -52,9 +57,9 @@ export default class WasteCheck extends Component {
     }else{
       return (
         <TouchableOpacity onPress={()=>{this.handleAction()}}>
-          <View key={this.props.waste.objectId} style={this.state.active ? styles.boxActive : styles.box}>
+          <View key={this.props.waste.id} style={this.state.active ? styles.boxActive : styles.box}>
             <View style={styles.boxImage}>
-              {/* <Image style={styles.image} source={{ uri: img }} />*/}
+              <Image style={styles.image} source={{ uri: img }} />
             </View>
             <View style={styles.boxCode}>
               <Text style={this.state.active ? styles.textActive : styles.text}>
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
       flex: 1, 
       flexDirection: 'row',
       alignSelf: 'center',
-      borderColor: '#000',
+      borderColor: colors.colmenaLightGrey,
       borderWidth: 1,
       borderRadius: 10,
       marginBottom: 10,
@@ -84,21 +89,23 @@ const styles = StyleSheet.create({
       flex: 1, 
       flexDirection: 'row',
       alignSelf: 'center',
-      borderColor: '#000',
-      borderColor: colors.colmenaBackground,
-      backgroundColor: colors.colmenaOtherGreen,
+      borderColor: colors.white,
+      backgroundColor: colors.colmenaGreenActive,
       borderWidth: 1,
       borderRadius: 10,
       marginBottom: 10,
     },
     boxDisabled: {
-      padding: 15,
+      width: '90%',
+      flex: 1, 
+      flexDirection: 'row',
+      alignSelf: 'center',
       borderColor: '#bbb',
       borderWidth: 1,
       borderRadius: 10,
+      marginBottom: 10,
       color: colors.colmenaGrey02, 
       backgroundColor: colors.colmenaGreyDisabled,
-      textAlign: 'center'
     },
     boxCode:{
       width: '70%',
@@ -113,11 +120,10 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     image:{
-      width: 60,
-      height: 60,
+      width: 40,
+      height: 40,
       resizeMode: 'contain',
-      padding: 5,
-      backgroundColor: 'blue'
+      padding: 10,
     },
     text: {
       textAlign: 'center',
@@ -126,5 +132,10 @@ const styles = StyleSheet.create({
     textActive: {
       textAlign: 'center',
       color: colors.white,
-    }
+      fontWeight: 'bold'
+    },
+    textDisabled: {
+      textAlign: 'center',
+      color: colors.colmenaLightGrey,
+    },
 });
