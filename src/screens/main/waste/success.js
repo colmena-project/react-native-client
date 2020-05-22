@@ -124,13 +124,6 @@ class success extends Component {
               <Text style={styles.text}>Cargando contenedores...</Text>
             )}
           </View>
-          <View>
-            <List.Item
-              title="Usuario"
-              description="Dirección."
-              left={props => <List.Icon icon="map-marker-outline" />}
-            />
-          </View>
 
           <View style={{marginTop: 5}}>
             <TouchableOpacity
