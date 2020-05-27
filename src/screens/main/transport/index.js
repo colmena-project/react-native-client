@@ -37,7 +37,6 @@ class index extends Component {
   }
 
   componentDidMount() {
-    this.limpiar();
     this.props.wasteTypes();
     this.props.myAccount();
   }
@@ -70,22 +69,14 @@ class index extends Component {
   };
 
   handleChecked(wasteID, code, check) {
-    if (!check) {
-      this.setState({checks: this.state.checks - 1 });
-      this.removeItem(wasteID);
-    } else {
+    if (check) {
       this.setState({checks: this.state.checks + 1 });
       this.addItem(wasteID,code);
+    } else {
+      this.setState({checks: this.state.checks - 1 });
+      this.removeItem(wasteID);
     }
   }
-
-  limpiar = async()=> {
-    console.log('limpiando...');
-    const keys = await AsyncStorage.getAllKeys();
-    const containersRemove = keys.filter(item => item.includes('containers_'));
-    await AsyncStorage.multiRemove(containersRemove);
-    console.log('limpieza completa!');
-  };
 
   render() {
     const {checks} = this.state;

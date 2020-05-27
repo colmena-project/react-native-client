@@ -119,7 +119,6 @@ class check extends Component {
   };
   
   saveTransport = async () =>{
-    this.setState({loadingVisible: true});
     const containers = this.state.localContainers.map(item => {
       return JSON.parse(item[1]).id;
     });
@@ -127,14 +126,19 @@ class check extends Component {
       'containers': containers,
       'to': this.state.RecyclingCenter.id
     });
-    console.log('RESPUESTA');
-    console.log(respRegister);
-    console.log('FIN RESPUESTA');
-    this.setState({loadingVisible: false});
+  };
+
+  limpiar = async()=> {
+    const keys = await AsyncStorage.getAllKeys();
+    const containersRemove = keys.filter(item => item.includes('containers_'));
+    await AsyncStorage.multiRemove(containersRemove);
   };
 
   submit = () => {
+    this.setState({loadingVisible: true});
     this.saveTransport();
+    this.limpiar();
+    this.setState({loadingVisible: false});
     this.props.navigation.navigate('TransportSuccess');
   };
 

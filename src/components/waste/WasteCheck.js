@@ -20,8 +20,9 @@ export default class WasteCheck extends Component {
       `containers_${this.props.waste.objectId}`,
     );
     if (localWaste) {
-      this.setState({active: true});
-      this.props.action(this.props.waste.objectId, this.props.waste.code, true);
+      this.setState({active: true}, () => {
+        this.props.action(this.props.waste.objectId, this.props.waste.code, true);
+      });
     }
   }
 
@@ -30,8 +31,9 @@ export default class WasteCheck extends Component {
   }
 
   handleAction(){
-    this.setState({active: !this.state.active});
-    this.props.action(this.props.waste.objectId, this.props.waste.code, !this.state.active);
+    this.setState({active: !this.state.active}, () => {
+      this.props.action(this.props.waste.objectId, this.props.waste.code, this.state.active);
+    });
   }
 
   render() {
