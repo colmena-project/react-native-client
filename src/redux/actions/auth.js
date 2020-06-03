@@ -52,6 +52,7 @@ const loginFb = () => {
     }
 
     try {
+
       const graphRequest = new GraphRequest(
         '/me',
         {
@@ -77,7 +78,6 @@ const loginFb = () => {
               });
               const account = await Parse.Cloud.run('getMyAccount');
               if (!account) {
-                console.log('SIN ACCOUNT.');
                 await Parse.Cloud.run('createAccount', {
                   firstName: r.first_name,
                   middleName: r.middle_name,
@@ -86,9 +86,8 @@ const loginFb = () => {
                   facebookProfilePhotoUrl: r.picture.data.url,
                 });
               } else {
-                console.log('CON ACCOUNT.');
                 if (!account.account.get('firstName')) {
-                  account.set('firstName', r.first_name);
+                  account.account.set('firstName', r.first_name);
                 }
                 if (!account.account.get('middleName')) {
                   account.account.set('middleName', r.middle_name);
