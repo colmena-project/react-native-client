@@ -10,13 +10,15 @@ import {
   Alert,
 } from 'react-native';
 
+import colors from '../../../styles/colors';
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ActionCreators from '../../../redux/actions';
-
-import WasteSetting from '../../../components/waste/WasteSetting';
 
 import styles from '../../../styles/waste';
 
@@ -55,35 +57,42 @@ class index extends Component {
 
   edit(wasteId){
     Alert.alert('param: ' + wasteId);
-    // this.props.navigation.navigate('WastesEdit');
   }
 
-  wasteTypesList() {
-    const {wasteTypeStatus} = this.props;
 
-    return wasteTypeStatus.data.map((waste, index) => {
-      return <TouchableOpacity onPress={()=> this.edit(waste.id)}><WasteSetting key={index} waste={waste} value={0} /></TouchableOpacity>;
+  stockList() {
+    const {myStockStatus} = this.props;
+
+    return myStockStatus.data.map((wasteType, index) => {
+      let img = Object.values(wasteType.wasteType.iconFile)[3];
+      return (
+      <TouchableOpacity onPress={()=> {
+        this.props.navigation.navigate('WastesEdit', { type: wasteType.wasteType.id });
+      }}>
+        <View key={index.toString()} style={styles.box}>
+          <View style={styles.tableItem}>
+            <Image style={styles.boxImage} source={{uri: img}} />
+            <Text style={{textAlign: 'center'}}>
+              {wasteType.wasteType.name}
+            </Text>
+          </View>
+          <View style={styles.tableItem}>
+              <Text>{wasteType.ammount}</Text>
+              <Text style={styles.tableItem}>
+              {wasteType.ammount > 1 ? wasteType.wasteType.containerPlural : wasteType.wasteType.container }
+              </Text>
+          </View>
+          <Ionicons name={'md-settings'} size={30} color={colors.colmenaLightGrey} />
+        </View>
+      </TouchableOpacity>
+      );
     });
   }
 
-  checkInitial = async () => {
-    const keys = await AsyncStorage.getAllKeys();
-    const items = await AsyncStorage.multiGet(keys);
-    const res = items.filter(item => item[0].includes('wastes_'));
-    if (res.length > 0) {
-      this.setState({next: true});
-    } else {
-      this.setState({next: false});
-    }
-  };
-
   componentDidMount() {
-    this.checkInitial();
-    this.props.wasteTypes();
-  }
-
-  componentDidUpdate() {
-    this.checkInitial();
+    // this.checkInitial();
+    this.props.myStock();
+    //this.props.wasteTypes();
   }
 
   render() {
@@ -97,12 +106,11 @@ class index extends Component {
           <View style={styles.headerBox}>
             <Text style={styles.title}>TIPO</Text>
             <Text style={styles.title}>Cant. Aprox.</Text>
-            <Text style={styles.title}>Retribución</Text>
             <Text style={styles.title}></Text>
           </View>
 
-          {this.props.wasteTypeStatus.data ? (
-            this.wasteTypesList()
+          {this.props.myStockStatus.data ? (
+            this.stockList()
           ) : (
             <View>
               <Text style={styles.text}>Cargando residuos...</Text>
@@ -116,7 +124,6 @@ class index extends Component {
 }
 const mapStateToProps = state => ({
   myStockStatus: state.myStockStatus,
-  wasteTypeStatus: state.wasteTypeStatus,
 });
 
 const mapDispatchToProps = dispatch =>

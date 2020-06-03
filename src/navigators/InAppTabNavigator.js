@@ -52,7 +52,7 @@ const TransportNav = createStackNavigator({
 
 const ManageWasteNav = createStackNavigator({
   wastesSelect: {screen: wastesSelect, navigationOptions: {header: null}},
-  WastesEdit: {screen: WastesEdit},
+  WastesEdit: { screen: WastesEdit },
 });
 
 const HomeNavigator = createBottomTabNavigator(

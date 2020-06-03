@@ -82,7 +82,7 @@ class Login extends Component {
 
     if (isLoginOk) {
       this.setState({ formValid: true, loadingVisible: false });
-      navigate('Profile');
+      navigate('Home');
     } else {
       this.setState({ formValid: false, loadingVisible: false });
       Alert.alert('error.. usuario o pass incorrecto');
@@ -105,11 +105,10 @@ class Login extends Component {
 
     const { navigation } = this.props;
     const { navigate } = navigation;
-
+    
     return (
       <KeyboardAvoidingView style={styles.wrapper} behavior="padding">
         <Loader modalVisible={loadingVisible} animationType="fade" />
-
         <View style={styles.scrollViewWrapper}>
           <ScrollView style={styles.scrollView}>
             <View style={styles.brand}>
