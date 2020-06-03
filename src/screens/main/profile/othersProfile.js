@@ -12,6 +12,8 @@ import FeedList from '../../../components/posts/FeedList';
 
 const OthersProfile = props => {
 
+    console.log(props.route);
+
     const [userAccount, setUserAccount] = useState(null);
     const [stock, setStock] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -87,9 +89,9 @@ const OthersProfile = props => {
      * END TABS VIEW 
      *****************************************************/
 
-     const handleBackButton = () => {
+    const handleBackButton = () => {
         props.navigation.goBack();
-     };
+    };
 
     return (
         <View style={stylesCommon.scrollViewWrapper}>
@@ -176,7 +178,7 @@ const OthersProfile = props => {
 
                     <View style={styles.activityContainer}>
                         <Text style={{ ...stylesCommon.brandText, fontSize: 16, padding: 20 }}>Actividad</Text>
-                        <FeedList onPress={props.onPress} data={data}/>
+                        <FeedList onPress={props.onPress} data={data} />
                     </View>
                 </View>
             }

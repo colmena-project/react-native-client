@@ -156,7 +156,6 @@ class Register extends Component {
         username: email,
         email: email,
         password: password,
-        name: fullname,
       });
     } else {
       Alert.alert('Error! falta completar datos..');

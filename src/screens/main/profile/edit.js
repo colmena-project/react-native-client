@@ -224,6 +224,7 @@ const EditProfile = props => {
             } else {
                 try {
                     const avatarImage = new Parse.File(response.fileName, { base64: response.data });
+                    console.log(response.fileName);
                     userAccount.set('avatar', avatarImage);
                     await userAccount.save();
                 } catch (ex) {

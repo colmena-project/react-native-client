@@ -65,14 +65,10 @@ const MyProfile = props => {
     *****************************************************/
     const [index, setIndex] = useState(0);
     const [routes] = useState([
-        { key: 'user', title: (<Feather name={'user'} size={25}/>) },
-        { key: 'waste', title: (<MaterialCommunityIcons name={'recycle'} size={25}/>) },
-        { key: 'pendantsList', title: (<Feather name={'clipboard'} size={25}/>) },
-        { key: 'cart', title: (<EvilIcons name={'cart'} size={25}/>) },
-        { key: 'metrics', title: (<Ionicons name={'ios-stats'} size={25}/>) },
+        { key: 'user', title: (<Feather name={'user'} size={25} />) },
+        { key: 'waste', title: (<MaterialCommunityIcons name={'recycle'} size={25} />) },
+        { key: 'pendantsList', title: (<Feather name={'clipboard'} size={25} />) },
     ]);
-
-    // signal  bar-chart FontAwesome
 
     const userTab = () => {
         return (
@@ -116,19 +112,12 @@ const MyProfile = props => {
                             <Text style={{ ...styles.headerExtraInfoText, fontSize: 14 }}>por</Text>
                             <Text style={{ ...styles.headerExtraInfoText, fontSize: 14 }}>30 actividades</Text>
                         </View>
-                        <View style={{ marginTop: 15, width: '80%', justifyContent: 'flex-end' }} >
-                            <Button title={'Editar'} color={colors.colmenaGreen} />
-                        </View>
                     </View>
 
                     <View style={{ ...styles.headerExtraInfo, flex: 1, borderLeftWidth: 1, borderLeftColor: colors.colmenaGreen, justifyContent: 'space-between' }}>
                         <View style={{ margin: 0, padding: 0, paddingLeft: 10, alignItems: 'stretch' }}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={{ ...styles.headerExtraInfoText, paddingRight: 10, fontWeight: 'bold' }}>Mis Residuos</Text>
-                                <Image
-                                    style={{ width: 16, height: 16, resizeMode: 'contain' }}
-                                    source={require('../../../../assets/icons/png/icon-pencil.png')}
-                                />
                             </View>
 
                             <View style={{ width: '100%' }}>
@@ -144,14 +133,21 @@ const MyProfile = props => {
                                 })}
                             </View>
                         </View>
-                        <View style={{ marginTop: 15, width: '80%', justifyContent: 'flex-end' }} >
-                            <Button title={'Editar'} color={colors.colmenaGreen} />
-                        </View>
                     </View>
                 </View>
 
                 <View style={{ marginTop: 20 }}>
-                    <Text style={{ fontSize: 16, color: colors.colmenaGrey }}>Actividad</Text>
+                    <Text style={{
+                        fontSize: 16,
+                        color: colors.colmenaGrey,
+                        width: '100%',
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#cccccc',
+                        marginBottom: 10,
+                        paddingBottom: 10
+                    }}>
+                        Posts
+                    </Text>
                     {data == null ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
                         <FeedList onPress={handleOthersProfile} data={data} />
                     }
@@ -177,14 +173,6 @@ const MyProfile = props => {
         );
     };
 
-    const cartTab = () => {
-        return <View style={{ flex: 1, backgroundColor: colors.colmenaGreyDisabled }} />
-    };
-
-    const metricsTab = () => {
-        return <View style={{ flex: 1, backgroundColor: 'black' }} />
-    };
-
     const initialLayout = {
         width: Dimensions.get('window').width
     };
@@ -193,8 +181,6 @@ const MyProfile = props => {
         user: userTab,
         waste: wasteTab,
         pendantsList: listTab,
-        cart: cartTab,
-        metrics: metricsTab,
     });
 
     const renderTabBar = props => {

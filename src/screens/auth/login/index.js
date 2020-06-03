@@ -94,7 +94,7 @@ class Login extends Component {
     const isLoginFbOk = await loginFb();
     if (isLoginFbOk) {
       this.setState({ formValid: true, loadingVisible: false });
-      navigate('Profile');
+      navigate('Home', { screen: 'Profile' });
     } else {
       this.setState({ formValid: false, loadingVisible: false });
     }
