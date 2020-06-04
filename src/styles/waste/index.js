@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   scrollView: {
     paddingLeft: 30,
     paddingRight: 30,
-    paddingTop: 20,
+    paddingTop: 8,
     flex: 1,
   },
   brand: {
@@ -34,17 +34,38 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 40,
-    height: 50,
   },
   brandText: {
     fontFamily: 'Montserrat-Medium',
     fontWeight: '300',
     fontSize: headingTextSize,
     color: colors.colmenaGrey,
+    marginLeft:30,
+  },
+  brandTextAlt: {
+    fontFamily: 'Montserrat-Medium',
+    fontWeight: '300',
+    fontSize: 23,
+    color: colors.colmenaGrey,
+    marginLeft:40,
+  },
+  brandTextCenter: {
+    fontFamily: 'Montserrat-Medium',
+    fontWeight: '300',
+    fontSize: 22,
+    margin: 5,
+    color: colors.colmenaGrey,
+    textAlign:'center',
   },
   colmenaLogo: {
     resizeMode: 'stretch',
     marginRight: 10,
+  },
+  titleImg: {
+    resizeMode: 'stretch',
+    marginRight: 10,
+    width:40,
+    height: 40,
   },
   notificationWrapper: {
     position: 'absolute',
@@ -145,7 +166,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-Medium',
     textAlign: 'center',
     fontWeight: '900',
-    margin: 10,
+    margin: 5,
     color: colors.colmenaOtherGreen,
   },
   footTotal: {
@@ -166,13 +187,26 @@ const styles = StyleSheet.create({
   headerMsg: {
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 0,
-    marginBottom: 10,
+    marginBottom: 0,
     width: '100%',
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 0,
+    paddingBottom: 0,
+  },
+  headerText: {
+    width: '85%',
+    fontFamily: 'Montserrat-Medium',
+    textAlign: 'center',
+    fontSize: 22,
+    color: colors.colmenaGrey,
+  },
+  headerIcon: {
+    resizeMode: 'stretch',
+    marginRight: 10,
+    width: 46,
+    height: 46,
   },
   headerBox: {
     display: 'flex',
@@ -252,6 +286,37 @@ const styles = StyleSheet.create({
   activityIndicator: {
     flex: 1,
     alignItems: 'center',
+  },
+  totalize: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.colmenaUltraLightGrey,
+    paddingLeft: 20,
+    paddingRight: 30,
+    paddingTop: 12,
+    paddingBottom: 12,
+    marginBottom: 10,
+  },
+  input: {
+    flex: 1,
+    textAlign: 'center',
+  },
+  btnSubmit: {
+    width: '100%',
+    backgroundColor: colors.colmenaGreen,
+    borderRadius: 5,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  submitText: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'Montserrat-Medium',
+    fontWeight: '900',
   },
 });
 

@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { TextInput, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { Fragment, useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 
-import MapPicker from './MapPicker';
-import Input from '../form/Input';
+import { Parse } from 'parse/react-native';
+import Geolocation from 'react-native-geolocation-service';
 
+import Input from '../../../components/form/Input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import colors from '../../styles/colors';
+import MapPicker from '../../../components/address/MapPicker';
 
-import validate from '../../utils/Validate';
+import colors from '../../../styles/colors';
+import stylesCommon from '../../../styles/waste';
+import validate from '../../../utils/Validate';
 
-const Address = () => {
+import NavBarButton from '../../../components/buttons/NavBarButton';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
+const Location = (props) => {
     const fields = {
         address: '',
         street: '',
@@ -24,6 +29,7 @@ const Address = () => {
 
     const [inputs, setInputs] = useState(fields);
     const [errorMessages, setErrorMessages] = useState(fields);
+    const [userAccount, setUserAccount] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -34,7 +40,9 @@ const Address = () => {
             const parseAddress = new Parse.Query('Address');
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();
+            const parseAccount = await userAddress.get('account').fetch();
 
+            setUserAccount(parseAccount);
             setUserAddress(userAddress);
 
             console.log('USER ADDRESS', userAddress);
@@ -93,17 +101,6 @@ const Address = () => {
 
     const handleBackButton = () => {
         props.navigation.goBack();
-    };
-
-    const handleChangePassword = () => {
-        Parse.User.requestPasswordReset(inputs.email)
-            .then(() => {
-                setIsLoading(false);
-                Alert.alert('Cambio de contraseña.', 'Se envió un link a su correo, con las instrucciones para cambiar su contraseña.');
-            }).catch((error) => {
-                setIsLoading(false);
-                alert("Error: " + error.code + " " + error.message);
-            });
     };
 
     const handleChangeAddress = async () => {
@@ -185,11 +182,9 @@ const Address = () => {
                 userAddress.set('country', inputs.country);
                 userAddress.set('description', inputs.addressDescription);
                 userAddress.set('latLng',  new Parse.GeoPoint(inputs.coords));
-                await userAddress.save();
-
-                // await Parse.Object.saveAll([userAddress]);
-
-                Alert.alert('', 'Datos guardados!');
+                // await userAddress.save();
+                await Parse.Object.saveAll([userAddress]);
+                props.navigation.navigate('WasteCheckInfo');
             }
         } catch (error) {
             console.log(error);
@@ -197,85 +192,69 @@ const Address = () => {
     };
 
     return (
-        <View style={{ marginBottom: 120, }}>
-            <Input
-                label={'Dirección'}
-                style={styles.input}
-                blurOnSubmit
-                keyboardType={'default'}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                value={inputs.address}
-                error={errorMessages.address}
-                onChangeText={value => handleInput('address', value)}
-                onEndEditing={handleChangeAddress}
-            />
-            <Input
-                label={'Info extra de tu ubicación'}
-                style={styles.input}
-                blurOnSubmit
-                keyboardType={'default'}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                value={inputs.addressDescription}
-                error={errorMessages.addressDescription}
-                onChangeText={value => handleInput('addressDescription', value)}
-            />
-            <View>
-                <MapPicker coords={inputs.coords} getCoords={value => getAddressFromLatLng(value)} />
-                <TouchableOpacity onPress={getCurrentPosition} style={{
-                    position: 'absolute',
-                    width: 50,
-                    height: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    right: 10,
-                    bottom: 10,
-                }}>
-                    <Ionicons name={'md-locate'} size={36} color={colors.colmenaGreen} />
-                </TouchableOpacity>
+        <Fragment>
+            <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
+                {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                    <ScrollView style={stylesCommon.scrollView}>
+                    <View style={{ marginBottom: 10, }}>
+
+                        <Input
+                            label={'Dirección'}
+                            style={stylesCommon.input}
+                            blurOnSubmit
+                            keyboardType={'default'}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            value={inputs.address}
+                            error={errorMessages.address}
+                            onChangeText={value => handleInput('address', value)}
+                            onEndEditing={handleChangeAddress}
+                        />
+                        <View>
+                            <MapPicker coords={inputs.coords} getCoords={value => getAddressFromLatLng(value)} />
+                            <TouchableOpacity onPress={getCurrentPosition} style={{
+                                position: 'absolute',
+                                width: 50,
+                                height: 50,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                right: 10,
+                                bottom: 10,
+                            }}>
+                                <Ionicons name={'md-locate'} size={36} color={colors.colmenaGreen} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View>
+                        <TouchableOpacity
+                            style={stylesCommon.btnSubmit}
+                            onPress={handleSaveButton}>
+                            <Text style={stylesCommon.submitText}>Continuar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            }
             </View>
-        </View>
+        </Fragment>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingTop: 10,
-        flex: 2,
+Location.navigationOptions = ({navigation}) => ({
+    headerLeft: (
+        <NavBarButton
+        icon={
+            <Icon name="angle-left" color={colors.colmenaLightGrey} size={30} />
+        }
+        handleButtonPress={() => navigation.goBack()}
+        location="left"
+        />
+    ),
+    headerStyle: {
+        borderBottomWidth: 0,
+        elevation: 0,
     },
-    scrollView: {
-        flex: 1,
-    },
-    headerIcons: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    input: {
-        flex: 1,
-        textAlign: 'center',
-    },
-    saveIcon: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 40,
-        height: 40,
-        borderRadius: 50,
-        backgroundColor: '#e8e8e8',
-    },
-    changePassword: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: 20,
-        padding: 5,
-        paddingLeft: 10,
-        borderRadius: 5,
-        backgroundColor: '#e8e8e8',
-    }
+    headerTransparent: true,
 });
 
-export default Address;
+export default Location;

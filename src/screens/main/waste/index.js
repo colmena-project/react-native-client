@@ -34,12 +34,12 @@ class index extends Component {
     this.wasteSubmit = this.wasteSubmit.bind(this);
   }
 
-  limpiarWastes = async () => {
-    const keys = await AsyncStorage.getAllKeys();
-    const wastesRemove = keys.filter(item => item.includes('wastes_'));
-    await AsyncStorage.multiRemove(wastesRemove);
-    this.setState({next: false});
-  };
+  // limpiarWastes = async () => {
+  //   const keys = await AsyncStorage.getAllKeys();
+  //   const wastesRemove = keys.filter(item => item.includes('wastes_'));
+  //   await AsyncStorage.multiRemove(wastesRemove);
+  //   this.setState({next: false});
+  // };
 
   displayStorage = async () => {
     const keys = await AsyncStorage.getAllKeys();
@@ -49,7 +49,7 @@ class index extends Component {
   };
 
   wasteSubmit() {
-    this.props.navigation.navigate('WasteCheckInfo');
+    this.props.navigation.navigate('WasteAddress');
   }
 
   wasteTypesList() {
@@ -87,25 +87,11 @@ class index extends Component {
           <View style={styles.brand}>
             <Text style={styles.brandText}>Registrar residuos</Text>
           </View>
-          {/*
-          <View>
-            <Button
-              title="terminar lo q quedo"
-              onPress={() => {
-                this.props.navigation.navigate('WasteSuccess');
-              }}
-            />
-          </View>
-          <View>
-            <Button title="Limpiar wastes" onPress={this.limpiarWastes} />
-          </View>
-          */}
           <View style={styles.headerBox}>
             <Text style={styles.title}>TIPO</Text>
             <Text style={styles.title}>Cant. Aprox.</Text>
             <Text style={styles.title}>Retribución</Text>
           </View>
-
           {this.props.wasteTypeStatus.data ? (
             this.wasteTypesList()
           ) : (
@@ -120,11 +106,9 @@ class index extends Component {
               <Text style={styles.submitText}>Continuar</Text>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity
-              style={styles.btnSubmitDisabled}
-              onPress={this.wasteSubmit}>
+            <View style={styles.btnSubmitDisabled}>
               <Text style={styles.submitText}>Continuar</Text>
-            </TouchableOpacity>
+            </View>
           )}
         </ScrollView>
       </View>

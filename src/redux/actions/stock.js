@@ -65,11 +65,11 @@ const setUpdateStock = updateStockInState => ({
   updateStockInState,
 });
 
-const updateStock = wasteContainers => {
+const updateStock = (wasteContainers, addressId) => {
   const action = async dispatch => {
-    // TODO: luego agregariamos addressId: address
     return await Parse.Cloud.run('registerRecover', {
       containers: wasteContainers,
+      "addressId": addressId
     }).then(
       result => {
         dispatch(setUpdateStock(result));

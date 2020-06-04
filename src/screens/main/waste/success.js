@@ -5,7 +5,6 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  TouchableHighlightBase,
 } from 'react-native';
 
 import {List} from 'react-native-paper';
@@ -44,7 +43,7 @@ class success extends Component {
   }
 
   wasteSubmit() {
-    console.log('termino el procesos...');
+    this.props.navigation.navigate('Transport');
   }
 
   recoverData = async () => {
@@ -124,13 +123,6 @@ class success extends Component {
             ) : (
               <Text style={styles.text}>Cargando contenedores...</Text>
             )}
-          </View>
-          <View>
-            <List.Item
-              title="Usuario"
-              description="Dirección."
-              left={props => <List.Icon icon="map-marker-outline" />}
-            />
           </View>
 
           <View style={{marginTop: 5}}>

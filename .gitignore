@@ -5,6 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# NPM
+package-lock.json
+
 # Runtime data
 pids
 *.pid
@@ -74,6 +77,6 @@ android/app/build/
 android/app/google-services.json
 android/app/src/main/res/values/strings.xml
 android/.settings/
-package-lock.json
+android/.settings/org.eclipse.buildship.core.prefs
 # exclude ios
 ios

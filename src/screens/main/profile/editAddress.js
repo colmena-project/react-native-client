@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { TextInput, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import { Avatar } from 'react-native-elements';
+import { Parse } from 'parse/react-native';
+import Input from '../../../components/form/Input';
 
-import MapPicker from './MapPicker';
-import Input from '../form/Input';
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import colors from '../../styles/colors';
+import MapPicker from '../../../components/address/MapPicker';
+import Geolocation from 'react-native-geolocation-service';
 
-import validate from '../../utils/Validate';
+import colors from '../../../styles/colors';
+import stylesCommon from '../../../styles/waste';
+import validate from '../../../utils/Validate';
 
-const Address = () => {
+
+export default EditAddress = props => {
 
     const fields = {
         address: '',
@@ -24,6 +29,7 @@ const Address = () => {
 
     const [inputs, setInputs] = useState(fields);
     const [errorMessages, setErrorMessages] = useState(fields);
+    const [userAccount, setUserAccount] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -34,7 +40,9 @@ const Address = () => {
             const parseAddress = new Parse.Query('Address');
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();
+            const parseAccount = await userAddress.get('account').fetch();
 
+            setUserAccount(parseAccount);
             setUserAddress(userAddress);
 
             console.log('USER ADDRESS', userAddress);
@@ -93,17 +101,6 @@ const Address = () => {
 
     const handleBackButton = () => {
         props.navigation.goBack();
-    };
-
-    const handleChangePassword = () => {
-        Parse.User.requestPasswordReset(inputs.email)
-            .then(() => {
-                setIsLoading(false);
-                Alert.alert('Cambio de contraseña.', 'Se envió un link a su correo, con las instrucciones para cambiar su contraseña.');
-            }).catch((error) => {
-                setIsLoading(false);
-                alert("Error: " + error.code + " " + error.message);
-            });
     };
 
     const handleChangeAddress = async () => {
@@ -179,17 +176,18 @@ const Address = () => {
             if (hasErrors(errors)) {
                 Alert.alert('', 'Revise los datos!');
             } else {
+               
                 userAddress.set('street', inputs.street);
                 userAddress.set('city', inputs.city);
                 userAddress.set('state', inputs.state);
                 userAddress.set('country', inputs.country);
                 userAddress.set('description', inputs.addressDescription);
                 userAddress.set('latLng',  new Parse.GeoPoint(inputs.coords));
-                await userAddress.save();
+                // await userAddress.save();
 
-                // await Parse.Object.saveAll([userAddress]);
-
-                Alert.alert('', 'Datos guardados!');
+                await Parse.Object.saveAll([userAddress]);
+                
+                // Alert.alert('', 'Datos guardados!');
             }
         } catch (error) {
             console.log(error);
@@ -197,47 +195,81 @@ const Address = () => {
     };
 
     return (
-        <View style={{ marginBottom: 120, }}>
-            <Input
-                label={'Dirección'}
-                style={styles.input}
-                blurOnSubmit
-                keyboardType={'default'}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                value={inputs.address}
-                error={errorMessages.address}
-                onChangeText={value => handleInput('address', value)}
-                onEndEditing={handleChangeAddress}
-            />
-            <Input
-                label={'Info extra de tu ubicación'}
-                style={styles.input}
-                blurOnSubmit
-                keyboardType={'default'}
-                autoCapitalize={'none'}
-                autoCorrect={false}
-                value={inputs.addressDescription}
-                error={errorMessages.addressDescription}
-                onChangeText={value => handleInput('addressDescription', value)}
-            />
-            <View>
-                <MapPicker coords={inputs.coords} getCoords={value => getAddressFromLatLng(value)} />
-                <TouchableOpacity onPress={getCurrentPosition} style={{
-                    position: 'absolute',
-                    width: 50,
-                    height: 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    right: 10,
-                    bottom: 10,
-                }}>
-                    <Ionicons name={'md-locate'} size={36} color={colors.colmenaGreen} />
-                </TouchableOpacity>
-            </View>
+        <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
+            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                <ScrollView style={stylesCommon.scrollView}>
+                    {/* 
+                    <View style={styles.headerIcons}>
+                        
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Ionicons onPress={handleBackButton} name={'md-arrow-back'} size={22} color={colors.colmenaGrey} />
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={{ ...stylesCommon.brandText, fontSize: 24, paddingLeft: 10 }}>
+                                    Editar perfil
+                                </Text>
+                            </View>
+                        </View>
+                        
+                        <View style={styles.saveIcon}>
+                            <Ionicons onPress={handleSaveButton} name={'md-checkmark'} size={30} color={colors.colmenaGreen} />
+                        </View>
+                    </View>
+                    */}
+                    <View style={{ marginBottom: 10, }}>
+
+                        <Input
+                            label={'Dirección'}
+                            style={styles.input}
+                            blurOnSubmit
+                            keyboardType={'default'}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            value={inputs.address}
+                            error={errorMessages.address}
+                            onChangeText={value => handleInput('address', value)}
+                            onEndEditing={handleChangeAddress}
+                        />
+                        {/*
+                        <Input
+                            label={'Info extra de tu ubicación'}
+                            style={styles.input}
+                            blurOnSubmit
+                            keyboardType={'default'}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            value={inputs.addressDescription}
+                            error={errorMessages.addressDescription}
+                            onChangeText={value => handleInput('addressDescription', value)}
+                        />
+                        */}
+                        <View>
+                            <MapPicker coords={inputs.coords} getCoords={value => getAddressFromLatLng(value)} />
+                            <TouchableOpacity onPress={getCurrentPosition} style={{
+                                position: 'absolute',
+                                width: 50,
+                                height: 50,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                right: 10,
+                                bottom: 10,
+                            }}>
+                                <Ionicons name={'md-locate'} size={36} color={colors.colmenaGreen} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View>
+                        <TouchableOpacity
+                            style={styles.btnSubmit}
+                            onPress={handleSaveButton(props.next)}>
+                            <Text style={styles.submitText}>Continuar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
+            }
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -275,7 +307,20 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         borderRadius: 5,
         backgroundColor: '#e8e8e8',
-    }
+    },
+    btnSubmit: {
+        backgroundColor: colors.colmenaGreen,
+        borderRadius: 5,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    submitText: {
+        color: colors.white,
+        fontSize: 16,
+        fontFamily: 'Montserrat-Medium',
+        fontWeight: '900',
+    },
 });
-
-export default Address;

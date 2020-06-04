@@ -3,6 +3,7 @@ export default {
   //colmenaGreen: '#5EBFA5',
   colmenaOtherGreen: '#9cbfb6',
   colmenaGreenDisabled: '#cfe7e0',
+  colmenaGreenActive: '#8de28d',
   colmenaBackground: '#FBFBFB',
   colmenaTitleLine: '#393939',
   colmenaTextLine: '#6d6d6d',

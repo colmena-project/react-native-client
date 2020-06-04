@@ -189,6 +189,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.3.0'
     implementation 'com.android.support:multidex:1.0.3'
 
+    implementation 'com.google.firebase:firebase-core:17.3.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.5'
+    implementation 'com.android.support:multidex:1.0.3'
+
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
