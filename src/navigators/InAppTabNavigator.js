@@ -22,6 +22,8 @@ import TransportSuccess from '../screens/main/transport/success';
 import wastesSelect from '../screens/main/manageWaste';
 import WastesEdit from '../screens/main/manageWaste/edit';
 
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -39,6 +41,7 @@ const InAppTabNavigator = () => {
     return (
       <WasteStack.Navigator>
         <WasteStack.Screen name="Waste" component={Waste} options={{ headerShown: false }} />
+        <WasteStack.Screen name="WasteAddress" component={WasteAddress} options={{ headerShown: false }} />
         <WasteStack.Screen name="WasteCheckInfo" component={WasteCheckInfo} options={{ headerShown: false }} />
         <WasteStack.Screen name="WasteSuccess" component={WasteSuccess} options={{ headerShown: false }} />
       </WasteStack.Navigator>
@@ -66,42 +69,23 @@ const InAppTabNavigator = () => {
   };
   
   const HomeNavigator = () => {
+    const sizeIcon = 28;
     return (
       <HomeStack.Navigator tabBarOptions={{ showLabel: false }} >
         <HomeStack.Screen name="Home" component={Home} options={{
-          tabBarIcon: ({ focused }) => {
-            const img = focused ? require('../../assets/icons/png/menu-home-active.png') : require('../../assets/icons/png/menu-home-gray.png')
-            return (
-              <Image style={{ width: 28, height: 28 }} source={img} />
-            );
-          }
+          tabBarIcon: ({ color, focused }) => (<AntDesign name="home" color={focused ? colors.colmenaGreen : color} size={sizeIcon} />)
         }} />
-        <HomeStack.Screen name="Waste" component={WasteNav} options={{
-          tabBarIcon: ({ focused }) => {
-            const img = focused ? require('../../assets/icons/png/menu-search-active.png') : require('../../assets/icons/png/menu-search-gray.png')
-            return (
-              <Image style={{ width: 28, height: 28 }} source={img} />
-            );
-          }
+        <HomeStack.Screen name="WasteNav" component={WasteNav} options={{
+          tabBarIcon: ({ color, focused }) => ( <MaterialIcons name={'move-to-inbox'} color={focused ? colors.colmenaGreen : color} size={sizeIcon} />),
         }} />
-        <HomeStack.Screen name="Waste" component={WasteNav} options={{
-          tabBarIcon: <MaterialIcons name={'move-to-inbox'} size={28} />,
+        <HomeStack.Screen name="TransportNav" component={TransportNav} options={{
+          tabBarIcon: ({ color, focused }) => ( <MaterialCommunityIcons name={'bank-transfer-in'} color={focused ? colors.colmenaGreen : color} size={sizeIcon} />),
         }} />
-        <HomeStack.Screen name="Transport" component={TransportNav} options={{
-          tabBarIcon: <MaterialCommunityIcons name={'bank-transfer-in'} size={28} />,
-          }
-        }} />
-        <HomeStack.Screen name="wastesSelect" component={ManageWasteNav} options={{
-          tabBarIcon: <MaterialCommunityIcons name={'recycle'} size={28} />,
-          }
+        <HomeStack.Screen name="wastesSelectNav" component={ManageWasteNav} options={{
+          tabBarIcon: ({ color, focused }) => ( <MaterialCommunityIcons name={'recycle'} color={focused ? colors.colmenaGreen : color} size={sizeIcon} />),
         }} />
         <HomeStack.Screen name="Profile" component={Profile} options={{
-          tabBarIcon: ({ focused }) => {
-            const img = focused ? require('../../assets/icons/png/menu-burger-active.png') : require('../../assets/icons/png/menu-home-gray.png')
-            return (
-              <Image style={{ width: 28, height: 28 }} source={img} />
-            );
-          }
+          tabBarIcon: ({ color, focused }) => (<FontAwesome name="user-o" color={focused ? colors.colmenaGreen : color} size={sizeIcon} />),
         }} />
       </HomeStack.Navigator>
     );

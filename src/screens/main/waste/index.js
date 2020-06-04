@@ -56,7 +56,7 @@ class index extends Component {
     const {wasteTypeStatus} = this.props;
 
     return wasteTypeStatus.data.map((waste, index) => {
-      return <WasteBox key={index} waste={waste} value={0} min={0} max={30} />;
+      return <WasteBox key={index} waste={waste} value={0} min={0} max={30}  />;
     });
   }
 

@@ -11,11 +11,7 @@ import {
 import styles from '../../../styles/waste';
 
 export default function success(props) {
-  /*
-  static navigationOptions = ({navigation}) => ({
-    header: null,
-  });
-  */
+
   const submit = () => {
     // props.navigation.navigate('WasteCheckInfo');
     Alert.alert('Peticiones pendientes...');
