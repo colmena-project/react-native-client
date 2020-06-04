@@ -1,36 +1,32 @@
+
+
 import React from 'react';
-import {compose, createStore, applyMiddleware} from 'redux';
-import {
-  createReduxContainer,
-  createReactNavigationReduxMiddleware,
-} from 'react-navigation-redux-helpers';
-import {createLogger} from 'redux-logger';
-import thunkMiddleware from 'redux-thunk';
-import {connect} from 'react-redux';
-import AppRouteConfigs from './AppRouteConfigs';
-import reducer from '../redux/reducers';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const middleware = createReactNavigationReduxMiddleware(
-  state => state.nav,
-  'root',
-);
+import Intro from '../components/Intro';
+import Login from '../screens/auth/login';
+import Logout from '../screens/auth/logout';
+import ForgotPassword from '../components/ForgotPassword';
+import Register from '../screens/auth/register';
+import InAppTabNavigator from './InAppTabNavigator';
 
-const App = createReduxContainer(AppRouteConfigs, 'root');
-const mapStateToProps = state => ({
-  state: state.nav,
-});
+const AppNavigator = () => {
 
-const AppWithNavigationState = connect(mapStateToProps)(App);
+  const RootStack = createStackNavigator();
 
-const loggerMiddleware = createLogger({predicate: () => __DEV__});
-
-const configureStore = initialState => {
-  const enhancer = compose(
-    applyMiddleware(middleware, thunkMiddleware, loggerMiddleware),
+  return (
+    <NavigationContainer>
+      <RootStack.Navigator>
+        {/* <RootStack.Screen name="Intro" component={Intro} /> */}
+        <RootStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <RootStack.Screen name="Logout" component={Logout} options={{ headerShown: false }} />
+        <RootStack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+        <RootStack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+        <RootStack.Screen name="Home" component={InAppTabNavigator} options={{ headerShown: false }} />
+      </RootStack.Navigator>
+    </NavigationContainer>
   );
-  return createStore(reducer, initialState, enhancer);
 };
 
-const Root = () => <AppWithNavigationState />;
-
-export {configureStore, Root};
+export default AppNavigator;

@@ -1,9 +1,11 @@
 export const LOG_IN = 'LOG_IN';
 export const SET_LOGGED_IN_STATE = 'SET_LOGGED_IN_STATE';
 export const GET_MY_ACCOUNT = 'GET_MY_ACCOUNT';
+export const GET_MY_PARSE_ACCOUNT = 'GET_MY_PARSE_ACCOUNT';
+export const GET_MY_PARSE_ADDRESS = 'GET_MY_PARSE_ADDRESS';
 export const GET_STOCK = 'GET_STOCK';
 export const CHANGE_STOCK = 'CHANGE_STOCK';
 export const UPDATE_STOCK = 'UPDATE_STOCK';
 export const GET_WASTE_TYPES = 'GET_WASTE_TYPES';
-export const GET_ALL_POST = 'GET_ALL_POST';
+export const GET_ALL_POSTS = 'GET_ALL_POSTS';
 export const FETCHING_DATA_ERROR = 'FETCHING_DATA_ERROR';

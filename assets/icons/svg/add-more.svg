@@ -1,0 +1,10 @@
+<svg id="_" data-name="+" xmlns="http://www.w3.org/2000/svg" width="47" height="47" viewBox="0 0 47 47">
+  <g id="add_btn" data-name="add btn">
+    <circle id="Oval" cx="23.5" cy="23.5" r="23.5" fill="#79d379"/>
+    <circle id="Oval-2" data-name="Oval" cx="21.5" cy="21.5" r="21.5" transform="translate(2 2)" fill="#79d379"/>
+    <g id="plus" transform="translate(14.5 14.5)">
+      <rect id="Rectangle" width="2" height="18" rx="1" transform="translate(8.5 0.5)" fill="#fff"/>
+      <rect id="Rectangle-2" data-name="Rectangle" width="2" height="18" rx="1" transform="translate(18.5 8.5) rotate(90)" fill="#fff"/>
+    </g>
+  </g>
+</svg>

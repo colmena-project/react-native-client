@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 
-import {createStackNavigator} from 'react-navigation-stack';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../screens/main/home';
 import Profile from '../screens/main/profile';
@@ -22,116 +22,97 @@ import TransportSuccess from '../screens/main/transport/success';
 import wastesSelect from '../screens/main/manageWaste';
 import WastesEdit from '../screens/main/manageWaste/edit';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import colors from '../styles/colors';
 
-const CustomIcon = (name, size) => {
-  const icon = ({tintColor}) => (
-    <Icon name={name} size={size} color={tintColor} />
-  );
+const InAppTabNavigator = () => {
 
-  icon.propTypes = {
-    tintColor: PropTypes.string.isRequired,
+  const WasteStack = createStackNavigator();
+  const TransportStack = createStackNavigator();
+  const ManageWasteStack = createStackNavigator();
+  const HomeStack = createBottomTabNavigator();
+  const InAppStack = createStackNavigator();
+
+  const WasteNav = () => {
+    return (
+      <WasteStack.Navigator>
+        <WasteStack.Screen name="Waste" component={Waste} options={{ headerShown: false }} />
+        <WasteStack.Screen name="WasteCheckInfo" component={WasteCheckInfo} options={{ headerShown: false }} />
+        <WasteStack.Screen name="WasteSuccess" component={WasteSuccess} options={{ headerShown: false }} />
+      </WasteStack.Navigator>
+    );
   };
-  return icon;
+  
+  const TransportNav = () => {
+    return (
+      <TransportStack.Navigator>
+        <TransportStack.Screen name="Transport" component={Transport} options={{ headerShown: false }} />
+        <TransportStack.Screen name="TransportAddress" component={TransportAddress} options={{ headerShown: false }} />
+        <TransportStack.Screen name="TransportCheckInfo" component={TransportCheckInfo} options={{ headerShown: false }} />
+        <TransportStack.Screen name="TransportSuccess" component={TransportSuccess} options={{ headerShown: false }} />
+      </TransportStack.Navigator>
+    );
+  };
+  
+  const ManageWasteNav = () => {
+    return (
+      <ManageWasteStack.Navigator>
+        <ManageWasteStack.Screen name="wastesSelect" component={wastesSelect} options={{ headerShown: false }} />
+        <ManageWasteStack.Screen name="WastesEdit" component={WastesEdit} options={{ headerShown: false }} />
+      </ManageWasteStack.Navigator>
+    );
+  };
+  
+  const HomeNavigator = () => {
+    return (
+      <HomeStack.Navigator tabBarOptions={{ showLabel: false }} >
+        <HomeStack.Screen name="Home" component={Home} options={{
+          tabBarIcon: ({ focused }) => {
+            const img = focused ? require('../../assets/icons/png/menu-home-active.png') : require('../../assets/icons/png/menu-home-gray.png')
+            return (
+              <Image style={{ width: 28, height: 28 }} source={img} />
+            );
+          }
+        }} />
+        <HomeStack.Screen name="Waste" component={WasteNav} options={{
+          tabBarIcon: ({ focused }) => {
+            const img = focused ? require('../../assets/icons/png/menu-search-active.png') : require('../../assets/icons/png/menu-search-gray.png')
+            return (
+              <Image style={{ width: 28, height: 28 }} source={img} />
+            );
+          }
+        }} />
+        <HomeStack.Screen name="Waste" component={WasteNav} options={{
+          tabBarIcon: <MaterialIcons name={'move-to-inbox'} size={28} />,
+        }} />
+        <HomeStack.Screen name="Transport" component={TransportNav} options={{
+          tabBarIcon: <MaterialCommunityIcons name={'bank-transfer-in'} size={28} />,
+          }
+        }} />
+        <HomeStack.Screen name="wastesSelect" component={ManageWasteNav} options={{
+          tabBarIcon: <MaterialCommunityIcons name={'recycle'} size={28} />,
+          }
+        }} />
+        <HomeStack.Screen name="Profile" component={Profile} options={{
+          tabBarIcon: ({ focused }) => {
+            const img = focused ? require('../../assets/icons/png/menu-burger-active.png') : require('../../assets/icons/png/menu-home-gray.png')
+            return (
+              <Image style={{ width: 28, height: 28 }} source={img} />
+            );
+          }
+        }} />
+      </HomeStack.Navigator>
+    );
+  };
+  return (
+    <InAppStack.Navigator>
+      <InAppStack.Screen name="InApp" component={HomeNavigator} options={{ headerShown: false }} />
+      <InAppStack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+      <InAppStack.Screen name="OthersProfile" component={OthersProfile} options={{ headerShown: false }} />
+    </InAppStack.Navigator>
+  );
 };
-
-const WasteNav = createStackNavigator({
-  Waste: {screen: Waste, navigationOptions: {header: null}},
-  WasteAddress: {screen: WasteAddress},
-  WasteCheckInfo: {screen: WasteCheckInfo},
-  WasteSuccess: {screen: WasteSuccess},
-});
-
-const TransportNav = createStackNavigator({
-  Transport: {screen: Transport, navigationOptions: {header: null}},
-  TransportAddress: {screen: TransportAddress},
-  TransportCheckInfo: {screen: TransportCheckInfo},
-  TransportSuccess: {screen: TransportSuccess},
-});
-
-const ManageWasteNav = createStackNavigator({
-  wastesSelect: {screen: wastesSelect, navigationOptions: {header: null}},
-  WastesEdit: { screen: WastesEdit },
-});
-
-const HomeNavigator = createBottomTabNavigator(
-  {
-    Home: {
-      screen: Home,
-      navigationOptions: {
-        tabBarLabel: 'HOME',
-        tabBarIcon: CustomIcon('ios-home', 28),
-      },
-    },
-    Waste: {
-      screen: WasteNav,
-      navigationOptions: {
-        tabBarLabel: 'MIS RESIDUOS',
-        tabBarIcon: CustomIcon('ios-download', 28),
-      },
-    },
-    Transport: {
-      screen: TransportNav,
-      navigationOptions: {
-        tabBarLabel: 'TRANSPORTAR MIS RESIDUOS',
-        tabBarIcon: CustomIcon('ios-subway', 28),
-      },
-    },
-    ManageWaste: {
-      screen: ManageWasteNav,
-      navigationOptions: {
-        tabBarLabel: 'GESTIONAR RESIDUOS',
-        tabBarIcon: CustomIcon('ios-create', 28),
-      },
-    },
-    Profile: {
-      screen: Profile,
-      navigationOptions: {
-        tabBarLabel: 'MI PERFIL',
-        tabBarIcon: CustomIcon('ios-person', 28),
-      },
-    },
-  },
-  {
-    tabBarOptions: {
-      showLabel: false,
-      labelStyle: {
-        fontWeight: '600',
-        marginBottom: 5,
-      },
-      activeBackgroundColor: 'white',
-      activeTintColor: colors.colmenaGreen,
-      style: {
-        borderTopWidth: 0,
-      },
-    },
-    tabBarPosition: 'bottom',
-  },
-);
-
-const InAppTabNavigator = createStackNavigator({
-  InApp: {
-    screen: HomeNavigator,
-    navigationOptions: {
-      header: null,
-      gesturesEnabled: true,
-    },
-  },
-  EditProfile: {
-    screen: EditProfile,
-    navigationOptions: {
-      header: null,
-      gesturesEnabled: true,
-    }
-  },
-  OthersProfile: {
-    screen: OthersProfile,
-    navigationOptions: {
-      header: null,
-      gesturesEnabled: true,
-    }
-  },
-});
 
 export default InAppTabNavigator;

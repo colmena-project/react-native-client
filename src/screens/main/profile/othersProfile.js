@@ -12,6 +12,8 @@ import FeedList from '../../../components/posts/FeedList';
 
 const OthersProfile = props => {
 
+    console.log(props.route);
+
     const [userAccount, setUserAccount] = useState(null);
     const [stock, setStock] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -87,9 +89,9 @@ const OthersProfile = props => {
      * END TABS VIEW 
      *****************************************************/
 
-     const handleBackButton = () => {
+    const handleBackButton = () => {
         props.navigation.goBack();
-     };
+    };
 
     return (
         <View style={stylesCommon.scrollViewWrapper}>
@@ -124,7 +126,7 @@ const OthersProfile = props => {
                                 <View style={{ flexDirection: 'row' }}>
                                     <Image
                                         style={{ width: 40, height: 40, resizeMode: 'contain' }}
-                                        source={require('../../../../assets/icons/icon-co2.png')}
+                                        source={require('../../../../assets/icons/png/icon-co2.png')}
                                     />
                                 </View>
                             </View>
@@ -150,11 +152,11 @@ const OthersProfile = props => {
                                 <View style={{ flexDirection: 'row', }}>
                                     <Image
                                         style={{ width: 40, height: 40, resizeMode: 'contain' }}
-                                        source={require('../../../../assets/icons/icon-residuo-pet.png')}
+                                        source={require('../../../../assets/icons/png/icon-residuo-pet.png')}
                                     />
                                     <Image
                                         style={{ width: 40, height: 40, resizeMode: 'contain' }}
-                                        source={require('../../../../assets/icons/icon-residuo-organico.png')}
+                                        source={require('../../../../assets/icons/png/icon-residuo-organico.png')}
                                     />
                                 </View>
 
@@ -176,7 +178,7 @@ const OthersProfile = props => {
 
                     <View style={styles.activityContainer}>
                         <Text style={{ ...stylesCommon.brandText, fontSize: 16, padding: 20 }}>Actividad</Text>
-                        <FeedList onPress={props.onPress} data={data}/>
+                        <FeedList onPress={props.onPress} data={data} />
                     </View>
                 </View>
             }

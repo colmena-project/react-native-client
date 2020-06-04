@@ -46,7 +46,7 @@ class Intro extends Component {
 
   _onDone = () => {
     this.setState({ showIntro: false });
-    return this.props.navigation.navigate('LoginNuevo');
+    return this.props.navigation.navigate('Login');
   };
 
   _onSkip = () => {

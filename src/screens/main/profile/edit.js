@@ -9,11 +9,11 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import MapPicker from '../../../components/address/MapPicker';
 import Geolocation from 'react-native-geolocation-service';
+import ImagePicker from 'react-native-image-picker';
 
 import colors from '../../../styles/colors';
 import stylesCommon from '../../../styles/waste';
 import validate from '../../../utils/Validate';
-import { parse } from 'react-native-svg';
 
 const EditProfile = props => {
 
@@ -37,21 +37,17 @@ const EditProfile = props => {
     const [userAccount, setUserAccount] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [sourceImage, setSourceImage] = useState(null);
 
     const fetchData = async () => {
         try {
             setIsLoading(true);
-            
             const parseAddress = new Parse.Query('Address');
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();
             const parseAccount = await userAddress.get('account').fetch();
-
             setUserAccount(parseAccount);
             setUserAddress(userAddress);
-
-            console.log('USER ADDRESS', userAddress);
-
             setInputs({
                 ...inputs,
                 firstName: parseAccount.get('firstName'),
@@ -67,7 +63,6 @@ const EditProfile = props => {
                 address: `${userAddress.get('street')}, ${userAddress.get('city')}, ${userAddress.get('state')}`,
                 coords: userAddress.get('latLng').toJSON()
             });
-
             setIsLoading(false);
         } catch (err) {
             console.log('Error!! ' + err);
@@ -78,10 +73,6 @@ const EditProfile = props => {
     useEffect(() => {
         fetchData();
     }, []);
-
-    useEffect(() => {
-        console.log('USE EFFECT INPUTS', inputs);
-    }, [inputs]);
 
     const hasErrors = errors => {
         for (const [key, value] of Object.entries(errors)) {
@@ -136,41 +127,39 @@ const EditProfile = props => {
 
     const getAddressFromLatLng = async (latLng) => {
         try {
-            const result = await Parse.Cloud.run("getAddress", { lat: latLng.latitude, lng: latLng.longitude });
+            const { address_components, formatted_address } = await Parse.Cloud.run("getAddress", { lat: latLng.latitude, lng: latLng.longitude });
             let calcStreet = undefined;
             let calcCity = undefined;
             let calcState = undefined;
             let calcCountry = undefined;
             let calcStreetNumber = undefined;
-           
-            result.address_components.forEach(field => {
-                if(field.types[0] == 'route'){
+            address_components.forEach(field => {
+                if (field.types[0] == 'route') {
                     calcStreet = field.long_name;
                 };
-                if(field.types[0] == 'street_number'){
+                if (field.types[0] == 'street_number') {
                     calcStreetNumber = field.long_name;
                 };
-                if(field.types[0] == 'administrative_area_level_2'){
+                if (field.types[0] == 'administrative_area_level_2') {
                     calcCity = field.long_name;
                 };
-                if(field.types[0] == 'locality'){
+                if (field.types[0] == 'locality') {
                     calcCity = field.long_name;
                 };
-                if(field.types[0] == 'administrative_area_level_1'){
+                if (field.types[0] == 'administrative_area_level_1') {
                     calcState = field.long_name;
                 };
-                if(field.types[0] == 'country'){
+                if (field.types[0] == 'country') {
                     calcCountry = field.long_name;
                 };
             });
-
             setInputs({
                 ...inputs,
                 street: `${calcStreet} ${calcStreetNumber}`,
                 city: calcCity,
-                state: calcState, 
+                state: calcState,
                 country: calcCountry,
-                address: result.formatted_address,
+                address: formatted_address,
                 coords: latLng,
             });
         } catch (err) {
@@ -190,7 +179,6 @@ const EditProfile = props => {
         try {
             let errors = { ...errorMessages };
             for (const [key, value] of Object.entries(inputs)) {
-                console.log('KEY: ', key, 'VALUE ', value)
                 errors[key] = validate(value, inputs[key]);
                 setErrorMessages(errors);
             }
@@ -201,17 +189,13 @@ const EditProfile = props => {
                 userAccount.set('lastName', inputs.lastName);
                 userAccount.set('nickname', inputs.nickname);
                 userAccount.set('aboutMe', inputs.aboutMe);
-               
                 userAddress.set('street', inputs.street);
                 userAddress.set('city', inputs.city);
                 userAddress.set('state', inputs.state);
                 userAddress.set('country', inputs.country);
                 userAddress.set('description', inputs.addressDescription);
-                userAddress.set('latLng',  new Parse.GeoPoint(inputs.coords));
-                // await userAddress.save();
-
+                userAddress.set('latLng', new Parse.GeoPoint(inputs.coords));
                 await Parse.Object.saveAll([userAccount, userAddress]);
-
                 Alert.alert('', 'Datos guardados!');
             }
         } catch (error) {
@@ -219,9 +203,40 @@ const EditProfile = props => {
         }
     };
 
+    const options = {
+        title: 'Nuevo avatar',
+        takePhotoButtonTitle: 'Tomar foto',
+        chooseFromLibraryButtonTitle: 'Seleccionar desde galería',
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+    };
+
+    const showImagePicker = () => {
+        ImagePicker.showImagePicker(options, async (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                try {
+                    const avatarImage = new Parse.File(response.fileName, { base64: response.data });
+                    console.log(response.fileName);
+                    userAccount.set('avatar', avatarImage);
+                    await userAccount.save();
+                } catch (ex) {
+                    console.log(ex);
+                }
+            }
+        });
+    };
+
     return (
         <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
-            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+            {isLoading ? <ActivityIndicator style={stylesCommon.activityIndicator} size={'large'} color={colors.colmenaGreen} /> :
                 <ScrollView style={stylesCommon.scrollView}>
                     <View style={styles.headerIcons}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -236,16 +251,27 @@ const EditProfile = props => {
                             <Ionicons onPress={handleSaveButton} name={'md-checkmark'} size={30} color={colors.colmenaGreen} />
                         </View>
                     </View>
-                    <View style={{ marginBottom: 120, }}>
-                        <View style={{ alignItems: 'center', marginTop: 40, }}>
-                            <Avatar
-                                size={120}
-                                rounded
-                                icon={{ name: 'user', type: 'font-awesome' }}
-                                onPress={() => console.log('Subir foto...')}
-                                activeOpacity={0.5}
-                                showEditButton
-                            />
+                    <View style={styles.inputsContainer}>
+                        <View style={styles.avatarContainer}>
+                            {!(userAccount && userAccount.get('avatar')) ?
+                                <Avatar
+                                    size={120}
+                                    rounded
+                                    icon={{ name: 'user', type: 'font-awesome' }}
+                                    onPress={showImagePicker}
+                                    activeOpacity={0.5}
+                                    showEditButton
+                                />
+                                :
+                                <Avatar
+                                    size={120}
+                                    rounded
+                                    onPress={showImagePicker}
+                                    activeOpacity={0.5}
+                                    showEditButton
+                                    source={{ uri: userAccount.get('avatar')._url }}
+                                />
+                            }
                         </View>
                         <Input
                             label={'Nombre/s'}
@@ -328,15 +354,7 @@ const EditProfile = props => {
                         />
                         <View>
                             <MapPicker coords={inputs.coords} getCoords={value => getAddressFromLatLng(value)} />
-                            <TouchableOpacity onPress={getCurrentPosition} style={{
-                                position: 'absolute',
-                                width: 50,
-                                height: 50,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                right: 10,
-                                bottom: 10,
-                            }}>
+                            <TouchableOpacity onPress={getCurrentPosition} style={styles.getCurrentPositionIcon}>
                                 <Ionicons name={'md-locate'} size={36} color={colors.colmenaGreen} />
                             </TouchableOpacity>
                         </View>
@@ -352,23 +370,21 @@ const EditProfile = props => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingTop: 10,
-        flex: 2,
-    },
-    scrollView: {
-        flex: 1,
-    },
     headerIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+    inputsContainer: {
+        marginBottom: 120,
+    },
     input: {
         flex: 1,
         textAlign: 'center',
+    },
+    avatarContainer: {
+        alignItems: 'center',
+        marginTop: 40,
     },
     saveIcon: {
         justifyContent: 'center',
@@ -387,7 +403,16 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         borderRadius: 5,
         backgroundColor: '#e8e8e8',
-    }
+    },
+    getCurrentPositionIcon: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 10,
+        bottom: 10,
+    },
 });
 
 export default EditProfile;

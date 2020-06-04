@@ -1,7 +1,8 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-import AsyncStorage from '@react-native-community/async-storage';
+import Installation from '../../../services/Installation';
 
 import { Parse } from 'parse/react-native';
 
@@ -10,13 +11,13 @@ import stylesCommon from '../../../styles/login';
 
 import PostModal from '../../../components/posts/PostModal';
 import FeedList from '../../../components/posts/FeedList';
-import { useEffect } from 'react';
 
 const HomeFeed = props => {
 
     const [isAddMode, setIsAddMode] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState(null);
+    const navigation = useNavigation();
 
     const loadData = async () => {
         try {
@@ -27,36 +28,6 @@ const HomeFeed = props => {
 
             setData(result);
             setIsLoading(false);
-        } catch (err) {
-            console.log('Error!! ' + err);
-        }
-    };
-
-    const getToken = async () => {
-        const FCMToken = await AsyncStorage.getItem('FCMToken');
-        if (!FCMToken) throw new Error('No tiene token.');
-
-        return FCMToken;
-    };
-
-    const getInstallation = async () => {
-        try {
-            const FCMToken = await getToken();
-            const session = await Parse.Session.current();
-            const installationId = session.get('installationId');
-
-            //FIXME: Add dynamic data
-            const newInstallation = new Parse.Installation();
-            newInstallation.set('deviceType', 'android');
-            newInstallation.set('installationId', installationId);
-            newInstallation.set('channels', ["All"]);
-            newInstallation.set('pushType', 'gcm');
-            newInstallation.set('timeZone', 'America/Argentina/Buenos_Aires');
-            newInstallation.set('appName', 'ColmenaApp');
-            newInstallation.set('appIdentifier', 'com.colmena.colmenapp');
-            newInstallation.set('deviceToken', FCMToken);
-
-            await newInstallation.save();
         } catch (err) {
             console.log('Error!! ' + err);
         }
@@ -81,12 +52,15 @@ const HomeFeed = props => {
     };
 
     useEffect(() => {
-        loadData();
-        getInstallation();
+        Installation.setInstallation();
     }, []);
 
-    const handleOthersProfile = () => {
-        props.navigation.navigate('OthersProfile');
+    useEffect(() => {
+        loadData();
+    }, [navigation]);
+
+    const handleOthersProfile = user => {
+        props.navigation.navigate('OthersProfile', { user: user });
     };
 
     return (
@@ -111,7 +85,7 @@ const HomeFeed = props => {
                     <Text style={styles.colmenaHeaderSubtitle}>Novedades</Text>
                 </View>
 
-                {isLoading ? <ActivityIndicator style={{ flex:1 }} size={'large'} color={colors.colmenaGreen} /> :
+                {isLoading ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
                     <FeedList onPress={handleOthersProfile} data={data} />
                 }
 

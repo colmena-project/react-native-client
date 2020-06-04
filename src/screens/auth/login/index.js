@@ -82,7 +82,7 @@ class Login extends Component {
 
     if (isLoginOk) {
       this.setState({ formValid: true, loadingVisible: false });
-      navigate('Home');
+      navigate('Home', { screen: 'Profile' });
     } else {
       this.setState({ formValid: false, loadingVisible: false });
       Alert.alert('error.. usuario o pass incorrecto');
@@ -94,7 +94,7 @@ class Login extends Component {
     const isLoginFbOk = await loginFb();
     if (isLoginFbOk) {
       this.setState({ formValid: true, loadingVisible: false });
-      navigate('Profile');
+      navigate('Home', { screen: 'Profile' });
     } else {
       this.setState({ formValid: false, loadingVisible: false });
     }
