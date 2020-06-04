@@ -34,8 +34,9 @@ const InAppTabNavigator = () => {
   const WasteStack = createStackNavigator();
   const TransportStack = createStackNavigator();
   const ManageWasteStack = createStackNavigator();
+  const ProfileStack = createStackNavigator();
   const HomeStack = createBottomTabNavigator();
-  const InAppStack = createStackNavigator();
+  //const InAppStack = createStackNavigator();
 
   const WasteNav = () => {
     return (
@@ -68,35 +69,35 @@ const InAppTabNavigator = () => {
     );
   };
   
-  const HomeNavigator = () => {
-    const sizeIcon = 28;
+  const ProfileNav = () => {
     return (
-      <HomeStack.Navigator tabBarOptions={{ showLabel: false }} >
-        <HomeStack.Screen name="Home" component={Home} options={{
-          tabBarIcon: ({ color, focused }) => (<AntDesign name="home" color={focused ? colors.colmenaGreen : color} size={sizeIcon} />)
-        }} />
-        <HomeStack.Screen name="WasteNav" component={WasteNav} options={{
-          tabBarIcon: ({ color, focused }) => ( <MaterialIcons name={'move-to-inbox'} color={focused ? colors.colmenaGreen : color} size={sizeIcon} />),
-        }} />
-        <HomeStack.Screen name="TransportNav" component={TransportNav} options={{
-          tabBarIcon: ({ color, focused }) => ( <MaterialCommunityIcons name={'bank-transfer-in'} color={focused ? colors.colmenaGreen : color} size={sizeIcon} />),
-        }} />
-        <HomeStack.Screen name="wastesSelectNav" component={ManageWasteNav} options={{
-          tabBarIcon: ({ color, focused }) => ( <MaterialCommunityIcons name={'recycle'} color={focused ? colors.colmenaGreen : color} size={sizeIcon} />),
-        }} />
-        <HomeStack.Screen name="Profile" component={Profile} options={{
-          tabBarIcon: ({ color, focused }) => (<FontAwesome name="user-o" color={focused ? colors.colmenaGreen : color} size={sizeIcon} />),
-        }} />
-      </HomeStack.Navigator>
+      <ProfileStack.Navigator>
+        <ProfileStack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+        <ProfileStack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+        <ProfileStack.Screen name="OthersProfile" component={OthersProfile} options={{ headerShown: false }} />
+      </ProfileStack.Navigator>
     );
   };
-  return (
-    <InAppStack.Navigator>
-      <InAppStack.Screen name="InApp" component={HomeNavigator} options={{ headerShown: false }} />
-      <InAppStack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
-      <InAppStack.Screen name="OthersProfile" component={OthersProfile} options={{ headerShown: false }} />
-    </InAppStack.Navigator>
-  );
+
+  return(
+    <HomeStack.Navigator tabBarOptions={{ showLabel: false }} >
+      <HomeStack.Screen name="Home" component={Home} options={{
+        tabBarIcon: ({ color, focused }) => (<AntDesign name="home" color={focused ? colors.colmenaGreen : color} size={28} />)
+      }} />
+      <HomeStack.Screen name="WasteNav" component={WasteNav} options={{
+        tabBarIcon: ({ color, focused }) => ( <MaterialIcons name={'move-to-inbox'} color={focused ? colors.colmenaGreen : color} size={28} />),
+      }} />
+      <HomeStack.Screen name="TransportNav" component={TransportNav} options={{
+        tabBarIcon: ({ color, focused }) => ( <MaterialCommunityIcons name={'bank-transfer-in'} color={focused ? colors.colmenaGreen : color} size={28} />),
+      }} />
+      <HomeStack.Screen name="wastesSelectNav" component={ManageWasteNav} options={{
+        tabBarIcon: ({ color, focused }) => ( <MaterialCommunityIcons name={'recycle'} color={focused ? colors.colmenaGreen : color} size={28} />),
+      }} />
+      <HomeStack.Screen name="ProfileNav" component={ProfileNav} options={{
+        tabBarIcon: ({ color, focused }) => (<FontAwesome name="user-o" color={focused ? colors.colmenaGreen : color} size={28} />),
+      }} />
+    </HomeStack.Navigator>
+  )
 };
 
 export default InAppTabNavigator;
