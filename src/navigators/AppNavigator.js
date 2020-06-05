@@ -5,8 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-// import { AuthorizedScreen } from '../components/auth/AuthorizedScreen';
-
 import {useSelector} from 'react-redux';
 
 import Intro from '../components/Intro';
@@ -77,7 +75,7 @@ const AppNavigator = () => {
       <RootStack.Navigator>
         {/* <RootStack.Screen name="Intro" component={Intro} /> */}
 
-      { isSignIn.loggedInState ?
+        { isSignIn.loggedInState ?
         <>
           <RootStack.Screen name="Home" component={InAppTabNavigator} options={{ headerShown: false }} />
           <RootStack.Screen name="WasteNav" component={WasteNav} options={{ headerShown: false }} />
@@ -91,7 +89,7 @@ const AppNavigator = () => {
           <RootStack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
           <RootStack.Screen name="Register" component={Register} options={{ headerShown: false }} />
         </>
-      }
+        }
       </RootStack.Navigator>
     </NavigationContainer>
   );

@@ -7,7 +7,7 @@ const AuthorizedScreen = props => {
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const isLoggedIn = useSelector(state => state.auth);
+    const isLoggedIn = useSelector(state => state.loggedInStatus);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -16,7 +16,7 @@ const AuthorizedScreen = props => {
         return unsubscribe;
     }, [navigation]);
 
-    return isLoggedIn ? props.children : null;
+    return isLoggedIn.loggedInState ? props.children : null;
 };
 
 export default AuthorizedScreen;
