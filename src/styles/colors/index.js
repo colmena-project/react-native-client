@@ -1,10 +1,10 @@
 export default {
-  colmenaGreen: '#79d379',
+  colmenaGreen: '#29C17E',
   //colmenaGreen: '#5EBFA5',
   colmenaOtherGreen: '#9cbfb6',
   colmenaGreenDisabled: '#cfe7e0',
   colmenaGreenActive: '#8de28d',
-  colmenaBackground: '#FBFBFB',
+  colmenaBackground: '#FFFFFF',
   colmenaTitleLine: '#393939',
   colmenaTextLine: '#6d6d6d',
   colmenaGrey: '#6D7278',

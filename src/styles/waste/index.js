@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
+    backgroundColor: colors.colmenaBackground,
   },
   scrollView: {
     paddingLeft: 30,
@@ -56,6 +57,15 @@ const styles = StyleSheet.create({
     margin: 5,
     color: colors.colmenaGrey,
     textAlign:'center',
+  },
+  headerImage: {
+    resizeMode: 'contain',
+    alignContent: 'center',
+    alignSelf:'center',
+    width: '100%',
+    marginTop: 10,
+    marginBottom:10,
+
   },
   colmenaLogo: {
     resizeMode: 'stretch',

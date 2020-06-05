@@ -104,10 +104,12 @@ class success extends Component {
         <ScrollView style={styles.scrollView}>
           <View style={styles.headerMsg}>
             <Image
-              style={styles.colmenaLogo}
+              style={styles.headerImage}
               source={require('../../../../assets/icons/png/icon-registrar-ok.png')}
             />
-            <Text style={styles.headerTitle}>
+          </View>
+          <View>
+            <Text style={styles.headerTitle} numberOfLines={4}>
               Residuos registrados correctamente!
             </Text>
           </View>

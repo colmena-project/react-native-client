@@ -8,7 +8,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="light-content" backgroundColor="#54CD98" />
         <RootNavigator />
       </Provider>
     );
