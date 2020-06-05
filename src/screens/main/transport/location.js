@@ -264,23 +264,6 @@ const Location = (props) => {
     );
 }
 
-Location.navigationOptions = ({navigation}) => ({
-    headerLeft: (
-        <NavBarButton
-        icon={
-            <Icon name="angle-left" color={colors.colmenaLightGrey} size={30} />
-        }
-        handleButtonPress={() => navigation.goBack()}
-        location="left"
-        />
-    ),
-    headerStyle: {
-        borderBottomWidth: 0,
-        elevation: 0,
-    },
-    headerTransparent: true,
-});
-
 const styles = StyleSheet.create({
     map: {
         marginTop: 15,

@@ -8,6 +8,11 @@ const getMyAccount = data => ({
   data,
 });
 
+const getMyParseAccount = data => ({
+  type: types.GET_MY_PARSE_ACCOUNT,
+  data,
+});
+
 const myAccount = () => {
   const action = async dispatch => {
     const account = await Parse.Cloud.run('getMyAccount');
@@ -16,4 +21,4 @@ const myAccount = () => {
   return action;
 };
 
-export {myAccount, getMyAccount};
+export { myAccount, getMyAccount };

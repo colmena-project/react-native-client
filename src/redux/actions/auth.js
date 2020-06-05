@@ -119,4 +119,16 @@ const loginFb = () => {
   return action;
 };
 
-export {login, loginFb, setLoggedInState};
+
+const logOut = dispatch => {
+  try {
+      Parse.User.currentAsync().then(async user => {
+          await Parse.User.logOut();
+          dispatch(setLoggedInState(false));
+      });
+  } catch (err) {
+      console.log(err);
+  }
+};
+
+export {login, loginFb, setLoggedInState, logOut};

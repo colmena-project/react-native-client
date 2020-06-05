@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -7,17 +7,19 @@ import {
   TouchableOpacity,
   TouchableHighlightBase,
   Button,
-} from 'react-native';
+} from "react-native";
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import ActionCreators from '../../../redux/actions';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import ActionCreators from "../../../redux/actions";
 
-import WasteBox from '../../../components/waste/WasteBox';
+// import { AuthorizedScreen } from "../../../components/auth/AuthorizedScreen";
 
-import styles from '../../../styles/waste';
+import WasteBox from "../../../components/waste/WasteBox";
+
+import styles from "../../../styles/waste";
 
 class index extends Component {
   constructor(props) {
@@ -44,16 +46,16 @@ class index extends Component {
   displayStorage = async () => {
     const keys = await AsyncStorage.getAllKeys();
     const items = await AsyncStorage.multiGet(keys);
-    const res = items.filter(item => item[0].includes('wastes_'));
+    const res = items.filter((item) => item[0].includes("wastes_"));
     return res;
   };
 
   wasteSubmit() {
-    this.props.navigation.navigate('WasteAddress');
+    this.props.navigation.navigate("WasteAddress");
   }
 
   wasteTypesList() {
-    const {wasteTypeStatus} = this.props;
+    const { wasteTypeStatus } = this.props;
 
     return wasteTypeStatus.data.map((waste, index) => {
       return <WasteBox key={index} waste={waste} value={0} min={0} max={30} />;
@@ -63,11 +65,11 @@ class index extends Component {
   checkInitial = async () => {
     const keys = await AsyncStorage.getAllKeys();
     const items = await AsyncStorage.multiGet(keys);
-    const res = items.filter(item => item[0].includes('wastes_'));
+    const res = items.filter((item) => item[0].includes("wastes_"));
     if (res.length > 0) {
-      this.setState({next: true});
+      this.setState({ next: true });
     } else {
-      this.setState({next: false});
+      this.setState({ next: false });
     }
   };
 
@@ -82,48 +84,49 @@ class index extends Component {
 
   render() {
     return (
-      <View style={styles.scrollViewWrapper}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.brand}>
-            <Text style={styles.brandText}>Registrar residuos</Text>
-          </View>
-          <View style={styles.headerBox}>
-            <Text style={styles.title}>TIPO</Text>
-            <Text style={styles.title}>Cant. Aprox.</Text>
-            <Text style={styles.title}>Retribución</Text>
-          </View>
-          {this.props.wasteTypeStatus.data ? (
-            this.wasteTypesList()
-          ) : (
-            <View>
-              <Text style={styles.text}>Cargando residuos...</Text>
+        <View style={styles.scrollViewWrapper}>
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.brand}>
+              <Text style={styles.brandText}>Registrar residuos</Text>
             </View>
-          )}
-          {this.state.next ? (
-            <TouchableOpacity
-              style={styles.btnSubmit}
-              onPress={this.wasteSubmit}>
-              <Text style={styles.submitText}>Continuar</Text>
-            </TouchableOpacity>
-          ) : (
-            <View style={styles.btnSubmitDisabled}>
-              <Text style={styles.submitText}>Continuar</Text>
+            <View style={styles.headerBox}>
+              <Text style={styles.title}>TIPO</Text>
+              <Text style={styles.title}>Cant. Aprox.</Text>
+              <Text style={styles.title}>Retribución</Text>
             </View>
-          )}
-        </ScrollView>
-      </View>
+            {this.props.wasteTypeStatus.data ? (
+              this.wasteTypesList()
+            ) : (
+              <View>
+                <Text style={styles.text}>Cargando residuos...</Text>
+              </View>
+            )}
+            {this.state.next ? (
+              <TouchableOpacity
+                style={styles.btnSubmit}
+                onPress={this.wasteSubmit}
+              >
+                <Text style={styles.submitText}>Continuar</Text>
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.btnSubmitDisabled}>
+                <Text style={styles.submitText}>Continuar</Text>
+              </View>
+            )}
+          </ScrollView>
+        </View>
     );
   }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   myStockStatus: state.myStockStatus,
   wasteTypeStatus: state.wasteTypeStatus,
 });
 
-const mapDispatchToProps = dispatch =>
+const mapDispatchToProps = (dispatch) =>
   bindActionCreators(ActionCreators, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(index);

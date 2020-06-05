@@ -40,23 +40,6 @@ class check extends Component {
     // this.submit = this.submit.bind(this);
   }
 
-  static navigationOptions = ({navigation}) => ({
-    headerLeft: (
-      <NavBarButton
-        icon={
-          <Icon name="angle-left" color={colors.colmenaLightGrey} size={30} />
-        }
-        handleButtonPress={() => navigation.goBack()}
-        location="left"
-      />
-    ),
-    headerStyle: {
-      borderBottomWidth: 0,
-      elevation: 0,
-    },
-    headerTransparent: true,
-  });
-
   componentDidMount() {
     this.props.myAccount();
     this.initData();

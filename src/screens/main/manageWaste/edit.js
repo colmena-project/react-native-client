@@ -76,7 +76,7 @@ class index extends Component {
     return (
         <View style={styles.wrapper}>
           <View style={styles.brand, { padding: 10}}>
-            <Text style={styles.brandText}>Gestionar residuos</Text>
+            <Text style={styles.brandText}>Gestionar residuos { this.props.route.params.type }</Text>
           </View>
           <View>
             { this.props.myAccountStatus.data ? (

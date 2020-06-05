@@ -34,7 +34,7 @@ class index extends Component {
       next: false,
     };
 
-    this.wasteSubmit = this.wasteSubmit.bind(this);
+    // this.wasteSubmit = this.wasteSubmit.bind(this);
   }
 
   limpiarWastes = async () => {
@@ -50,24 +50,26 @@ class index extends Component {
     const res = items.filter(item => item[0].includes('wastes_'));
     return res;
   };
-
+  /*
   wasteSubmit() {
     this.props.navigation.navigate('WastesEdit');
   }
-
+  */
   edit(wasteId){
     Alert.alert('param: ' + wasteId);
   }
 
 
   stockList() {
-    const {myStockStatus} = this.props;
+    const {myStockStatus, navigation} = this.props;
 
     return myStockStatus.data.map((wasteType, index) => {
       let img = Object.values(wasteType.wasteType.iconFile)[3];
       return (
-      <TouchableOpacity onPress={()=> {
-        this.props.navigation.navigate('WastesEdit', { type: wasteType.wasteType.id });
+      <TouchableOpacity onPress={() => {
+        console.log('--PARAM --');
+        console.log(wasteType.wasteType.objectId);
+        return navigation.navigate('WastesEdit', { type: wasteType.wasteType.objectId });
       }}>
         <View key={index.toString()} style={styles.box}>
           <View style={styles.tableItem}>
