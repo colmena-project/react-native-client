@@ -67,7 +67,9 @@ class index extends Component {
       let img = Object.values(wasteType.wasteType.iconFile)[3];
       return (
       <TouchableOpacity onPress={() => {
-        navigation.navigate('WastesEdit');
+        console.log('--PARAM --');
+        console.log(wasteType.wasteType.objectId);
+        return navigation.navigate('WastesEdit', { type: wasteType.wasteType.objectId });
       }}>
         <View key={index.toString()} style={styles.box}>
           <View style={styles.tableItem}>

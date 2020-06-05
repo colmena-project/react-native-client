@@ -12,6 +12,7 @@ const ActionSelector = props => {
 
     const handleRegisterWaste = () => {
         console.log('REGISTER WASTE');
+        props.navigation.navigate('WasteNav');
     };
 
     const handleTransport = () => {
