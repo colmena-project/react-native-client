@@ -25,7 +25,7 @@ import colors from '../styles/colors';
 enableScreens();
 
 const InAppTabNavigator = () => {
-
+  
   const ProfileStack = createNativeStackNavigator();
   const HomeStack = createBottomTabNavigator();
   const ActionStack = createNativeStackNavigator();

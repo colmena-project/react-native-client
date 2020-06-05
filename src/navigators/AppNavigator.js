@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -7,6 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
+// import { AuthorizedScreen } from '../components/auth/AuthorizedScreen';
+
+import {useSelector} from 'react-redux';
 
 import Intro from '../components/Intro';
 import Login from '../screens/auth/login';
@@ -14,8 +15,6 @@ import Logout from '../screens/auth/logout';
 import ForgotPassword from '../components/ForgotPassword';
 import Register from '../screens/auth/register';
 import InAppTabNavigator from './InAppTabNavigator';
-
-
 
 import Waste from '../screens/main/waste';
 import WasteAddress from '../screens/main/waste/location';
@@ -33,6 +32,8 @@ import WastesEdit from '../screens/main/manageWaste/edit';
 enableScreens();
 
 const AppNavigator = () => {
+
+  const isSignIn = useSelector((state)=> state.loggedInStatus);
 
   const RootStack = createNativeStackNavigator();
 
@@ -75,14 +76,22 @@ const AppNavigator = () => {
     <NavigationContainer>
       <RootStack.Navigator>
         {/* <RootStack.Screen name="Intro" component={Intro} /> */}
-        <RootStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <RootStack.Screen name="Logout" component={Logout} options={{ headerShown: false }} />
-        <RootStack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
-        <RootStack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-        <RootStack.Screen name="Home" component={InAppTabNavigator} options={{ headerShown: false }} />
-        <RootStack.Screen name="WasteNav" component={WasteNav} options={{ headerShown: false }} />
-        <RootStack.Screen name="TransportNav" component={TransportNav} options={{ headerShown: false }} />
-        <RootStack.Screen name="ManageWasteNav" component={ManageWasteNav} options={{ headerShown: false }} />
+
+      { isSignIn.loggedInState ?
+        <>
+          <RootStack.Screen name="Home" component={InAppTabNavigator} options={{ headerShown: false }} />
+          <RootStack.Screen name="WasteNav" component={WasteNav} options={{ headerShown: false }} />
+          <RootStack.Screen name="TransportNav" component={TransportNav} options={{ headerShown: false }} />
+          <RootStack.Screen name="ManageWasteNav" component={ManageWasteNav} options={{ headerShown: false }} />
+        </>
+         : 
+         <>
+          <RootStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <RootStack.Screen name="Logout" component={Logout} options={{ headerShown: false }} />
+          <RootStack.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+          <RootStack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+        </>
+      }
       </RootStack.Navigator>
     </NavigationContainer>
   );
