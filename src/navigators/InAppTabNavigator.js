@@ -54,7 +54,7 @@ const InAppTabNavigator = () => {
         tabBarIcon: ({ color, focused }) => (<AntDesign name="home" color={focused ? colors.colmenaGreen : color} size={30} />)
       }} />
       <HomeStack.Screen name="ActionNav" component={ActionNav} options={{
-        tabBarIcon: ({ color, focused }) => ( <AntDesign name={'plus'} color={focused ? colors.colmenaGreen : color} size={32} />),
+        tabBarIcon: ({ color, focused }) => ( <AntDesign name={'plussquareo'} color={focused ? colors.colmenaGreen : color} size={32} />),
       }} />
       <HomeStack.Screen name="ProfileNav" component={ProfileNav} options={{
         tabBarIcon: ({ color, focused }) => (<FontAwesome name="user-o" color={focused ? colors.colmenaGreen : color} size={30} />),
