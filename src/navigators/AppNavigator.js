@@ -30,15 +30,12 @@ import WastesEdit from "../screens/main/manageWaste/edit";
 enableScreens();
 
 const AppNavigator = () => {
+
   const isSignIn = useSelector((state) => state.loggedInStatus);
-
   const RootStack = createNativeStackNavigator();
-
   const WasteStack = createNativeStackNavigator();
   const TransportStack = createNativeStackNavigator();
   const ManageWasteStack = createNativeStackNavigator();
-
-
 
   const setColmenaOptions = (title) => {
     return {
@@ -124,6 +121,7 @@ const AppNavigator = () => {
         <ManageWasteStack.Screen
           name="wastesSelect"
           component={wastesSelect}
+          options={setColmenaOptions('Mis Residuos')}
         />
         <ManageWasteStack.Screen
           name="WastesEdit"
