@@ -25,51 +25,19 @@ import styles from '../../../styles/waste';
 class index extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      account: null,
-      checked: false,
       containers: [],
-      stock: null,
-      next: false,
     };
-
-    // this.wasteSubmit = this.wasteSubmit.bind(this);
   }
-
-  limpiarWastes = async () => {
-    const keys = await AsyncStorage.getAllKeys();
-    const wastesRemove = keys.filter(item => item.includes('wastes_'));
-    await AsyncStorage.multiRemove(wastesRemove);
-    this.setState({next: false});
-  };
-
-  displayStorage = async () => {
-    const keys = await AsyncStorage.getAllKeys();
-    const items = await AsyncStorage.multiGet(keys);
-    const res = items.filter(item => item[0].includes('wastes_'));
-    return res;
-  };
-  /*
-  wasteSubmit() {
-    this.props.navigation.navigate('WastesEdit');
-  }
-  */
-  edit(wasteId){
-    Alert.alert('param: ' + wasteId);
-  }
-
 
   stockList() {
-    const {myStockStatus, navigation} = this.props;
-
-    return myStockStatus.data.map((wasteType, index) => {
+    const {myAccountStatus, navigation} = this.props;
+    const accountData = myAccountStatus.data;
+    return accountData.stock.map((wasteType, index) => {
       let img = Object.values(wasteType.wasteType.iconFile)[3];
       return (
       <TouchableOpacity onPress={() => {
-        console.log('--PARAM --');
-        console.log(wasteType.wasteType.objectId);
-        return navigation.navigate('WastesEdit', { type: wasteType.wasteType.objectId });
+        navigation.navigate('WastesEdit', { type: wasteType.wasteType.objectId });
       }}>
         <View key={index.toString()} style={styles.box}>
           <View style={styles.tableItem}>
@@ -92,9 +60,8 @@ class index extends Component {
   }
 
   componentDidMount() {
-    // this.checkInitial();
-    this.props.myStock();
-    //this.props.wasteTypes();
+    this.props.wasteTypes();
+    this.props.myAccount();
   }
 
   render() {
@@ -111,7 +78,7 @@ class index extends Component {
             <Text style={styles.title}></Text>
           </View>
 
-          {this.props.myStockStatus.data ? (
+          {this.props.myAccountStatus.data ? (
             this.stockList()
           ) : (
             <View>
@@ -125,7 +92,7 @@ class index extends Component {
   }
 }
 const mapStateToProps = state => ({
-  myStockStatus: state.myStockStatus,
+  myAccountStatus: state.myAccountStatus,
 });
 
 const mapDispatchToProps = dispatch =>

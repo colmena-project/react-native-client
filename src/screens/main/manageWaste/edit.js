@@ -33,14 +33,9 @@ class index extends Component {
       containers: [],
     };
     this.remove = this.remove.bind(this);
-    //this.handleChecked = this.handleChecked.bind(this);
-    //this.submit = this.submit.bind(this);
   }
 
-
-  componentDidMount() {
-    this.props.wasteTypes();
-    this.props.myAccount();
+  componentDidMount(){
     this.initialData();
   }
 
@@ -52,7 +47,9 @@ class index extends Component {
       [
         {
           text: 'Si, estoy seguro',
-          onPress: () => this.setState({containers: this.state.containers.filter(item => item.objectId !== id)})
+          onPress: () => {
+            this.setState({containers: this.state.containers.filter(item => item.objectId !== id)})
+          }
         },
         {
           text: 'Cancelar',
@@ -67,7 +64,8 @@ class index extends Component {
   initialData = () => {
     const {myAccountStatus} = this.props;
     const accountData = myAccountStatus.data;
-    const filteredData = accountData.containers.filter(item => item.status == 'RECOVERED');
+    const containersOfType = accountData.containers.filter(item => item.type.id == this.props.route.params.type);
+    const filteredData = containersOfType.filter(item => item.status == 'RECOVERED');
     this.setState({containers: filteredData});
   };
 
@@ -76,12 +74,12 @@ class index extends Component {
     return (
         <View style={styles.wrapper}>
           <View style={styles.brand, { padding: 10}}>
-            <Text style={styles.brandText}>Gestionar residuos { this.props.route.params.type }</Text>
+            <Text style={styles.brandText}>Gestionar residuos</Text>
           </View>
           <View>
             { this.props.myAccountStatus.data ? (
                 <FlatList
-                  style={{ height: '76%'}}
+                  style={{ height: '70%'}}
                   data={ this.state.containers } 
                   keyExtractor={(item, index) => index.toString()}
                   renderItem={({item}) => <WasteEdit waste={item} action={this.remove} />} 
@@ -95,7 +93,7 @@ class index extends Component {
                   icon="plus"
                   color={Colors.green500}
                   size={40}
-                  onPress={() => console.log('Pressed')}
+                  onPress={() => console.log('Agregando...')}
                   style={{ backgroundColor: Colors.green50 }}
                 />
               </View>
