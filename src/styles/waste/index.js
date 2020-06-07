@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     width: '100%',
     paddingTop: 10,
-    paddingBottom: 10,
+    paddingBottom: 0,
   },
   tableGroup: {
     display: 'flex',
@@ -168,9 +168,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.colmenaUltraLightGrey,
   },
   tableItem: {
-    alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
+    width: '30%',
   },
   footText: {
     fontFamily: 'Montserrat-Medium',

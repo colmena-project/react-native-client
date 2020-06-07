@@ -33,9 +33,6 @@ class index extends Component {
   }
 
   submit() {
-    console.log('-- NAVEGATOR! --');
-    console.log(this.props.navigation);
-    console.log('FIN NAV');
     this.props.navigation.navigate('TransportAddress');
   }
 

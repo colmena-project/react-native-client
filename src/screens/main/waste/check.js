@@ -110,13 +110,13 @@ class check extends Component {
       let waste = JSON.parse(item[1]);
       return (
         <View key={index} style={styles.tableGroup}>
-          <View style={styles.tableItem}>
+          <View style={{...styles.tableItem, alignItems:'flex-start' }}>
             <Text style={styles.title}>{waste.name}</Text>
           </View>
           <View style={styles.tableItem}>
             <Text style={styles.title}>{waste.qty}</Text>
           </View>
-          <View style={styles.tableItem}>
+          <View style={{...styles.tableItem, alignItems:'flex-end'}}>
             <Text style={styles.title}> {this.calcularJC(waste.id)} jc</Text>
           </View>
         </View>
@@ -133,12 +133,14 @@ class check extends Component {
       <View style={styles.scrollViewWrapper}>
         <Loader modalVisible={loadingVisible} animationType="fade" />
         <ScrollView style={styles.scrollView}>
-          <View style={styles.headerMsg}>
+          <View style={{width: '100%'}}>
             <Image
-              style={styles.colmenaLogo}
+              style={{...styles.headerImage, width: 80, height:80, alignItems: 'center', alignContent:'center',textAlign: 'center' }}
               source={require('../../../../assets/icons/png/icon-registrar-gestionar.png')}
             />
-            <Text style={styles.brandText}>Verificar info</Text>
+          </View>
+          <View style={{ width:'100%', marginBottom: 15,}}>
+            <Text style={{...styles.headerTitle, fontSize: 28,}}>Verificar info</Text>
           </View>
           <View>
           {myAccountStatus.data ? (

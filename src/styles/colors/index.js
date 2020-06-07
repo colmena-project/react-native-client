@@ -10,7 +10,7 @@ export default {
   colmenaGrey: '#6D7278',
   colmenaGrey02: '#949aa2',
   colmenaLightGrey: '#b3b3b3',
-  colmenaUltraLightGrey: '#ececec',
+  colmenaUltraLightGrey: '#f9f9fb',
   colmenaGreyDisabled: '#dedede',
   colmenaBlue: '#0D47A1',
   black: '#000000',
