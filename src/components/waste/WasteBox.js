@@ -111,7 +111,7 @@ class WasteBox extends Component {
               );
             }}
           />
-          <Text style={styles.tableItem}>
+          <Text style={{alignItems: 'center' }}>
             {this.state.qty > 1
               ? this.props.waste.get('containerPlural')
               : this.props.waste.get('container')}

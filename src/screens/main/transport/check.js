@@ -62,6 +62,26 @@ class check extends Component {
     return retributionDistance.transport;
   };
 
+  distanceKm = async() => {
+    const {myAccountStatus} = this.props;
+    const latLong = myAccountStatus.data.addresses[0].latLng;
+    const sRc = await AsyncStorage.getItem('RecyclingCenter');
+    const rc = JSON.parse(sRc);
+
+    const distance = await Parse.Cloud.run('distanceCalculate',
+    {
+      "origin": {
+          "lat": latLong.latitude,
+          "lng": latLong.longitude
+      },
+      "destination": {
+        "lat": rc.latitude,
+          "lng": rc.longitude
+      }
+    });
+    return distance.distance;
+  };
+
   initData = async () => {
     const {myAccountStatus} = this.props;
 
@@ -92,11 +112,16 @@ class check extends Component {
 
     const jcDistance = await this.estimateTransportDistance();
 
+    const distance = await this.distanceKm();
+  
+    const element = distance[0].elements;
+
+    
     this.setState({ 
       localContainers: containers, 
       totalAcopio: retribution['material']['total'], 
       totalTransport: jcDistance.total, 
-      distance: '...',
+      distance: element[0].distance.text,
       loadingVisible: false,
     });
   };
@@ -131,14 +156,14 @@ class check extends Component {
       <View style={styles.scrollViewWrapper}>
         { loadingVisible ? <ActivityIndicator animating={loadingVisible} style={{ flex: 1, alignItems: 'center' }} color={colors.colmenaGreen} /> :
         <ScrollView style={styles.scrollView}>
-          <View style={styles.headerMsg}>
+          <View style={{...styles.headerMsg, marginTop: 20}}>
             <Text style={styles.headerText}>Verificar info de Transporte</Text>
             <Image
               style={styles.headerIcon}
               source={require('../../../../assets/icons/png/icon-transportar.png')}
             />
           </View>
-          <View>
+          <View style={{ marginTop: 20, marginBottom: 20}}>
             {this.state.RecyclingCenter && 
             <List.Item 
               title={this.state.RecyclingCenter.name}
@@ -156,27 +181,28 @@ class check extends Component {
               </View>
             );
           })}
-          <View style={styles.tableFoot}>
-            <Text style={styles.footText}>
-              Por Material Recuperado{' '}
-              <Text style={styles.footTotal}>{this.state.totalAcopio} jc</Text>
-            </Text>
-          </View>
+          <View style={{ marginTop: 30}}>
+            <View style={styles.tableFoot}>
+              <Text style={styles.footText}>
+                Por Material Recuperado{' '}
+                <Text style={styles.footTotal}>{this.state.totalAcopio} jc</Text>
+              </Text>
+            </View>
 
-          <View style={styles.tableFoot}>
-            <Text style={styles.footText}>
-              Por Transporte{' '}
-              <Text style={styles.footTotal}>{this.state.totalTransport} jc</Text>
-            </Text>
-          </View>
+            <View style={styles.tableFoot}>
+              <Text style={styles.footText}>
+                Por Transporte{' '}
+                <Text style={styles.footTotal}>{this.state.totalTransport} jc</Text>
+              </Text>
+            </View>
 
-          <View style={styles.tableFoot}>
-            <Text style={styles.footText}>
-              Distancia{' '}
-              <Text style={styles.footTotal}>{this.state.distance} km</Text>
-            </Text>
+            <View style={styles.tableFoot}>
+              <Text style={styles.footText}>
+                Distancia{' '}
+                <Text style={styles.footTotal}>{this.state.distance}</Text>
+              </Text>
+            </View>
           </View>
-          
           <View>
             <TouchableOpacity
               style={styles.btnSubmit}
