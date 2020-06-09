@@ -10,9 +10,6 @@ import {
 import { Parse } from 'parse/react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import NavBarButton from '../../../components/buttons/NavBarButton';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
 import colors from '../../../styles/colors';
 
 import { ActivityIndicator, List} from 'react-native-paper';
@@ -35,11 +32,10 @@ class check extends Component {
       totalAcopio: null,
       totalTransport: null,
       distance: null,
+      duration: null,
       RecyclingCenter: null,
       loadingVisible: true,
     };
-
-    // this.submit = this.submit.bind(this);
   }
 
   componentDidMount() {
@@ -113,18 +109,15 @@ class check extends Component {
     });
 
     const jcDistance = await this.estimateTransportDistance();
-
     const distance = await this.distanceKm();
-  
     const element = distance[0].elements;
 
-    
     this.setState({ 
       localContainers: containers, 
       totalAcopio: retribution['material']['total'], 
       totalTransport: jcDistance.total, 
       distance: element[0].distance.text,
-      tiempo: secondsToHmsMin(element[0].duration.value),
+      duration: secondsToHmsMin(element[0].duration.value),
       loadingVisible: false,
     });
   };
@@ -205,7 +198,7 @@ class check extends Component {
               <Text style={styles.footText}>
                 Distancia{' '}
                 <Text style={styles.footTotal}>{this.state.distance}</Text>
-                {' '}<Text style={{color: colors.colmenaGreen, fontWeight: 'bold',}}>{this.state.tiempo}</Text>
+                {' '}<Text style={{color: colors.colmenaGreen, fontWeight: 'bold',}}>{this.state.duration}</Text>
               </Text>
             </View>
 
