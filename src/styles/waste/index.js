@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
   footTotal: {
     fontFamily: 'Montserrat-Medium',
     textAlign: 'center',
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: 'bold',
     margin: 10,
     color: colors.colmenaGreen,

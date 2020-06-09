@@ -48,7 +48,7 @@ class index extends Component {
           </View>
           <View style={styles.tableItem}>
               <Text>{wasteType.ammount}</Text>
-              <Text style={styles.tableItem}>
+              <Text style={{alignItems: 'center' }}>
               {wasteType.ammount > 1 ? wasteType.wasteType.containerPlural : wasteType.wasteType.container }
               </Text>
           </View>

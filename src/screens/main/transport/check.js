@@ -23,6 +23,8 @@ import ActionCreators from '../../../redux/actions';
 
 import styles from '../../../styles/waste';
 
+import {secondsToHmsMin} from '../../../utils/time';
+
 class check extends Component {
 
   constructor(props) {
@@ -122,10 +124,11 @@ class check extends Component {
       totalAcopio: retribution['material']['total'], 
       totalTransport: jcDistance.total, 
       distance: element[0].distance.text,
+      tiempo: secondsToHmsMin(element[0].duration.value),
       loadingVisible: false,
     });
   };
-  
+
   saveTransport = async () =>{
     const containers = this.state.localContainers.map(item => {
       return JSON.parse(item[1]).id;
@@ -181,18 +184,20 @@ class check extends Component {
               </View>
             );
           })}
-          <View style={{ marginTop: 30}}>
+          <View style={{ marginTop: 10}}>
             <View style={styles.tableFoot}>
               <Text style={styles.footText}>
                 Por Material Recuperado{' '}
-                <Text style={styles.footTotal}>{this.state.totalAcopio} jc</Text>
+                <Text style={styles.footTotal}>{this.state.totalAcopio}</Text>{' '}
+                <Text style={{color: colors.colmenaGreen, fontWeight: 'bold',}}>JYC</Text>
               </Text>
             </View>
 
             <View style={styles.tableFoot}>
               <Text style={styles.footText}>
                 Por Transporte{' '}
-                <Text style={styles.footTotal}>{this.state.totalTransport} jc</Text>
+                <Text style={styles.footTotal}>{this.state.totalTransport}</Text>{' '}
+                <Text style={{color: colors.colmenaGreen, fontWeight: 'bold',}}>JYC</Text>
               </Text>
             </View>
 
@@ -200,10 +205,12 @@ class check extends Component {
               <Text style={styles.footText}>
                 Distancia{' '}
                 <Text style={styles.footTotal}>{this.state.distance}</Text>
+                {' '}<Text style={{color: colors.colmenaGreen, fontWeight: 'bold',}}>{this.state.tiempo}</Text>
               </Text>
             </View>
+
           </View>
-          <View>
+          <View style={{ marginTop: 10}}>
             <TouchableOpacity
               style={styles.btnSubmit}
               onPress={this.submit}>
