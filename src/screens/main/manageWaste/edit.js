@@ -10,15 +10,13 @@ import {
   Alert
 } from 'react-native';
 
-import { IconButton, Colors } from 'react-native-paper';
+import Loader from '../../../components/Loader';
 
-import Parse from 'parse/react-native';
+import { IconButton, Colors } from 'react-native-paper';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ActionCreators from '../../../redux/actions';
-
-import AsyncStorage from '@react-native-community/async-storage';
 
 import WasteEdit from '../../../components/waste/WasteEdit';
 
@@ -31,6 +29,7 @@ class index extends Component {
       account: null,
       checks: 0,
       containers: [],
+      loadingVisible: true,
     };
     this.remove = this.remove.bind(this);
   }
@@ -67,12 +66,24 @@ class index extends Component {
     const containersOfType = accountData.containers.filter(item => item.type.id == this.props.route.params.type);
     const filteredData = containersOfType.filter(item => item.status == 'RECOVERED');
     this.setState({containers: filteredData});
+    this.setState({loadingVisible: false});
+  };
+
+  addContainer = async () => {
+    const {myAccountStatus, route} = this.props;
+
+    this.setState({loadingVisible: true});
+
+    const containerAdded = await this.props.updateStock([{ typeId: route.params.type, qty: 1}], myAccountStatus.data.addresses[0].objectId);
+
+    this.setState({loadingVisible: false});
   };
 
   render() {
-    const {checks} = this.state;
+    const {checks, loadingVisible} = this.state;
     return (
         <View style={styles.wrapper}>
+          <Loader modalVisible={loadingVisible} animationType="fade" />
           <View style={styles.brand, { padding: 10}}>
             <Text style={styles.brandText}>Gestionar residuos</Text>
           </View>
@@ -93,7 +104,7 @@ class index extends Component {
                   icon="plus"
                   color={Colors.green500}
                   size={40}
-                  onPress={() => console.log('Agregando...')}
+                  onPress={() => this.addContainer()}
                   style={{ backgroundColor: Colors.green50 }}
                 />
               </View>

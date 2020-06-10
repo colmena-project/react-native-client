@@ -36,7 +36,7 @@ class index extends Component {
     return accountData.stock.map((wasteType, index) => {
       let img = Object.values(wasteType.wasteType.iconFile)[3];
       return (
-      <TouchableOpacity onPress={() => {
+      <TouchableOpacity key={index.toString()} onPress={() => {
         navigation.navigate('WastesEdit', { type: wasteType.wasteType.objectId });
       }}>
         <View key={index.toString()} style={styles.box}>
