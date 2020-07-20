@@ -1,0 +1,320 @@
+import React, { useState } from 'react';
+import { View, TouchableOpacity, StyleSheet, Text, Image, Button, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import Parse from 'parse/react-native';
+import { useDispatch } from 'react-redux';
+import { setLoggedIn } from "../../redux/auth/actions";
+import Input from '../../components/form/Input';
+import validate from '../../services/Validate';
+import Installation from '../../services/Installation';
+import colors from '../../constants/colors';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+const RegisterScreen = props => {
+
+    const fields = {
+        email: '',
+        firstName: '',
+        lastName: '',
+        username: '',
+        password: '',
+        passwordConfirm: ''
+    };
+    const [inputs, setInputs] = useState(fields);
+    const [errorMessages, setErrorMessages] = useState(fields);
+    const [isLoading, setIsloading] = useState(false);
+    const dispatch = useDispatch();
+
+    const checkErrors = errors => {
+        for (item in errors) {
+            if (errors[item] !== null) {
+                console.log(item + ' => ' + errors[item]);
+                throw { message: 'Revise los datos!' };
+            }
+        }
+    };
+
+    const handleError = (field, value) => {
+        const errors = { ...errorMessages };
+        errors[field] = validate(field, value);
+        setErrorMessages(errors);
+    };
+
+    const handleField = (field, value) => {
+        const updateData = { ...inputs };
+        updateData[field] = value;
+        setInputs(updateData);
+    };
+
+    const handleInput = (field, value) => {
+        handleError(field, value);
+        handleField(field, value);
+    };
+
+    const handlePasswordConfirm = (field, value) => {
+        const errors = { ...errorMessages };
+        errors[field] = '';
+        if (value != inputs.password) {
+            errors[field] = 'Las contraseñas deben coincidir';
+        }
+        setErrorMessages(errors);
+        handleField(field, value);
+    };
+
+    const handlePressLogin = () => {
+        props.navigation.navigate('Login');
+    };
+
+    const resetFields = () => {
+        setInputs(fields);
+    };
+
+    const handleRegister = async () => {
+        setIsloading(true);
+        try {
+            await Parse.User.currentAsync().then(async user => {
+                if (user) {
+                    await Parse.User.logOut();
+                }
+            });
+            checkErrors();
+            const params = {
+                email: inputs.email,
+                password: inputs.password,
+                firstName: inputs.firstName,
+                lastName: inputs.lastName,
+                active: true,
+                defaultLanguage: 'es-AR',
+            };
+            const account = new Parse.Object('Account');
+            await account.save(params);
+            const userSessionToken = account.get('userSessionToken');
+            if (userSessionToken) {
+                const user = await Parse.User.become(userSessionToken)
+                resetFields();
+                setIsloading(false);
+                await Installation.setDeviceInstallation(inputs.password);
+                dispatch(setLoggedIn(true));
+            } else {
+                resetFields();
+                setIsloading(false);
+                Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo.');
+            }
+            props.navigation.navigate('Login');
+        } catch (error) {
+            setIsloading(false);
+            console.log("Error: " + error.code + " " + error.message);
+            Alert.alert(error.message);
+        }
+    };
+
+    return (
+        <View style={styles.screen}>
+            {isLoading === true ? <ActivityIndicator size={'large'} color={colors.colmenaGreen} /> :
+                <ScrollView>
+                    <View style={styles.container}>
+
+                        <View style={styles.loginText}>
+                            <View style={styles.colmenaHeaderTextContainer}>
+                                <Text style={styles.colmenaHeaderText}>Registrarse</Text>
+                            </View>
+                            <View style={styles.colmenaHeaderIconContainer}>
+                                <Image style={styles.colmenaHeaderIcon} source={require('../../../assets/colmena/icon.png')} />
+                            </View>
+                        </View>
+
+                        <View style={styles.inputContainer}>
+                            <View style={styles.input}>
+                                <Input
+                                    label={'Usuario'}
+                                    style={styles.input}
+                                    blurOnSubmit
+                                    keyboardType={'default'}
+                                    autoCapitalize={'none'}
+                                    autoCorrect={false}
+                                    value={inputs.username}
+                                    onChangeText={value => setUsername(value)}
+                                />
+                            </View>
+                            <View style={styles.input}>
+                                <Input
+                                    label={'Nombre/s'}
+                                    style={styles.input}
+                                    blurOnSubmit
+                                    keyboardType={'default'}
+                                    autoCapitalize={'none'}
+                                    autoCorrect={false}
+                                    value={inputs.firstName}
+                                    onChangeText={value => setFullName(value)}
+                                />
+                            </View>
+                            <View style={styles.input}>
+                                <Input
+                                    label={'Apellido/s'}
+                                    style={styles.input}
+                                    blurOnSubmit
+                                    keyboardType={'default'}
+                                    autoCapitalize={'none'}
+                                    autoCorrect={false}
+                                    value={inputs.lastName}
+                                    onChangeText={value => setFullName(value)}
+                                />
+                            </View>
+                            <View style={styles.input}>
+                                <Input
+                                    label={'Email'}
+                                    style={styles.input}
+                                    blurOnSubmit
+                                    keyboardType={'email-address'}
+                                    autoCapitalize={'none'}
+                                    autoCorrect={false}
+                                    value={inputs.email}
+                                    onChangeText={value => setEmail(value)}
+                                />
+                            </View>
+                            <View style={styles.input}>
+                                <Input
+                                    label={'Contraseña'}
+                                    style={styles.input}
+                                    blurOnSubmit
+                                    keyboardType={'default'}
+                                    autoCapitalize={'none'}
+                                    autoCorrect={false}
+                                    secureTextEntry
+                                    value={inputs.password}
+                                    onChangeText={value => setPassword(value)}
+                                />
+                            </View>
+
+                            <View style={styles.input}>
+                                <Input
+                                    label={'Confirmar contraseña'}
+                                    style={styles.input}
+                                    blurOnSubmit
+                                    keyboardType={'default'}
+                                    autoCapitalize={'none'}
+                                    autoCorrect={false}
+                                    secureTextEntry
+                                    value={inputs.confirmPassword}
+                                    onChangeText={value => setConfirmPassword(value)}
+                                />
+                            </View>
+
+                        </View>
+
+                        <View style={styles.additionalContainer}>
+                            <View style={styles.button}>
+                                <Button color={colors.colmenaGreen} title={'Registrarme'} onPress={handleRegister} />
+                            </View>
+                        </View>
+
+                        <View style={styles.additionalContainer}>
+                            <View style={styles.text}>
+                                <Text style={styles.textCenter}>O ingresa utilizando tu cuenta de:</Text>
+                            </View>
+                            <View style={styles.socialIconsContainer}>
+                                <TouchableOpacity style={styles.facebookLoginBtn} onPress={() => {}}>
+                                    <MaterialCommunityIcons style={styles.facebookLoginTextIcon} name={'facebook'} color={'white'} size={24} />
+                                    <Text style={styles.facebookLoginText}>Facebook</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                    </View>
+                </ScrollView>
+            }
+        </View>
+    )
+};
+
+const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+    },
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '85%',
+        margin: '7.5%',
+    },
+    loginText: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    inputContainer: {
+        flex: 1,
+        width: '100%',
+        alignItems: 'center',
+        marginTop: 30,
+    },
+    additionalContainer: {
+        alignItems: 'center',
+        paddingTop: 40,
+    },
+    input: {
+        width: '100%',
+    },
+    btnContainer: {
+        marginVertical: 2,
+    },
+    button: {
+        width: 400,
+        maxWidth: '100%',
+        marginBottom: 20,
+    },
+    text: {
+        width: '100%',
+        marginVertical: 10,
+    },
+    textCenter: {
+        textAlign: 'center',
+    },
+    underlinedColoredText: {
+        textAlign: 'center',
+        color: colors.colmenaGreen,
+        textDecorationLine: 'underline'
+    },
+    colmenaHeaderTextContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+    },
+    colmenaHeaderText: {
+        fontSize: 30,
+        marginLeft: 20,
+        color: colors.colmenaGrey,
+        fontFamily: 'Nunito-Regular'
+    },
+    colmenaHeaderIconContainer: {
+        overflow: 'hidden',
+    },
+    colmenaHeaderIcon: {
+        marginRight: 20,
+        width: 75,
+        height: 75
+    },
+    socialIconsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginTop: 10,
+    },
+    facebookLoginBtn: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 200,
+        backgroundColor: colors.colmenaGreen,
+        padding: 7,
+        borderRadius: 3
+    },
+    facebookLoginText: {
+        fontFamily: 'Nunito-Bold',
+        color: 'white',
+        fontSize: 16
+    }
+});
+
+export default RegisterScreen;

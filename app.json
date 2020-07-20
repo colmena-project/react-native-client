@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "name": "colmena-expo",
+    "slug": "colmena-expo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/colmena_icon.png",
+    "splash": {
+      "image": "./assets/colmena_splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}

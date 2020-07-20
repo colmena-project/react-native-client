@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="21" height="20" viewBox="0 0 21 20">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="21" height="20" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="feed" clip-path="url(#clip-path)">
+    <g id="Group">
+      <path id="Fill_285" data-name="Fill 285" d="M19.091,1.9H16.227V0H14.318V5.714h1.909V3.81h2.864V18.1H1.909V3.81H3.818V1.9H1.909A1.908,1.908,0,0,0,0,3.81V18.1A1.908,1.908,0,0,0,1.909,20H19.091A1.908,1.908,0,0,0,21,18.1V3.81a1.908,1.908,0,0,0-1.909-1.9" fill="#5ebfa5"/>
+      <path id="Fill_286" data-name="Fill 286" d="M2,4H9V2H2V0H0V6H2Z" transform="translate(4)" fill="#5ebfa5"/>
+      <path id="Fill_287" data-name="Fill 287" d="M3,0H0V3H3Z" transform="translate(5 8)" fill="#5ebfa5"/>
+      <path id="Fill_288" data-name="Fill 288" d="M3,0H0V3H3Z" transform="translate(9 8)" fill="#5ebfa5"/>
+      <path id="Fill_289" data-name="Fill 289" d="M0,3H3V0H0Z" transform="translate(13 8)" fill="#5ebfa5"/>
+      <path id="Fill_290" data-name="Fill 290" d="M0,3H3V0H0Z" transform="translate(5 12)" fill="#5ebfa5"/>
+      <path id="Fill_291" data-name="Fill 291" d="M0,3H3V0H0Z" transform="translate(9 12)" fill="#5ebfa5"/>
+    </g>
+  </g>
+</svg>
