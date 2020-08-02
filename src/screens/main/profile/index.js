@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Image, StyleSheet, ScrollView, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Parse } from 'parse/react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
+import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -107,10 +108,16 @@ const MyProfile = props => {
 
                     <View style={{ flexDirection: 'row', marginBottom: 20 }}>
                         <View style={styles.profilePicture}>
-                            <Image
-                                style={styles.avatar}
-                                source={{ uri: userAccount.avatar._url }}
-                            />
+                            {(userAccount && userAccount.avatar) ?
+                                <Image
+                                    style={styles.avatar}
+                                    source={{ uri: userAccount.avatar._url }}
+                                /> :
+                                <Image
+                                    style={styles.avatar}
+                                    source={require('../../../../assets/default_user_1.png')}
+                                />
+                            }
                             <Text style={styles.name}>
                                 @{userAccount.createdBy.get('username')}
                             </Text>
@@ -227,7 +234,7 @@ const MyProfile = props => {
 
                     <View style={styles.wasteCardsContainer}>
                         <View style={{ alignItems: 'flex-end', paddingHorizontal: 20 }}>
-                            <Image style={{ width: 130, height: 130, resizeMode: 'contain' }} source={require('../../../../assets/icons/save_the_planet.png')} />
+                            <Image style={{ width: 130, height: 130, resizeMode: 'contain' }} source={require('../../../../assets/img/save_the_planet.png')} />
                             <Text style={{ ...styles.impactDescription, fontSize: 14 }}>Retribución estimada</Text>
                             <Text style={{ ...styles.impactTitle, fontSize: 40, letterSpacing: 2, fontFamily: 'Nunito-Bold' }}>400 jyc</Text>
                         </View>
@@ -300,28 +307,30 @@ const MyProfile = props => {
 
 
     return (
-        <View style={{
-            flex: 1,
-            padding: 0,
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            backgroundColor: colors.colmenaBackground,
-        }}>
-            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
-                <View style={styles.tabBarContainer}>
-                    <TabView
-                        navigationState={{ index, routes }}
-                        renderScene={renderScene}
-                        onIndexChange={setIndex}
-                        initialLayout={initialLayout}
-                        renderTabBar={renderTabBar}
-                    />
-                </View>
-            }
-        </View>
+        <AuthorizedScreen>
+            <View style={{
+                flex: 1,
+                padding: 0,
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                backgroundColor: colors.colmenaBackground,
+            }}>
+                {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                    <View style={styles.tabBarContainer}>
+                        <TabView
+                            navigationState={{ index, routes }}
+                            renderScene={renderScene}
+                            onIndexChange={setIndex}
+                            initialLayout={initialLayout}
+                            renderTabBar={renderTabBar}
+                        />
+                    </View>
+                }
+            </View>
+        </AuthorizedScreen>
     );
 };
 

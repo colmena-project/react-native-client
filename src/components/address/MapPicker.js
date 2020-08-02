@@ -46,7 +46,9 @@ const MapPicker = props => {
                     title={'Picked Location'}
                     coordinate={props.coords}
                     onDragEnd={selectedLocationHandler}
-                ></Marker>
+                >
+                    {props.marker}
+                </Marker>
             </MapView>
 
             <TouchableOpacity onPress={getCurrentPosition} style={styles.getCurrentPositionIcon}>

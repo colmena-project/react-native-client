@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 import colors from '../../../../constants/colors';
 
-const WasteActions = props => {
+const ManageWasteActionsScreen = props => {
 
     const handleManageProductPress = product => {
         props.navigation.navigate('ManageWaste')
@@ -13,9 +13,7 @@ const WasteActions = props => {
     return (
         <View style={styles.scrollViewWrapper} >
 
-
-            <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, paddingHorizontal: 50, marginBottom: 20, textAlign: 'justify' }}><Text style={{ fontWeight: 'bold' }}>@wara</Text> eliga el tipo de producto a modificar</Text>
-
+            <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, paddingHorizontal: 50, marginBottom: 20, textAlign: 'left' }}><Text style={{ fontWeight: 'bold' }}>@wara</Text> elegí el residuo a modificar</Text>
 
             <View style={styles.wasteTabContainer}>
 
@@ -28,7 +26,8 @@ const WasteActions = props => {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.wasteItem}>
+                <View style
+                ={styles.wasteItem}>
                     <Image style={styles.wasteImage} source={require('../../../../../assets/profile/profile_caps.png')} />
                     <Text style={styles.wasteDescription}>Tapitas (2 bolsas)</Text>
                     <View style={styles.btnContainer}>
@@ -37,8 +36,8 @@ const WasteActions = props => {
                         </TouchableOpacity>
                     </View>
                 </View>
-
             </View>
+
         </View >
     );
 };
@@ -208,7 +207,7 @@ const styles = StyleSheet.create({
 
     wasteTabContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         width: '100%',
         paddingVertical: 20,
         borderBottomWidth: 1,
@@ -282,10 +281,9 @@ const styles = StyleSheet.create({
     wasteItem: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: '40%',
+        width: '45%',
         height: 165,
         padding: 10,
-        marginRight: 10,
     },
     impactTitle: {
         color: colors.colmenaGreen,
@@ -345,4 +343,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default WasteActions;
+export default ManageWasteActionsScreen;

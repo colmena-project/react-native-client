@@ -4,7 +4,7 @@ import { setLoggedIn } from '../redux/auth/actions';
 const isSignedIn = async (dispatch) => {
     let user = undefined;
     try {
-        user = await Parse.User.currentAsync();
+        user = await Parse.User.me();
         return user;
     } catch (err) {
         Parse.User.logOut().catch(err => console.log('INVALID SESSION')).finally(() => dispatch(setLoggedIn(false)));

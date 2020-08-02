@@ -8,6 +8,7 @@ import validate from '../../services/Validate';
 import Installation from '../../services/Installation';
 import colors from '../../constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Slugify from 'slugify';
 
 const RegisterScreen = props => {
 
@@ -25,9 +26,8 @@ const RegisterScreen = props => {
     const dispatch = useDispatch();
 
     const checkErrors = errors => {
-        for (item in errors) {
+        for (let item in errors) {
             if (errors[item] !== null) {
-                console.log(item + ' => ' + errors[item]);
                 throw { message: 'Revise los datos!' };
             }
         }
@@ -52,16 +52,13 @@ const RegisterScreen = props => {
 
     const handlePasswordConfirm = (field, value) => {
         const errors = { ...errorMessages };
-        errors[field] = '';
         if (value != inputs.password) {
             errors[field] = 'Las contraseñas deben coincidir';
+        } else {
+            errors[field] = '';
         }
         setErrorMessages(errors);
         handleField(field, value);
-    };
-
-    const handlePressLogin = () => {
-        props.navigation.navigate('Login');
     };
 
     const resetFields = () => {
@@ -82,17 +79,18 @@ const RegisterScreen = props => {
                 password: inputs.password,
                 firstName: inputs.firstName,
                 lastName: inputs.lastName,
-                active: true,
+                username: Slugify(`${inputs.firstName} ${inputs.lastName}`, '_'),
                 defaultLanguage: 'es-AR',
             };
-            const account = new Parse.Object('Account');
-            await account.save(params);
+            // const account = new Parse.Object('Account');
+            // await account.save(params);
+            const account = await Parse.Cloud.run('createAccount', params);
             const userSessionToken = account.get('userSessionToken');
             if (userSessionToken) {
                 const user = await Parse.User.become(userSessionToken)
                 resetFields();
                 setIsloading(false);
-                await Installation.setDeviceInstallation(inputs.password);
+                await Installation.setInstallation();
                 dispatch(setLoggedIn(true));
             } else {
                 resetFields();
@@ -123,7 +121,7 @@ const RegisterScreen = props => {
                         </View>
 
                         <View style={styles.inputContainer}>
-                            <View style={styles.input}>
+                            {/* <View style={styles.input}>
                                 <Input
                                     label={'Usuario'}
                                     style={styles.input}
@@ -134,7 +132,7 @@ const RegisterScreen = props => {
                                     value={inputs.username}
                                     onChangeText={value => setUsername(value)}
                                 />
-                            </View>
+                            </View> */}
                             <View style={styles.input}>
                                 <Input
                                     label={'Nombre/s'}
@@ -144,7 +142,8 @@ const RegisterScreen = props => {
                                     autoCapitalize={'none'}
                                     autoCorrect={false}
                                     value={inputs.firstName}
-                                    onChangeText={value => setFullName(value)}
+                                    error={errorMessages.firstName}
+                                    onChangeText={value => handleInput('firstName', value)}
                                 />
                             </View>
                             <View style={styles.input}>
@@ -156,7 +155,8 @@ const RegisterScreen = props => {
                                     autoCapitalize={'none'}
                                     autoCorrect={false}
                                     value={inputs.lastName}
-                                    onChangeText={value => setFullName(value)}
+                                    error={errorMessages.lastName}
+                                    onChangeText={value => handleInput('lastName', value)}
                                 />
                             </View>
                             <View style={styles.input}>
@@ -168,7 +168,8 @@ const RegisterScreen = props => {
                                     autoCapitalize={'none'}
                                     autoCorrect={false}
                                     value={inputs.email}
-                                    onChangeText={value => setEmail(value)}
+                                    error={errorMessages.email}
+                                    onChangeText={value => handleInput('email', value)}
                                 />
                             </View>
                             <View style={styles.input}>
@@ -181,7 +182,8 @@ const RegisterScreen = props => {
                                     autoCorrect={false}
                                     secureTextEntry
                                     value={inputs.password}
-                                    onChangeText={value => setPassword(value)}
+                                    error={errorMessages.password}
+                                    onChangeText={value => handleInput('password', value)}
                                 />
                             </View>
 
@@ -195,7 +197,8 @@ const RegisterScreen = props => {
                                     autoCorrect={false}
                                     secureTextEntry
                                     value={inputs.confirmPassword}
-                                    onChangeText={value => setConfirmPassword(value)}
+                                    error={errorMessages.confirmPassword}
+                                    onChangeText={value => handlePasswordConfirm('confirmPassword', value)}
                                 />
                             </View>
 
@@ -212,7 +215,7 @@ const RegisterScreen = props => {
                                 <Text style={styles.textCenter}>O ingresa utilizando tu cuenta de:</Text>
                             </View>
                             <View style={styles.socialIconsContainer}>
-                                <TouchableOpacity style={styles.facebookLoginBtn} onPress={() => {}}>
+                                <TouchableOpacity style={styles.facebookLoginBtn} onPress={() => { }}>
                                     <MaterialCommunityIcons style={styles.facebookLoginTextIcon} name={'facebook'} color={'white'} size={24} />
                                     <Text style={styles.facebookLoginText}>Facebook</Text>
                                 </TouchableOpacity>

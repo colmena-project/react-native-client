@@ -1,49 +1,53 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { FontAwesome, AntDesign } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 
-import MapPicker from '../../../../components/address/MapPicker';
-import colors from '../../../../constants/colors';
+import colors from '../../../constants/colors';
 
-const PickDestinyScreen = props => {
+const WasteActions = props => {
 
-    const handleNextButton = () => {
-        props.navigation.navigate('VerifyTransportInfo');
+    const handleStartRegisteringWaste = () => {
+        props.navigation.navigate('RegisterWaste');
+    };
+
+    const handleRegisterInOtherMomment = () => {
+        Alert.alert('En otro momento!');
     };
 
     return (
         <View style={styles.scrollViewWrapper} >
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                <FontAwesome name="map-marker" color={'black'} size={30} />
-                <Text style={{ flex: 1, padding: 15, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
-                    Calle falsa 123 Campo Viera Misiones
-                </Text>
-                <TouchableOpacity>
-                    <AntDesign name={"search1"} size={30} color="black" />
+
+            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
+                <Image style={{ width: 400, height: 300, resizeMode: 'contain' }} source={require('../../../../assets/img/1st_time_waste.png')} />
+            </View>
+
+
+            <Text style={{
+                paddingHorizontal: 40,
+                marginVertical: 25,
+                textAlign: 'justify',
+                fontSize: 16,
+                fontFamily: 'Nunito-Regular',
+                color: '#7f7f7f'
+            }}>
+                Registra tus residuos y recibe beneficios por tu reciclaje. La Comunidad Colmena comenzará a ver tus aportes.
+            </Text>
+
+
+            <View style={{ paddingHorizontal: 40 }}>
+                <TouchableOpacity onPress={handleStartRegisteringWaste} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
+                    <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                        EMPEZAR A REGISTRAR
+                    </Text>
                 </TouchableOpacity>
-            </View>
-
-            <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
-                <MapPicker
-                    styles={{ height: '100%', marginTop: 0 }}
-                    coords={{ latitude: -27.3715333, longitude: -55.9170078 }}
-                    marker={<FontAwesome style={{backgroundColor: 'white', borderRadius: 50}} name={"circle-o"} color={colors.colmenaGreen} size={34} />}
-                    getCoords={console.log}
-                />
-            </View>
-
-            <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
-                <TouchableOpacity onPress={handleNextButton} >
-                    <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
-                        SIGUIENTE
+                <TouchableOpacity style={{ marginVertical: 10 }} onPress={handleRegisterInOtherMomment} >
+                    <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                        EN OTRO MOMENTO
                     </Text>
                 </TouchableOpacity>
             </View>
         </View >
     );
 };
-
-
 
 const styles = StyleSheet.create({
     scrollViewWrapper: {
@@ -344,4 +348,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default PickDestinyScreen;
+export default WasteActions;

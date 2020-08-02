@@ -1,10 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+
+import RegisterWasteItem from '../../../../components/waste/RegisterWasteItem';
 
 import colors from '../../../../constants/colors';
 
-const WasteActions = props => {
+const RegisterWasteScreen = props => {
 
+    const dummyData = [
+        {
+            id: 1,
+            qty: 5,
+            img: require('../../../../../assets/profile/profile_bottles.png')
+        },
+        {
+            id: 2,
+            qty: 10,
+            img: require('../../../../../assets/profile/profile_caps.png')
+        }
+    ];
+    const [data, setData] = useState(dummyData);
+
+    const handleUpdateWasteItem = wasteItem => {
+        const updatedData = data.map(item => {
+            if (item.id === wasteItem.id) return wasteItem;
+            return item;
+        });
+        setData(updatedData);
+    };
+
+    const handleNextButton = () => {
+        props.navigation.navigate('PickSourceAddress');
+    };
 
     return (
         <View style={styles.scrollViewWrapper} >
@@ -23,93 +50,16 @@ const WasteActions = props => {
                 </Text>
 
                 <View style={{ width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '100%', borderBottomColor: '#EDEDED', borderBottomWidth: 1, paddingVertical: 10 }}>
-                        <View style={{ width: 80 }}>
-                            <View>
-                                <Image style={{ width: 80, height: 80, resizeMode: 'contain' }} source={require('../../../../../assets/profile/profile_bottles.png')} />
-                            </View>
-                            <View>
-                                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5, textAlign: 'center' }}>Plástico PET</Text>
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View>
-                                <TouchableOpacity style={{ alignItems: 'center', width: 30, height: 30, backgroundColor: '#7f7f7f', borderRadius: 50 }} onPress={() => console.log('Menos')}>
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -11 }}>_</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ alignItems: 'center', marginHorizontal: 10 }}>
-                                <View>
-                                    <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24 }}>10</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Bolsas</Text>
-                                </View>
-                            </View>
-                            <View>
-                                <TouchableOpacity style={{ alignItems: 'center', width: 30, height: 30, backgroundColor: colors.colmenaGreen, borderRadius: 50 }} onPress={() => console.log('Más')}>
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -4 }}>+</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={{ width: 80 }}>
-                            <View>
-                                <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24, color: colors.colmenaGreen }}>100 jyc</Text>
-                            </View>
-                            <View>
-                                <Text style={{ textAlign: 'center', fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Estimado</Text>
-                            </View>
-                        </View>
-                    </View>
 
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '100%', borderBottomColor: '#EDEDED', borderBottomWidth: 1, paddingVertical: 10 }}>
-                        <View style={{ width: 80 }}>
-                            <View>
-                                <Image style={{ width: 80, height: 80, resizeMode: 'contain' }} source={require('../../../../../assets/profile/profile_caps.png')} />
-                            </View>
-                            <View>
-                                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5, textAlign: 'center' }}>Tapitas PP</Text>
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View>
-                                <TouchableOpacity style={{ alignItems: 'center', width: 30, height: 30, backgroundColor: '#7f7f7f', borderRadius: 50 }} onPress={() => console.log('Menos')}>
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -11 }}>_</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ alignItems: 'center', marginHorizontal: 10 }}>
-                                <View>
-                                    <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24 }}>10</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Bolsas</Text>
-                                </View>
-                            </View>
-                            <View>
-                                <TouchableOpacity style={{ alignItems: 'center', width: 30, height: 30, backgroundColor: colors.colmenaGreen, borderRadius: 50 }} onPress={() => console.log('Más')}>
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -4 }}>+</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={{ width: 80 }}>
-                            <View>
-                                <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24, color: colors.colmenaGreen }}>100 jyc</Text>
-                            </View>
-                            <View>
-                                <Text style={{ textAlign: 'center', fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Estimado</Text>
-                            </View>
-                        </View>
-                    </View>
-
-
+                    <RegisterWasteItem updateWasteItem={handleUpdateWasteItem} wasteItem={data[0]} />
+                    <RegisterWasteItem updateWasteItem={handleUpdateWasteItem} wasteItem={data[1]} />
 
                 </View>
             </View>
 
 
             <View style={{ marginBottom: 20 }}>
-                <TouchableOpacity style={{ marginVertical: 10 }} onPress={() => { }} >
+                <TouchableOpacity style={{ marginVertical: 10 }} onPress={handleNextButton} >
                     <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
                         SIGUIENTE
                     </Text>
@@ -421,4 +371,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default WasteActions;
+export default RegisterWasteScreen;

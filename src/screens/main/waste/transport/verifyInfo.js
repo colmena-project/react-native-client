@@ -1,45 +1,110 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { FontAwesome, AntDesign } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import MapPicker from '../../../../components/address/MapPicker';
 import colors from '../../../../constants/colors';
 
-const PickDestinyScreen = props => {
+const VerifyInfo = props => {
 
-    const handleNextButton = () => {
-        props.navigation.navigate('VerifyTransportInfo');
+    const handleTransportButton = () => {
+        props.navigation.navigate('TransportInEvaluation');
     };
 
     return (
-        <View style={styles.scrollViewWrapper} >
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                <FontAwesome name="map-marker" color={'black'} size={30} />
-                <Text style={{ flex: 1, padding: 15, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
-                    Calle falsa 123 Campo Viera Misiones
+        <ScrollView style={styles.scrollViewWrapper} >
+
+            <View>
+                <Text style={{
+                    textAlign: 'center',
+                    paddingHorizontal: 40,
+                    marginVertical: 20,
+                    fontSize: 20,
+                    fontFamily: 'Nunito-Regular',
+                    color: '#5a5d6c'
+                }}>
+                    <Text style={{ fontWeight: 'bold' }}>@wara</Text> verifica si la información del transporte es correcta.
                 </Text>
-                <TouchableOpacity>
-                    <AntDesign name={"search1"} size={30} color="black" />
-                </TouchableOpacity>
             </View>
 
-            <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
-                <MapPicker
-                    styles={{ height: '100%', marginTop: 0 }}
-                    coords={{ latitude: -27.3715333, longitude: -55.9170078 }}
-                    marker={<FontAwesome style={{backgroundColor: 'white', borderRadius: 50}} name={"circle-o"} color={colors.colmenaGreen} size={34} />}
-                    getCoords={console.log}
-                />
+            <View style={{ paddingHorizontal: 50, flexDirection: 'row', justifyContent: 'space-between', }}>
+                <View>
+                    <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>PET <Text style={{ fontSize: 14 }}>(3 bolsas)</Text></Text>
+                    </View>
+                    <View>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PET 1234</Text>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PET 1235</Text>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PET 1236</Text>
+                    </View>
+                </View>
+                <View>
+                    <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>Tapitas <Text style={{ fontSize: 14 }}>(5 bolsas)</Text></Text>
+                    </View>
+                    <View>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1234</Text>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1235</Text>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1236</Text>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1237</Text>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1238</Text>
+                    </View>
+                </View>
             </View>
 
-            <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
-                <TouchableOpacity onPress={handleNextButton} >
-                    <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
-                        SIGUIENTE
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottomWidth: 1,
+                borderBottomColor: colors.separator,
+                borderTopWidth: 1,
+                borderTopColor: colors.separator,
+                paddingVertical: 5,
+                marginTop: 20,
+                paddingHorizontal: 30,
+            }}>
+                <View style={{ paddingRight: 10, paddingVertical: 10 }}>
+                    <Text style={{ fontWeight: 'bold', marginHorizontal: 10, color: colors.greyText }}>
+                        Destino: Centro de reciclaje CPO Viera
                     </Text>
-                </TouchableOpacity>
+                    <Text style={{ marginHorizontal: 10, color: colors.greyText }}>
+                        Av. Libertad 100 Cpo Viera (a 30km)
+                    </Text>
+                </View>
+                <MaterialCommunityIcons name="pencil" color={colors.colmenaGreen} size={30} />
             </View>
-        </View >
+
+            <View style={{ paddingHorizontal: 40 }}>
+                <View style={{ width: '100%', alignItems: 'flex-end', paddingVertical: 5 }}>
+                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>Por acopiar aprox</Text>
+                    <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 26, color: colors.colmenaGreen }}>300 jyc</Text>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingVertical: 5 }}>
+                    <View>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>Distancia <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>30km</Text></Text>
+                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>x Km <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>1 jyc / bolsa</Text></Text>
+                </View>
+                <View style={{ alignItems: 'flex-end', paddingLeft: 30 }}>
+                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>Por transportar aprox</Text>
+                    <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 26, color: colors.colmenaGreen }}>90 jyc</Text>
+                </View>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingTop: 10, paddingBottom: 25 }}>
+                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>
+                    Estimado <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 40, color: colors.colmenaGreen }}>390 jyc</Text>
+                    </Text>
+            </View>
+            </View>
+
+
+        <View style={{ paddingHorizontal: 40, marginBottom: 20, }}>
+            <TouchableOpacity onPress={handleTransportButton} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
+                <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                    TRANSPORTAR
+                    </Text>
+            </TouchableOpacity>
+        </View>
+        </ScrollView >
     );
 };
 
@@ -344,4 +409,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default PickDestinyScreen;
+export default VerifyInfo;

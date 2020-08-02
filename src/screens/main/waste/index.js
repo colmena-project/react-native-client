@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 
 import colors from '../../../constants/colors';
+import { AntDesign } from '@expo/vector-icons';
 
 const WasteActions = props => {
 
@@ -14,50 +15,50 @@ const WasteActions = props => {
     };
 
     return (
-        <View style={styles.scrollViewWrapper} >
-
-            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                <Image source={require('../../../../assets/img/1st_time_waste.png')} />
-            </View>
+        <ScrollView style={styles.scrollViewWrapper} >
 
 
             <Text style={{
                 paddingHorizontal: 40,
-                marginVertical: 25,
+                marginVertical: 20,
                 textAlign: 'justify',
                 fontSize: 16,
                 fontFamily: 'Nunito-Regular',
                 color: '#7f7f7f'
             }}>
-                Registra tus residuos y recibe beneficios por tu reciclaje. La Comunidad Colmena comenzará a ver tus aportes.
+                Ya registraste tus residuos. Ahora podés <Text style={{ color: colors.colmenaGreen }}>transportar</Text> a un centro de reciclaje o bien <Text style={{ color: colors.colmenaGreen }}>gestionar</Text> la cantidad.
             </Text>
 
-
-            <View style={{ paddingHorizontal: 40 }}>
-                <TouchableOpacity onPress={handleStartRegisteringWaste} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
-                    <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
-                        EMPEZAR A REGISTRAR
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ marginVertical: 10 }} onPress={handleRegisterInOtherMomment} >
-                    <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
-                        EN OTRO MOMENTO
+            <View style={{ width: '100%', alignItems: 'center', paddingBottom: 27, borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                <TouchableOpacity onPress={() => props.navigation.navigate('PickWasteToTransport')} style={{ width: '75%', }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
+                        <Image style={{ height: 150, resizeMode: 'contain' }} source={require('../../../../assets/img/waste_transport.png')} />
+                    </View>
+                    <Text style={{ textAlignVertical: 'center', textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                        TRANSPORTAR <AntDesign size={18} name={'arrowright'} />
                     </Text>
                 </TouchableOpacity>
             </View>
-        </View >
+
+            <View style={{ width: '100%', alignItems: 'center', marginTop: 27 }}>
+                <TouchableOpacity onPress={() => props.navigation.navigate('ManageWaste')} style={{ width: '75%', }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
+                        <Image style={{ height: 150, resizeMode: 'contain' }} source={require('../../../../assets/img/waste_manage.png')} />
+                    </View>
+                    <Text style={{ marginTop: 5, textAlignVertical: 'center', textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                        GESTIONAR RESIDUOS <AntDesign size={18} name={'arrowright'} />
+                    </Text>
+                </TouchableOpacity>
+            </View>
+
+
+        </ScrollView >
     );
 };
 
 const styles = StyleSheet.create({
     scrollViewWrapper: {
         flex: 1,
-        padding: 0,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
         backgroundColor: colors.colmenaBackground,
     },
     scrollView: {

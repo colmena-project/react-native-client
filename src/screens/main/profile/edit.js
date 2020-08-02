@@ -257,10 +257,10 @@ const EditProfile = props => {
                                 <Avatar
                                     size={120}
                                     rounded
-                                    icon={{ name: 'user', type: 'font-awesome' }}
-                                    onPress={showImagePicker}
+                                    onPress={() => {}}
                                     activeOpacity={0.5}
                                     showEditButton
+                                    source={require('../../../../assets/default_user_1.png')}
                                 />
                                 :
                                 <Avatar

@@ -21,7 +21,9 @@ const colors = {
     accentLightGray: '#d3d0cb',
     accentMeatBrown: '#e2c044',
     accentRed: '#C42B17',
-    background: 'white'
+    background: 'white',
+    separator: '#EDEDED',
+    greyText: '#7f7f7f'
 };
 
 export default colors;

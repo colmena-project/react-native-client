@@ -1,120 +1,90 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+
+import TransportWasteItem from '../../../../components/waste/TransportWasteItem';
 
 import colors from '../../../../constants/colors';
 
-const WasteActions = props => {
+const PickWasteForTransport = props => {
 
+    const handleNextButton = () => {
+        props.navigation.navigate('PickTransportDestiny');
+    };
 
     return (
         <View style={styles.scrollViewWrapper} >
 
+            <Text style={{
+                paddingHorizontal: 40,
+                marginTop: 25,
+                textAlign: 'justify',
+                fontSize: 16,
+                fontFamily: 'Nunito-Regular',
+                color: '#7f7f7f'
+            }}>
+                Elija las bolsas / cajas / botellas que desea transportar, viendo su código de identificación.
+            </Text>
 
-            <View>
-                <Text style={{
-                    textAlign: 'center',
-                    paddingHorizontal: 40,
-                    marginVertical: 25,
-                    fontSize: 16,
-                    fontFamily: 'Nunito-Regular',
-                    color: '#7f7f7f'
-                }}>
-                    Puedes registrar tus residuos y ver la retribución estimada en JellyCoins <Text style={{ fontWeight: 'bold' }}>jyc</Text> ingresando botellas / tapitas.
-                </Text>
-
-                <View style={{ width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1 }}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '100%', borderBottomColor: '#EDEDED', borderBottomWidth: 1, paddingVertical: 10 }}>
-                        <View style={{ width: 80 }}>
-                            <View>
-                                <Image style={{ width: 80, height: 80, resizeMode: 'contain' }} source={require('../../../../../assets/profile/profile_bottles.png')} />
-                            </View>
-                            <View>
-                                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5, textAlign: 'center' }}>Plástico PET</Text>
-                            </View>
-                        </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View>
-                                <TouchableOpacity style={{ alignItems: 'center', width: 30, height: 30, backgroundColor: '#7f7f7f', borderRadius: 50 }} onPress={() => console.log('Menos')}>
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -11 }}>_</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ alignItems: 'center', marginHorizontal: 10 }}>
-                                <View>
-                                    <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24 }}>10</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Bolsas</Text>
-                                </View>
-                            </View>
-                            <View>
-                                <TouchableOpacity style={{ alignItems: 'center', width: 30, height: 30, backgroundColor: colors.colmenaGreen, borderRadius: 50 }} onPress={() => console.log('Más')}>
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -4 }}>+</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={{ width: 80 }}>
-                            <View>
-                                <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24, color: colors.colmenaGreen }}>100 jyc</Text>
-                            </View>
-                            <View>
-                                <Text style={{ textAlign: 'center', fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Estimado</Text>
-                            </View>
+            <View style={styles.wasteTabContainer}>
+                <View style={{ alignItems: 'center', width: 200 }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Image style={{ resizeMode: 'contain', width: 100, height: 100 }} source={require('../../../../../assets/profile/profile_bottles.png')} />
+                        <Text style={styles.wasteDescription}>
+                            Plástico PET
+                        </Text>
+                        <View style={{ backgroundColor: colors.colmenaGreen, paddingVertical: 7, paddingHorizontal: 12, borderRadius: 3, position: 'absolute', top: 40 }}>
+                            <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: 'white' }}>8</Text>
                         </View>
                     </View>
-
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '100%', borderBottomColor: '#EDEDED', borderBottomWidth: 1, paddingVertical: 10 }}>
-                        <View style={{ width: 80 }}>
-                            <View>
-                                <Image style={{ width: 80, height: 80, resizeMode: 'contain' }} source={require('../../../../../assets/profile/profile_caps.png')} />
-                            </View>
-                            <View>
-                                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5, textAlign: 'center' }}>Tapitas PP</Text>
-                            </View>
+                    <ScrollView style={{ marginTop: 10, width: '80%' }}>
+                        <View>
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
                         </View>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View>
-                                <TouchableOpacity style={{ alignItems: 'center', width: 30, height: 30, backgroundColor: '#7f7f7f', borderRadius: 50 }} onPress={() => console.log('Menos')}>
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -11 }}>_</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ alignItems: 'center', marginHorizontal: 10 }}>
-                                <View>
-                                    <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24 }}>10</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Bolsas</Text>
-                                </View>
-                            </View>
-                            <View>
-                                <TouchableOpacity style={{ alignItems: 'center', width: 30, height: 30, backgroundColor: colors.colmenaGreen, borderRadius: 50 }} onPress={() => console.log('Más')}>
-                                    <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -4 }}>+</Text>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        <View style={{ width: 80 }}>
-                            <View>
-                                <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24, color: colors.colmenaGreen }}>100 jyc</Text>
-                            </View>
-                            <View>
-                                <Text style={{ textAlign: 'center', fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Estimado</Text>
-                            </View>
-                        </View>
-                    </View>
-
-
-
+                    </ScrollView>
                 </View>
+
+                <View style={{ alignItems: 'center', width: 200 }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Image style={{ resizeMode: 'contain', width: 100, height: 100 }} source={require('../../../../../assets/profile/profile_caps.png')} />
+                        <Text style={styles.wasteDescription}>
+                            Tapitas PP
+                        </Text>
+                        <View style={{ backgroundColor: colors.colmenaGreen, paddingVertical: 7, paddingHorizontal: 12, borderRadius: 3, position: 'absolute', top: 40 }}>
+                            <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: 'white' }}>4</Text>
+                        </View>
+                    </View>
+                    <ScrollView style={{ marginTop: 10, width: '80%' }}>
+                        <View>
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                            <TransportWasteItem isChecked={() => { }} />
+                        </View>
+                    </ScrollView>
+                </View>
+
             </View>
 
-
-            <View style={{ marginBottom: 20 }}>
-                <TouchableOpacity style={{ marginVertical: 10 }} onPress={() => { }} >
+            <View style={{ height: 100, paddingTop: 10, paddingHorizontal: 40 }}>
+                <Text style={{ textAlign: 'center', color: colors.greyText, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                    Estimado: <Text style={{ color: 'black', fontSize: 20 }}>300 jyc</Text>
+                </Text>
+                <TouchableOpacity style={{ marginVertical: 15 }} onPress={handleNextButton} >
                     <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
                         SIGUIENTE
                     </Text>
                 </TouchableOpacity>
             </View>
+
         </View >
     );
 };
@@ -124,14 +94,7 @@ const WasteActions = props => {
 const styles = StyleSheet.create({
     scrollViewWrapper: {
         flex: 1,
-        padding: 0,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
         backgroundColor: colors.colmenaBackground,
-        justifyContent: 'space-between'
     },
     scrollView: {
         paddingLeft: 30,
@@ -283,12 +246,13 @@ const styles = StyleSheet.create({
 
 
     wasteTabContainer: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '100%',
         paddingVertical: 20,
         borderBottomWidth: 1,
-        borderBottomColor: '#EDEDED'
+        borderBottomColor: colors.separator
     },
     locationTabContainer: {
         flexDirection: 'row',
@@ -421,4 +385,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default WasteActions;
+export default PickWasteForTransport;

@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import Parse from 'parse/react-native';
 
-export const setInstallation = async (password) => {
+export const setInstallation = async () => {
     try {
         const installationId = await Parse._getInstallationId();
         const deviceType = Platform.OS == 'android' ? 'android' : 'ios';

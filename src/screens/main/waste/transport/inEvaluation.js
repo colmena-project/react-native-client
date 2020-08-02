@@ -1,60 +1,50 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { FontAwesome, AntDesign } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 
-import MapPicker from '../../../../components/address/MapPicker';
 import colors from '../../../../constants/colors';
+import { AntDesign } from '@expo/vector-icons';
 
-const PickDestinyScreen = props => {
+const TransportInEvaluationScreen = props => {
 
-    const handleNextButton = () => {
-        props.navigation.navigate('VerifyTransportInfo');
+    const handleSeePendingRequests = () => {
+        props.navigation.navigate('User');
     };
 
     return (
         <View style={styles.scrollViewWrapper} >
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                <FontAwesome name="map-marker" color={'black'} size={30} />
-                <Text style={{ flex: 1, padding: 15, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
-                    Calle falsa 123 Campo Viera Misiones
+
+            <View style={{ width: '100%', alignItems: 'center', paddingBottom: 15, }}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
+                    <Image style={{ height: 175, resizeMode: 'contain' }} source={require('../../../../../assets/img/waste_transport.png')} />
+                </View>
+            </View>
+
+            <Text style={{
+                paddingHorizontal: 40,
+                marginVertical: 20,
+                textAlign: 'justify',
+                fontSize: 20,
+                fontFamily: 'Nunito-Regular',
+                color: '#7f7f7f'
+            }}>
+                Tu petición de transporte está siendo evaluada. Se te enviará un mensaje con los avances.
+            </Text>
+
+            <TouchableOpacity onPress={handleSeePendingRequests} style={{ marginTop: 60 }}>
+                <Text style={{ textAlignVertical: 'center', textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                    VER PETICIONES PENDIENTES
                 </Text>
-                <TouchableOpacity>
-                    <AntDesign name={"search1"} size={30} color="black" />
-                </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
 
-            <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
-                <MapPicker
-                    styles={{ height: '100%', marginTop: 0 }}
-                    coords={{ latitude: -27.3715333, longitude: -55.9170078 }}
-                    marker={<FontAwesome style={{backgroundColor: 'white', borderRadius: 50}} name={"circle-o"} color={colors.colmenaGreen} size={34} />}
-                    getCoords={console.log}
-                />
-            </View>
-
-            <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
-                <TouchableOpacity onPress={handleNextButton} >
-                    <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
-                        SIGUIENTE
-                    </Text>
-                </TouchableOpacity>
-            </View>
         </View >
     );
 };
 
-
-
 const styles = StyleSheet.create({
     scrollViewWrapper: {
         flex: 1,
-        padding: 0,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
         backgroundColor: colors.colmenaBackground,
+        justifyContent: 'center'
     },
     scrollView: {
         paddingLeft: 30,
@@ -344,4 +334,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default PickDestinyScreen;
+export default TransportInEvaluationScreen;
