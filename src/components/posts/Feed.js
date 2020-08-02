@@ -26,7 +26,7 @@ const Feed = props => {
                 {props.feed}
             </Text>
             {props.image ?
-                <View style={{ width: '100%', height: 225, marginTop: 20, backgroundColor: '#272822'}}>
+                <View style={{ width: '100%', height: 215.5, marginTop: 20, backgroundColor: '#272822'}}>
                     <Image
                         style={{ resizeMode: 'contain', width: '100%', height: '100%' }}
                         source={{ uri: props.image._url }}
@@ -41,9 +41,9 @@ const Feed = props => {
 const styles = StyleSheet.create({
     feed: {
         marginVertical: 7,
-        borderTopWidth: 1,
-        borderTopColor: '#EDEDED',
-        paddingTop: 15,
+        borderBottomWidth: 1,
+        borderBottomColor: '#EDEDED',
+        paddingBottom: 15,
     },
     userName: {
         flexDirection: 'row',

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, KeyboardAvoidingView, Modal, Image, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
-import ImagerPicker from 'expo-image-picker';
+import ImagerPicker from '../form/ImagePicker';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
@@ -13,10 +13,16 @@ const PostModal = props => {
     const [text, setText] = useState('');
     const [postImage, setPostImage] = useState(null);
     const [filename, setFilename] = useState('');
+    const [showImagePicker, setShowImagePicker] = useState(false);
 
     useEffect(() => {
         console.log(postImage ? true : false);
     }, [postImage]);
+
+    const handleTakenImage = (image, filename) => {
+        setPostImage(image);
+        setFilename(filename);
+    };
 
     const handleOnCancelPress = () => {
         setText('');
@@ -26,41 +32,35 @@ const PostModal = props => {
 
     const handleOnSendButton = () => {
         if (text && text !== '') {
-            props.onSendPress(text, postImage, filename);
-            setText('');
-            setPostImage(null);
+            Alert.alert(
+                'Nuevo post',
+                'Se procederá a crear un nuevo post. ¿Continuar?',
+                [
+                    {
+                        text: 'Cancelar',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Sí, continuar',
+                        onPress: send
+                    },
+                ],
+                { cancelable: false }
+            );
         } else {
             Alert.alert('No ingresó ningún texto.');
         }
     };
 
-    const options = {
-        title: 'Nueva imagen',
-        takePhotoButtonTitle: 'Tomar foto',
-        chooseFromLibraryButtonTitle: 'Seleccionar desde galería',
-        storageOptions: {
-            skipBackup: true,
-            path: 'images',
-        },
+    const send = () => {
+        props.onSendPress(text, postImage, filename);
+        setText('');
+        setPostImage(null);
     };
 
-    const showImagePicker = () => {
-        ImagePicker.showImagePicker(options, async (response) => {
-            if (response.didCancel) {
-                console.log('User cancelled image picker');
-            } else if (response.error) {
-                console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-                console.log('User tapped custom button: ', response.customButton);
-            } else {
-                try {
-                    setFilename(response.fileName);
-                    setPostImage(response.data);
-                } catch (ex) {
-                    console.log(ex);
-                }
-            }
-        });
+    const handleShowImagePicker = show => {
+        setShowImagePicker(show)
     };
 
     return (
@@ -75,6 +75,12 @@ const PostModal = props => {
                 backdrop={false}
                 position={"bottom"}
                 entry={"bottom"}>
+                <ImagerPicker
+                    onRequestClose={() => setShowImagePicker(false)}
+                    show={handleShowImagePicker}
+                    visible={showImagePicker}
+                    takenImage={handleTakenImage}
+                />
                 <View style={styles.modal}>
                     <View style={styles.addPost}>
                         <TouchableOpacity style={styles.cancelBtn} onPress={handleOnCancelPress}>
@@ -90,8 +96,7 @@ const PostModal = props => {
 
                     <View style={{ flex: 1, justifyContent: 'space-between' }} >
                         <View style={styles.post}>
-                            {/* <MaterialCommunityIcons style={styles.editingIcon} name={'pencil'} size={26} color={'white'} /> */}
-                            <TouchableOpacity style={styles.editingIcon} onPress={showImagePicker}>
+                            <TouchableOpacity style={styles.editingIcon} onPress={() => handleShowImagePicker(true)}>
                                 <Feather name={'camera'} size={24} color={'white'} />
                             </TouchableOpacity>
                             <View style={styles.postInput}>

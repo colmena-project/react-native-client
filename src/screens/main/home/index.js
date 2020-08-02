@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator, Animated } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Installation from "../../../services/Installation";
 import { Parse } from "parse/react-native";
@@ -7,8 +7,10 @@ import colors from "../../../constants/colors";
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PostModal from "../../../components/posts/PostModal";
-import FeedList from "../../../components/posts/FeedList";
+import FeedList from "../../../components/posts/FeedListU";
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
+
+const topNavbarHeight = 60;
 
 const HomeScreen = props => {
 
@@ -88,10 +90,31 @@ const HomeScreen = props => {
         props.navigation.navigate("OthersProfile", { user });
     };
 
+    const scrollY = new Animated.Value(0);
+    const diffClamp = Animated.diffClamp(scrollY, 0, topNavbarHeight);
+    const translateY = diffClamp.interpolate({
+        inputRange: [0, topNavbarHeight],
+        outputRange: [0, -topNavbarHeight -1],
+    });
+
     return (
         <AuthorizedScreen>
             <View style={styles.screen}>
-                <View style={styles.container}>
+                <Animated.View
+                    style={{
+                        transform: [{ translateY: translateY }],
+                        zIndex: 999
+                    }}>
+                    <View style={styles.brand}>
+                        <Image
+                            resizeMode={'contain'}
+                            style={{  width: '34%', height: 45 }}
+                            source={require("../../../../assets/colmena_logo.png")}
+                        />
+                        <EvilIcons name={'cart'} size={30} color={'#cccccc'} />
+                    </View>
+                </Animated.View>
+                <ScrollView style={styles.container} onScroll={e => scrollY.setValue(e.nativeEvent.contentOffset.y) }>
                     <PostModal
                         onRequestClose={() => setIsAddMode(false)}
                         visible={isAddMode}
@@ -99,42 +122,35 @@ const HomeScreen = props => {
                         onSendPress={handleOnSendButton}
                     />
 
-                    <View style={styles.brand}>
-                        <Image
-                            resizeMode={'contain'}
-                            style={{ width: '50%', height: 50 }}
-                            source={require("../../../../assets/colmena_logo.png")}
-                        />
-                        <EvilIcons name={'cart'} size={40} color={'#cccccc'} />
+                    <View style={{ paddingHorizontal: 15 }}>
+                        {/* <View style={styles.colmenaHeaderTextContainer}>
+                            <Text style={styles.colmenaHeaderSubtitle}>Novedades</Text>
+                        </View> */}
+
+                        {isLoading ? (
+                            <ActivityIndicator
+                                style={{ flex: 1 }}
+                                size={"large"}
+                                color={colors.colmenaGreen}
+                            />
+                        ) : (
+                                <FeedList onPress={handleOthersProfile} data={posts} onEndReached={handleOnEndReached} />
+                            )}
+                        {isLoadingMore ?
+                            <ActivityIndicator
+                                size={"large"}
+                                color={colors.colmenaGreen}
+                            />
+                            : <View></View>}
                     </View>
 
-                    <View style={styles.colmenaHeaderTextContainer}>
-                        <Text style={styles.colmenaHeaderSubtitle}>Novedades</Text>
-                    </View>
-
-                    {isLoading ? (
-                        <ActivityIndicator
-                            style={{ flex: 1 }}
-                            size={"large"}
-                            color={colors.colmenaGreen}
-                        />
-                    ) : (
-                            <FeedList onPress={handleOthersProfile} data={posts} onEndReached={handleOnEndReached} />
-                        )}
-                    {isLoadingMore ?
-                        <ActivityIndicator
-                            size={"large"}
-                            color={colors.colmenaGreen}
-                        />
-                        : <View></View>}
-
-                    <TouchableOpacity
-                        style={styles.floatingIcon}
-                        onPress={() => setIsAddMode(true)}
-                    >
-                        <MaterialCommunityIcons style={styles.addPostIcon} name={'pencil'} size={26} color={'white'} />
-                    </TouchableOpacity>
-                </View>
+                </ScrollView>
+                <TouchableOpacity
+                    style={styles.floatingIcon}
+                    onPress={() => setIsAddMode(true)}
+                >
+                    <MaterialCommunityIcons style={styles.addPostIcon} name={'pencil'} size={26} color={'white'} />
+                </TouchableOpacity>
             </View>
         </AuthorizedScreen>
     );
@@ -149,17 +165,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: "100%",
-        alignItems: "center",
-        justifyContent: "center",
+        // alignItems: "center",
+        // justifyContent: "center",
     },
     brand: {
+        height: topNavbarHeight,
         flexDirection: "row",
         width: "100%",
         justifyContent: "space-between",
         alignItems: 'center',
-        paddingTop: 34,
-        paddingBottom: 22,
-        paddingHorizontal: 20,
+        paddingHorizontal: 15,
+        backgroundColor: 'white',
+        elevation: 4,
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        left: 0
     },
     topNavigator: {
         width: "100%",
@@ -176,7 +197,7 @@ const styles = StyleSheet.create({
     colmenaHeaderSubtitle: {
         width: "100%",
         textAlign: "left",
-        fontSize: 24,
+        fontSize: 20,
         fontFamily: 'Nunito-SemiBold',
         paddingLeft: 20,
         paddingBottom: 8,

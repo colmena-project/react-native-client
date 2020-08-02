@@ -9,7 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import MapPicker from '../../../components/address/MapPicker';
 import Geolocation from 'react-native-geolocation-service';
-import ImagePicker from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 
 import colors from '../../../constants/colors';
 import validate from '../../../services/Validate';

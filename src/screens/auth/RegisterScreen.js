@@ -79,13 +79,12 @@ const RegisterScreen = props => {
                 password: inputs.password,
                 firstName: inputs.firstName,
                 lastName: inputs.lastName,
-                username: Slugify(`${inputs.firstName} ${inputs.lastName}`, '_'),
+                username: Slugify(`${inputs.firstName.charAt(0)} ${inputs.lastName}`, '_').toLowerCase(),
                 defaultLanguage: 'es-AR',
             };
-            // const account = new Parse.Object('Account');
-            // await account.save(params);
             const account = await Parse.Cloud.run('createAccount', params);
             const userSessionToken = account.get('userSessionToken');
+            console.log('userSessionToken', userSessionToken);
             if (userSessionToken) {
                 const user = await Parse.User.become(userSessionToken)
                 resetFields();
@@ -98,6 +97,7 @@ const RegisterScreen = props => {
                 Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo.');
             }
             props.navigation.navigate('Login');
+            setIsloading(false);
         } catch (error) {
             setIsloading(false);
             console.log("Error: " + error.code + " " + error.message);
