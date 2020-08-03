@@ -10,7 +10,7 @@ import PostModal from "../../../components/posts/PostModal";
 import FeedList from "../../../components/posts/FeedListU";
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 
-const topNavbarHeight = 60;
+const TOP_NAVBAR_HEIGHT = 60;
 
 const HomeScreen = props => {
 
@@ -91,10 +91,10 @@ const HomeScreen = props => {
     };
 
     const scrollY = new Animated.Value(0);
-    const diffClamp = Animated.diffClamp(scrollY, 0, topNavbarHeight);
+    const diffClamp = Animated.diffClamp(scrollY, 0, TOP_NAVBAR_HEIGHT);
     const translateY = diffClamp.interpolate({
-        inputRange: [0, topNavbarHeight],
-        outputRange: [0, -topNavbarHeight -1],
+        inputRange: [0, TOP_NAVBAR_HEIGHT],
+        outputRange: [0, -TOP_NAVBAR_HEIGHT -1],
     });
 
     return (
@@ -165,11 +165,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: "100%",
-        // alignItems: "center",
-        // justifyContent: "center",
+        paddingTop: TOP_NAVBAR_HEIGHT,
     },
     brand: {
-        height: topNavbarHeight,
+        height: TOP_NAVBAR_HEIGHT,
         flexDirection: "row",
         width: "100%",
         justifyContent: "space-between",

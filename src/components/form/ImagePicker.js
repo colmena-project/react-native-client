@@ -8,6 +8,8 @@ import { Divider } from 'react-native-paper';
 
 const ImagePicker = props => {
 
+    const aspect = props.aspect ? props.aspect : [16, 9];
+
     const handleShowModal = show => {
         props.show(show);
     };
@@ -19,12 +21,12 @@ const ImagePicker = props => {
             let result = await ImagePickerExpo.launchCameraAsync({
                 mediaTypes: ImagePickerExpo.MediaTypeOptions.All,
                 allowsEditing: true,
-                aspect: [16, 9],
+                aspect: aspect,
                 quality: 0.7,
                 base64: true
             });
             if (!result.cancelled) {
-                props.takenImage(result.base64, 'jpg');
+                props.takenImage(result.base64, 'pic.jpg');
             }
         } catch (E) {
             console.log(E);
@@ -38,12 +40,12 @@ const ImagePicker = props => {
             let result = await ImagePickerExpo.launchImageLibraryAsync({
                 mediaTypes: ImagePickerExpo.MediaTypeOptions.All,
                 allowsEditing: true,
-                aspect: [16, 9],
+                aspect: aspect,
                 quality: 0.7,
                 base64: true
             });
             if (!result.cancelled) {
-                props.takenImage(result.base64, 'jpg');
+                props.takenImage(result.base64, 'pic.jpg');
             }
         } catch (E) {
             console.log(E);

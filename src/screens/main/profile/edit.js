@@ -3,18 +3,16 @@ import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator
 import { Avatar } from 'react-native-elements';
 import { Parse } from 'parse/react-native';
 import Input from '../../../components/form/Input';
+import ImagerPicker from '../../../components/form/ImagePicker';
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import MapPicker from '../../../components/address/MapPicker';
-import Geolocation from 'react-native-geolocation-service';
-import * as ImagePicker from 'expo-image-picker';
 
 import colors from '../../../constants/colors';
 import validate from '../../../services/Validate';
 
-import Feather from 'react-native-vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 
 const EditProfile = props => {
 
@@ -107,10 +105,6 @@ const EditProfile = props => {
     const handleInput = (field, value) => {
         handleError(field, value);
         handleField(field, value);
-    };
-
-    const handleBackButton = () => {
-        props.navigation.goBack();
     };
 
     const handleChangePassword = () => {
@@ -212,36 +206,23 @@ const EditProfile = props => {
         }
     };
 
-    const options = {
-        title: 'Nuevo avatar',
-        takePhotoButtonTitle: 'Tomar foto',
-        chooseFromLibraryButtonTitle: 'Seleccionar desde galería',
-        storageOptions: {
-            skipBackup: true,
-            path: 'images',
-        },
+    const handleShowImagePicker = show => {
+        setShowImagePicker(show)
+    };
+    const handleTakenImage = async (image, filename) => {
+        try {
+            const avatarImage = new Parse.File(filename, { base64: image });
+            console.log(avatarImage);
+            userAccount.set('avatar', avatarImage);
+            await userAccount.save();
+        } catch (ex) {
+            console.log(ex);
+        }
     };
 
-    // const showImagePicker = () => {
-    //     ImagePicker.showImagePicker(options, async (response) => {
-    //         if (response.didCancel) {
-    //             console.log('User cancelled image picker');
-    //         } else if (response.error) {
-    //             console.log('ImagePicker Error: ', response.error);
-    //         } else if (response.customButton) {
-    //             console.log('User tapped custom button: ', response.customButton);
-    //         } else {
-    //             try {
-    //                 const avatarImage = new Parse.File(response.fileName, { base64: response.data });
-    //                 console.log(response.fileName);
-    //                 userAccount.set('avatar', avatarImage);
-    //                 await userAccount.save();
-    //             } catch (ex) {
-    //                 console.log(ex);
-    //             }
-    //         }
-    //     });
-    // };
+    const [postImage, setPostImage] = useState(null);
+    const [filename, setFilename] = useState('');
+    const [showImagePicker, setShowImagePicker] = useState(false);
 
     return (
         <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
@@ -253,11 +234,18 @@ const EditProfile = props => {
                 }}>
                     <View style={styles.inputsContainer}>
                         <View style={styles.avatarContainer}>
+                            <ImagerPicker
+                                aspect={[1, 1]}
+                                onRequestClose={() => setShowImagePicker(false)}
+                                show={handleShowImagePicker}
+                                visible={showImagePicker}
+                                takenImage={handleTakenImage}
+                            />
                             {!(userAccount && userAccount.get('avatar')) ?
                                 <Avatar
                                     size={120}
                                     rounded
-                                    onPress={() => {}}
+                                    onPress={() => handleShowImagePicker(true)}
                                     activeOpacity={0.5}
                                     showEditButton
                                     source={require('../../../../assets/default_user_1.png')}
@@ -266,7 +254,7 @@ const EditProfile = props => {
                                 <Avatar
                                     size={120}
                                     rounded
-                                    onPress={() => { }}
+                                    onPress={() => handleShowImagePicker(true)}
                                     activeOpacity={0.5}
                                     showEditButton
                                     source={{ uri: userAccount.get('avatar')._url }}
