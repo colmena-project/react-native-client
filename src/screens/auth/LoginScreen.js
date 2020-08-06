@@ -143,7 +143,10 @@ const LoginScreen = props => {
 
                         <View style={styles.additionalContainer}>
                             <View style={styles.button}>
-                                <Button color={colors.colmenaGreen} title={'Ingresar'} onPress={handleLogin} />
+                                {/* <Button color={colors.colmenaGreen} title={'Ingresar'} onPress={handleLogin} /> */}
+                                <TouchableOpacity style={{ backgroundColor: colors.colmenaGreen, padding: 10, borderRadius: 5 }} onPress={handleLogin}>
+                                    <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Nunito-SemiBold'}}>INGRESAR</Text>
+                                </TouchableOpacity>
                             </View>
                             <View style={styles.text}>
                                 <Text style={styles.underlinedColoredText} onPress={handleResetPassword}>No recuerdas tu contraseña?</Text>
@@ -215,6 +218,7 @@ const styles = StyleSheet.create({
     },
     textCenter: {
         textAlign: 'center',
+        color: colors.greyText
     },
     underlinedColoredText: {
         textAlign: 'center',
@@ -228,7 +232,6 @@ const styles = StyleSheet.create({
     },
     colmenaHeaderText: {
         fontSize: 30,
-        marginLeft: 20,
         color: colors.colmenaGrey,
         fontFamily: 'Nunito-Regular'
     },
@@ -236,16 +239,15 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     colmenaHeaderIcon: {
-        marginRight: 20,
-        width: 75,
-        height: 75
+        width: 55,
+        height: 55
     },
     socialIconsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 10
     },
-    facebookLoginBtn: {        
+    facebookLoginBtn: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',

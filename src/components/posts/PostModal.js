@@ -76,6 +76,7 @@ const PostModal = props => {
                 position={"bottom"}
                 entry={"bottom"}>
                 <ImagerPicker
+                    aspect={[1, 1]}
                     onRequestClose={() => setShowImagePicker(false)}
                     show={handleShowImagePicker}
                     visible={showImagePicker}

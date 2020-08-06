@@ -4,6 +4,9 @@ import { Parse } from 'parse/react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 
+import { useDispatch } from 'react-redux';
+import Auth from '../../../services/Auth';
+
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -21,6 +24,7 @@ const MyProfile = props => {
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [posts, setPosts] = useState([]);
     const [postsQty, setPostsQty] = useState(0);
+    const dispatch = useDispatch();
 
     const fetchData = async () => {
         try {
@@ -73,6 +77,10 @@ const MyProfile = props => {
 
     const handleOnEndReached = () => {
         loadMorePosts();
+    };
+
+    const handleLogout = () => {
+        Auth.logOut(dispatch);
     };
 
     const handleEditProfile = () => {
@@ -140,6 +148,12 @@ const MyProfile = props => {
                     <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
                         <TouchableOpacity onPress={handleEditProfile} style={styles.editInfoBtn}>
                             <Text style={styles.editInfoBtnText}>Editar info pública</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
+                        <TouchableOpacity onPress={handleLogout} style={styles.editInfoBtn}>
+                            <Text style={styles.editInfoBtnText}>Cerrar sesión</Text>
                         </TouchableOpacity>
                     </View>
 

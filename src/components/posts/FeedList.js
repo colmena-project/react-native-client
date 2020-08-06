@@ -15,6 +15,10 @@ const FeedList = props => {
         props.onEndReached();
     };
 
+    const handleOnScroll = event => {
+        props.onScroll(event.nativeEvent.contentOffset.y);
+    };
+
     const fillFeedWithPosts = post => {
         const user = post.item.get('createdBy');
         return (
@@ -25,7 +29,7 @@ const FeedList = props => {
                         user={user}
                         feed={post.item.get("text")}
                         hashTags={post.item.createdAt.toString()}
-                        likes={'134'}
+                        likes={'1594'}
                         image={post.item.get("image")}
                     />
                 </View>
@@ -39,7 +43,9 @@ const FeedList = props => {
 
     return (
         <View style={styles.feedList}>
-            <FlatList style={styles.mainFeed}
+            <FlatList style={{ ...styles.mainFeed, paddingTop: props.paddingTop }}
+                ListHeaderComponent={props.ListHeaderComponent}
+                onScroll={handleOnScroll}
                 nestedScrollEnabled={false}
                 keyExtractor={(item, index) => item.id}
                 data={data}
@@ -65,7 +71,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     feedItem: {
-        width: '90%',
+        width: '100%',
     },
 });
 

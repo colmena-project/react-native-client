@@ -206,7 +206,10 @@ const RegisterScreen = props => {
 
                         <View style={styles.additionalContainer}>
                             <View style={styles.button}>
-                                <Button color={colors.colmenaGreen} title={'Registrarme'} onPress={handleRegister} />
+                                {/* <Button color={colors.colmenaGreen} title={'Registrarme'} onPress={handleRegister} /> */}
+                                <TouchableOpacity style={{ backgroundColor: colors.colmenaGreen, padding: 10, borderRadius: 5 }} onPress={handleRegister}>
+                                    <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Nunito-SemiBold'}}>REGISTRARME</Text>
+                                </TouchableOpacity>
                             </View>
                         </View>
 
@@ -274,6 +277,7 @@ const styles = StyleSheet.create({
     },
     textCenter: {
         textAlign: 'center',
+        color: colors.greyText
     },
     underlinedColoredText: {
         textAlign: 'center',
@@ -287,17 +291,15 @@ const styles = StyleSheet.create({
     },
     colmenaHeaderText: {
         fontSize: 30,
-        marginLeft: 20,
         color: colors.colmenaGrey,
         fontFamily: 'Nunito-Regular'
     },
     colmenaHeaderIconContainer: {
         overflow: 'hidden',
     },
-    colmenaHeaderIcon: {
-        marginRight: 20,
-        width: 75,
-        height: 75
+    colmenaHeaderIcon: {        
+        width: 55,
+        height: 55
     },
     socialIconsContainer: {
         flexDirection: 'row',

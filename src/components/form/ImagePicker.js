@@ -4,6 +4,7 @@ import * as ImagePickerExpo from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { Divider } from 'react-native-paper';
+import { Feather } from '@expo/vector-icons';
 
 
 const ImagePicker = props => {
@@ -73,15 +74,17 @@ const ImagePicker = props => {
                 entry={"bottom"}>
                 <View style={styles.modalContainer}>
                     <View style={styles.card}>
-                        <TouchableOpacity onPress={handleTakePhoto}>
+                        <TouchableOpacity style={styles.btnContainer} onPress={handleTakePhoto}>
+                            <Feather name={'camera'} size={24} color={'black'} />
                             <Text style={styles.text}>Tomar foto</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handlePickFromGallery}>
+                        <TouchableOpacity style={styles.btnContainer} onPress={handlePickFromGallery}>
+                            <Feather name={'image'} size={24} color={'black'} />
                             <Text style={styles.text}>Seleccionar de galería</Text>
                         </TouchableOpacity>
                         <Divider />
-                        <TouchableOpacity onPress={() => handleShowModal(false)}>
-                            <Text style={styles.text}>Cancelar</Text>
+                        <TouchableOpacity style={styles.noIconTextContainer} onPress={() => handleShowModal(false)}>
+                            <Text style={styles.noIconText}>Cancelar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -101,11 +104,33 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         paddingVertical: 10
     },
+    btnContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginLeft: 10,
+        paddingLeft: 5,
+        paddingRight: 15,
+        paddingVertical: 10
+    },
+    noIconTextContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 10,
+        paddingLeft: 5,
+        paddingRight: 15,
+        paddingVertical: 10
+    },
     text: {
         fontFamily: 'Nunito-Regular',
         fontSize: 18,
-        paddingHorizontal: 20,
-        paddingVertical: 10
+        marginLeft: 10
+    },
+    noIconText: {
+        fontFamily: 'Nunito-Regular',
+        fontSize: 18,
+        textAlign: 'center'
     }
 });
 

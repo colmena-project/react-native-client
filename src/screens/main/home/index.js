@@ -7,7 +7,7 @@ import colors from "../../../constants/colors";
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PostModal from "../../../components/posts/PostModal";
-import FeedList from "../../../components/posts/FeedListU";
+import FeedList from "../../../components/posts/FeedList";
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 
 const TOP_NAVBAR_HEIGHT = 60;
@@ -94,7 +94,7 @@ const HomeScreen = props => {
     const diffClamp = Animated.diffClamp(scrollY, 0, TOP_NAVBAR_HEIGHT);
     const translateY = diffClamp.interpolate({
         inputRange: [0, TOP_NAVBAR_HEIGHT],
-        outputRange: [0, -TOP_NAVBAR_HEIGHT -1],
+        outputRange: [0, -TOP_NAVBAR_HEIGHT - 1],
     });
 
     return (
@@ -108,28 +108,46 @@ const HomeScreen = props => {
                     <View style={styles.brand}>
                         <Image
                             resizeMode={'contain'}
-                            style={{  width: '34%', height: 45 }}
+                            style={{ width: '34%', height: 45 }}
                             source={require("../../../../assets/colmena_logo.png")}
                         />
                         <EvilIcons name={'cart'} size={30} color={'#cccccc'} />
                     </View>
                 </Animated.View>
-                <ScrollView style={styles.container} onScroll={e => scrollY.setValue(e.nativeEvent.contentOffset.y) }>
-                    <PostModal
-                        onRequestClose={() => setIsAddMode(false)}
-                        visible={isAddMode}
-                        onCancelPress={handleOnCancelPress}
-                        onSendPress={handleOnSendButton}
-                    />
+                <PostModal
+                    onRequestClose={() => setIsAddMode(false)}
+                    visible={isAddMode}
+                    onCancelPress={handleOnCancelPress}
+                    onSendPress={handleOnSendButton}
+                />
+                <View style={{ flex: 1 }}>
+
+                    {isLoading ? (
+                        <ActivityIndicator
+                            style={{ marginTop: 100 }}
+                            size={"large"}
+                            color={colors.colmenaGreen}
+                        />
+                    ) : (
+                            <FeedList paddingTop={TOP_NAVBAR_HEIGHT} onPress={handleOthersProfile} data={posts} onScroll={value => scrollY.setValue(value)} onEndReached={handleOnEndReached} />
+                        )}
+                    {isLoadingMore ?
+                        <ActivityIndicator
+                            size={"large"}
+                            color={colors.colmenaGreen}
+                        />
+                        : <View></View>}
+                </View>
+                {/* <ScrollView style={styles.container} onScroll={e => scrollY.setValue(e.nativeEvent.contentOffset.y)}>
 
                     <View style={{ paddingHorizontal: 15 }}>
-                        {/* <View style={styles.colmenaHeaderTextContainer}>
+                        <View style={styles.colmenaHeaderTextContainer}>
                             <Text style={styles.colmenaHeaderSubtitle}>Novedades</Text>
-                        </View> */}
+                        </View>
 
                         {isLoading ? (
                             <ActivityIndicator
-                                style={{ flex: 1 }}
+                                style={{ marginTop: 10 }}
                                 size={"large"}
                                 color={colors.colmenaGreen}
                             />
@@ -144,7 +162,7 @@ const HomeScreen = props => {
                             : <View></View>}
                     </View>
 
-                </ScrollView>
+                </ScrollView> */}
                 <TouchableOpacity
                     style={styles.floatingIcon}
                     onPress={() => setIsAddMode(true)}

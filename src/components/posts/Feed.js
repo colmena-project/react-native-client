@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 
 const Feed = props => {
 
@@ -19,14 +19,11 @@ const Feed = props => {
                     </Text>
                 </View>
                 <View style={styles.moreActions}>
-                    <Icon name={'ios-more'} size={18} color={'#3d8cea'} />
+                    <Ionicons name={'ios-more'} size={18} color={'#3d8cea'} />
                 </View>
             </View>
-            <Text style={styles.feedText}>
-                {props.feed}
-            </Text>
             {props.image ?
-                <View style={{ width: '100%', height: 215.5, marginTop: 20, backgroundColor: '#272822'}}>
+                <View style={{ width: '100%', height: 410, marginTop: 10, marginBottom: 5, backgroundColor: '#272822' }}>
                     <Image
                         style={{ resizeMode: 'contain', width: '100%', height: '100%' }}
                         source={{ uri: props.image._url }}
@@ -34,6 +31,21 @@ const Feed = props => {
                 </View>
                 :
                 <View></View>}
+            <View style={styles.likesContainer}>
+                <Ionicons name={props.likes > 0 ? 'ios-heart' : 'ios-heart-empty'} size={18} color={props.likes > 0 ?'#fe87a5' : '#4c4c4c'} />
+                <Text style={styles.likesText}>
+                    {props.likes} Me gusta
+                </Text>
+            </View>
+            {/* <Text style={styles.hashTag}>
+                {props.hashTags}
+            </Text> */}
+            <Text style={styles.feedText}>
+                {props.feed}
+            </Text>
+            <Text style={{ ...styles.feedText, fontSize: 10 }}>
+                Hace 2d
+            </Text>
         </View>
     );
 };
@@ -48,26 +60,40 @@ const styles = StyleSheet.create({
     userName: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 5,
+        paddingHorizontal: 10
     },
     userNameText: {
         fontSize: 16,
+        marginBottom: 5,
         fontFamily: 'Nunito-SemiBold',
         color: '#4c4c4c',
     },
-    actionButtons: {
-        height: 40,
+    likesContainer: {
+        marginTop: 5,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+    },
+    likesText: {
+        color: '#4c4c4c',
+        paddingHorizontal: 5,
         textAlignVertical: 'center',
+        fontSize: 12
     },
     hashTag: {
+        paddingHorizontal: 10,
         color: '#3d8cea',
+        fontSize: 10,
     },
     moreActions: {
         transform: [{ rotate: '90deg' }],
     },
     feedText: {
+        marginTop: 5,
         fontFamily: 'Nunito-Regular',
-        color: '#4c4c4c'
+        color: '#4c4c4c',
+        paddingHorizontal: 10
     }
 });
 

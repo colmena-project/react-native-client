@@ -53,6 +53,9 @@ const EditProfile = props => {
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();
             const parseAccount = await userAddress.get('account').fetch();
+            if (parseAccount.get('avatar')) {
+                setUserProfilePhoto(parseAccount.get('avatar')._url);
+            }
             setUserAccount(parseAccount);
             setUserAddress(userAddress);
             setInputs({
@@ -170,14 +173,6 @@ const EditProfile = props => {
         }
     };
 
-    // const getCurrentPosition = async () => {
-    //     try {
-    //         Geolocation.getCurrentPosition(value => getAddressFromLatLng(value.coords), error => console.log(error), { enableHighAccuracy: true, timeout: 5000 });
-    //     } catch (ex) {
-    //         console.log(ex);
-    //     }
-    // };
-
     const handleSaveButton = async () => {
         try {
             let errors = { ...errorMessages };
@@ -211,9 +206,12 @@ const EditProfile = props => {
     };
     const handleTakenImage = async (image, filename) => {
         try {
-            const avatarImage = new Parse.File(filename, { base64: image });
-            console.log(avatarImage);
-            userAccount.set('avatar', avatarImage);
+            setUserProfilePhoto(`data:image/jpeg;base64,${image}`);
+            const dateInMillis = new Date().getTime();
+            const fileName = `${dateInMillis}_${inputs.firstName}_${inputs.lastName}.jpg`;
+            const profilePhoto = new Parse.File(fileName.toLowerCase(), { base64: image });
+            userAccount.set('avatar', profilePhoto);
+            // setUserAccount(userAccount);
             await userAccount.save();
         } catch (ex) {
             console.log(ex);
@@ -223,6 +221,7 @@ const EditProfile = props => {
     const [postImage, setPostImage] = useState(null);
     const [filename, setFilename] = useState('');
     const [showImagePicker, setShowImagePicker] = useState(false);
+    const [userProfilePhoto, setUserProfilePhoto] = useState(null);
 
     return (
         <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
@@ -241,7 +240,7 @@ const EditProfile = props => {
                                 visible={showImagePicker}
                                 takenImage={handleTakenImage}
                             />
-                            {!(userAccount && userAccount.get('avatar')) ?
+                            {!userProfilePhoto ?
                                 <Avatar
                                     size={120}
                                     rounded
@@ -256,8 +255,8 @@ const EditProfile = props => {
                                     rounded
                                     onPress={() => handleShowImagePicker(true)}
                                     activeOpacity={0.5}
-                                    showEditButton
-                                    source={{ uri: userAccount.get('avatar')._url }}
+                                    showEditButton                                    
+                                    source={{ uri: userProfilePhoto }}
                                 />
                             }
                         </View>
@@ -372,6 +371,9 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         paddingRight: 30,
         paddingTop: 8,
+        flex: 1,
+    },
+    activityIndicator:{
         flex: 1,
     },
     brand: {
