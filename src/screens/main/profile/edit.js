@@ -36,7 +36,8 @@ const EditProfile = props => {
     const [userAccount, setUserAccount] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [sourceImage, setSourceImage] = useState(null);
+    const [showImagePicker, setShowImagePicker] = useState(false);
+    const [userProfilePhoto, setUserProfilePhoto] = useState(null);
 
     props.navigation.setOptions({
         headerRight: () => (
@@ -204,6 +205,7 @@ const EditProfile = props => {
     const handleShowImagePicker = show => {
         setShowImagePicker(show)
     };
+
     const handleTakenImage = async (image, filename) => {
         try {
             setUserProfilePhoto(`data:image/jpeg;base64,${image}`);
@@ -217,11 +219,6 @@ const EditProfile = props => {
             console.log(ex);
         }
     };
-
-    const [postImage, setPostImage] = useState(null);
-    const [filename, setFilename] = useState('');
-    const [showImagePicker, setShowImagePicker] = useState(false);
-    const [userProfilePhoto, setUserProfilePhoto] = useState(null);
 
     return (
         <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
@@ -255,7 +252,7 @@ const EditProfile = props => {
                                     rounded
                                     onPress={() => handleShowImagePicker(true)}
                                     activeOpacity={0.5}
-                                    showEditButton                                    
+                                    showEditButton
                                     source={{ uri: userProfilePhoto }}
                                 />
                             }
@@ -373,7 +370,7 @@ const styles = StyleSheet.create({
         paddingTop: 8,
         flex: 1,
     },
-    activityIndicator:{
+    activityIndicator: {
         flex: 1,
     },
     brand: {
