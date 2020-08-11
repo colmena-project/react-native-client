@@ -17,7 +17,6 @@ const WasteActions = props => {
     return (
         <ScrollView style={styles.scrollViewWrapper} >
 
-
             <Text style={{
                 paddingHorizontal: 40,
                 marginVertical: 20,

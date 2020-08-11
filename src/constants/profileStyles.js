@@ -1,108 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-
-import RegisterWasteItem from '../../../../components/waste/RegisterWasteItem';
-
-import colors from '../../../../constants/colors';
-
-const RegisterWasteScreen = props => {
-
-    const dummyData = [
-        {
-            id: 1,
-            qty: 5,
-            img: require('../../../../../assets/profile/profile_bottles.png')
-        },
-        {
-            id: 2,
-            qty: 10,
-            img: require('../../../../../assets/profile/profile_caps.png')
-        }
-    ];
-    const [data, setData] = useState(dummyData);
-
-    const handleUpdateWasteItem = wasteItem => {
-        const updatedData = data.map(item => {
-            if (item.id === wasteItem.id) return wasteItem;
-            return item;
-        });
-        setData(updatedData);
-    };
-
-    const handleNextButton = () => {
-        props.navigation.navigate('PickSourceAddress');
-    };
-
-    return (
-        <View style={styles.scrollViewWrapper} >
-
-
-            <View>
-                <Text style={{
-                    textAlign: 'center',
-                    paddingHorizontal: 40,
-                    marginVertical: 25,
-                    fontSize: 16,
-                    fontFamily: 'Nunito-Regular',
-                    color: '#7f7f7f'
-                }}>
-                    Puedes registrar tus residuos y ver la retribución estimada en JellyCoins <Text style={{ fontWeight: 'bold' }}>jyc</Text> ingresando botellas / tapitas.
-                </Text>
-
-                <View style={{ width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1 }}>
-
-                    <RegisterWasteItem text={'Pástico PET'} updateWasteItem={handleUpdateWasteItem} wasteItem={data[0]} />
-                    <RegisterWasteItem text={'Tapitas PP'} updateWasteItem={handleUpdateWasteItem} wasteItem={data[1]} />
-
-                </View>
-            </View>
-
-
-            <View style={{ marginBottom: 20 }}>
-                <TouchableOpacity style={{ marginVertical: 10 }} onPress={handleNextButton} >
-                    <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
-                        SIGUIENTE
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </View >
-    );
-};
-
-
+import { StyleSheet } from 'react-native';
+import colors from './colors';
 
 const styles = StyleSheet.create({
-    scrollViewWrapper: {
-        flex: 1,
-        padding: 0,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        backgroundColor: colors.colmenaBackground,
-        justifyContent: 'space-between'
-    },
-    scrollView: {
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingTop: 8,
-        flex: 1,
-    },
-    brand: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 40,
-    },
-    brandText: {
-        fontFamily: 'Nunito-SemiBold',
-        fontWeight: '300',
-        fontSize: 26,
-        color: colors.colmenaGrey,
-        marginLeft: 30,
-    },
     headerIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -173,8 +72,8 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     activityContainer: {
-        flex: 3,
-        paddingHorizontal: 20
+        flex: 1,
+        width: '100%',
     },
     brandText: {
         fontFamily: 'Nunito-SemiBold',
@@ -334,10 +233,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#4C4C4C',
     },
-    activityContainer: {
-        flex: 3,
-        paddingHorizontal: 20
-    },
     activityTitle: {
         fontFamily: 'Nunito-SemiBold',
         fontWeight: '300',
@@ -367,8 +262,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito-Light',
         marginLeft: 10,
     },
-
-
 });
 
-export default RegisterWasteScreen;
+export default styles;

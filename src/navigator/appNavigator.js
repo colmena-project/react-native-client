@@ -51,10 +51,6 @@ const RootNavigator = () => {
     const isLoggedIn = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
-    const handleLogOut = () => {
-        Auth.logOut(dispatch);
-    };
-
     const setProfileHeaderOptions = (title) => {
         return {
             gestureEnabled: true,
@@ -72,6 +68,14 @@ const RootNavigator = () => {
                 <HomeStack.Screen name={'Index'} component={HomeScreen} options={{ headerShown: false }} />
                 <HomeStack.Screen name={'OthersProfile'} component={OthersProfile} options={setProfileHeaderOptions('Ver perfil')} />
             </HomeStack.Navigator>
+        );
+    };
+
+    const WasteNavigator = () => {
+        return (
+            <WasteStack.Navigator>
+                <WasteStack.Screen name={'MainWasteActions'} component={MainWasteActionsScreen} options={setProfileHeaderOptions('¿Qué quieres hacer?')} />
+            </WasteStack.Navigator>
         );
     };
 

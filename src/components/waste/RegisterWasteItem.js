@@ -26,7 +26,7 @@ const RegisterWasteItem = props => {
                     <Image style={{ width: 80, height: 80, resizeMode: 'contain' }} source={wasteItem.img} />
                 </View>
                 <View>
-                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5, textAlign: 'center' }}>Plástico PET</Text>
+                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5, textAlign: 'center' }}>{props.text}</Text>
                 </View>
             </View>
             <View style={{ flexDirection: 'row' }}>

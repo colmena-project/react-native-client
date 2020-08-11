@@ -32,7 +32,7 @@ const PickAddressScreen = props => {
 
             <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
                 <TouchableOpacity onPress={handleNextButton} >
-                    <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
+                <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
                         SIGUIENTE
                     </Text>
                 </TouchableOpacity>

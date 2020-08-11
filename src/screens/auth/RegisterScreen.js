@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Image, Button, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import Parse from 'parse/react-native';
 import { useDispatch } from 'react-redux';
-import { setLoggedIn } from "../../redux/auth/actions";
 import Input from '../../components/form/Input';
 import validate from '../../services/Validate';
-import Installation from '../../services/Installation';
 import colors from '../../constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Slugify from 'slugify';
@@ -13,10 +11,16 @@ import Slugify from 'slugify';
 const RegisterScreen = props => {
 
     const fields = {
-        email: '',
         firstName: '',
         lastName: '',
-        username: '',
+        email: '',
+        address: '',
+        street: '',
+        city: '',
+        state: '',
+        country: '',
+        addressDescription: '',
+        coords: { latitude: -27.3715333, longitude: -55.9170078 },
         password: '',
         passwordConfirm: ''
     };
@@ -74,6 +78,8 @@ const RegisterScreen = props => {
                 }
             });
             checkErrors();
+            const latLng = new Parse.GeoPoint({ latitude: -27.3715333, longitude: -55.9170078 });
+            console.log(latLng);
             const params = {
                 email: inputs.email,
                 password: inputs.password,
@@ -81,21 +87,17 @@ const RegisterScreen = props => {
                 lastName: inputs.lastName,
                 username: Slugify(`${inputs.firstName.charAt(0)} ${inputs.lastName}`, '_').toLowerCase(),
                 defaultLanguage: 'es-AR',
+                address: {
+                    street: 'Test Street',
+                    city: 'Test City',
+                    state: 'Test State',
+                    country: 'Test Country',
+                    description: 'Test description',
+                    latLng
+                }
             };
-            const account = await Parse.Cloud.run('createAccount', params);
-            const userSessionToken = account.get('userSessionToken');
-            console.log('userSessionToken', userSessionToken);
-            if (userSessionToken) {
-                const user = await Parse.User.become(userSessionToken)
-                resetFields();
-                setIsloading(false);
-                await Installation.setInstallation();
-                dispatch(setLoggedIn(true));
-            } else {
-                resetFields();
-                setIsloading(false);
-                Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo.');
-            }
+            await Parse.Cloud.run('createAccount', params);
+            Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo.');
             props.navigation.navigate('Login');
             setIsloading(false);
         } catch (error) {
@@ -208,7 +210,7 @@ const RegisterScreen = props => {
                             <View style={styles.button}>
                                 {/* <Button color={colors.colmenaGreen} title={'Registrarme'} onPress={handleRegister} /> */}
                                 <TouchableOpacity style={{ backgroundColor: colors.colmenaGreen, padding: 10, borderRadius: 5 }} onPress={handleRegister}>
-                                    <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Nunito-SemiBold'}}>REGISTRARME</Text>
+                                    <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Nunito-SemiBold' }}>REGISTRARME</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -297,7 +299,7 @@ const styles = StyleSheet.create({
     colmenaHeaderIconContainer: {
         overflow: 'hidden',
     },
-    colmenaHeaderIcon: {        
+    colmenaHeaderIcon: {
         width: 55,
         height: 55
     },

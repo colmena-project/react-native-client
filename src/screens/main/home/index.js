@@ -138,31 +138,6 @@ const HomeScreen = props => {
                         />
                         : <View></View>}
                 </View>
-                {/* <ScrollView style={styles.container} onScroll={e => scrollY.setValue(e.nativeEvent.contentOffset.y)}>
-
-                    <View style={{ paddingHorizontal: 15 }}>
-                        <View style={styles.colmenaHeaderTextContainer}>
-                            <Text style={styles.colmenaHeaderSubtitle}>Novedades</Text>
-                        </View>
-
-                        {isLoading ? (
-                            <ActivityIndicator
-                                style={{ marginTop: 10 }}
-                                size={"large"}
-                                color={colors.colmenaGreen}
-                            />
-                        ) : (
-                                <FeedList onPress={handleOthersProfile} data={posts} onEndReached={handleOnEndReached} />
-                            )}
-                        {isLoadingMore ?
-                            <ActivityIndicator
-                                size={"large"}
-                                color={colors.colmenaGreen}
-                            />
-                            : <View></View>}
-                    </View>
-
-                </ScrollView> */}
                 <TouchableOpacity
                     style={styles.floatingIcon}
                     onPress={() => setIsAddMode(true)}

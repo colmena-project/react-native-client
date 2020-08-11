@@ -4,16 +4,16 @@ import { Parse } from 'parse/react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 
-import { useDispatch } from 'react-redux';
-import Auth from '../../../services/Auth';
 
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 import colors from '../../../constants/colors';
-import FeedListU from '../../../components/posts/FeedListU';
-import Activity from '../../../components/pendants/Activity';
+
+
+import UserTab from '../../../components/profile/UserTab';
+import WasteTab from '../../../components/profile/WasteTab';
+import PendantsTab from '../../../components/profile/PendantsTab';
 
 const MyProfile = props => {
 
@@ -24,7 +24,6 @@ const MyProfile = props => {
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [posts, setPosts] = useState([]);
     const [postsQty, setPostsQty] = useState(0);
-    const dispatch = useDispatch();
 
     const fetchData = async () => {
         try {
@@ -71,26 +70,6 @@ const MyProfile = props => {
         fetchData();
     }, []);
 
-    const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
-        return layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
-    };
-
-    const handleOnEndReached = () => {
-        loadMorePosts();
-    };
-
-    const handleLogout = () => {
-        Auth.logOut(dispatch);
-    };
-
-    const handleEditProfile = () => {
-        props.navigation.navigate('EditProfile');
-    };
-
-    const handleOnUsernamePress = (user) => {
-        props.navigation.navigate("OthersProfile");
-    };
-
     /******************************************************
     * TABS VIEW 
     *****************************************************/
@@ -98,196 +77,32 @@ const MyProfile = props => {
     const [routes] = useState([
         { key: 'user', title: (<Feather name={'user'} size={25} />) },
         { key: 'waste', title: (<FontAwesome5 name={'recycle'} size={25} />) },
-        { key: 'pendantsList', title: (<Feather name={'clipboard'} size={25} />) },
+        { key: 'pendants', title: (<Feather name={'clipboard'} size={25} />) },
     ]);
 
-    /******************************************************
-    * USER TAB
-    *****************************************************/
     const userTab = () => {
         return (
-            <ScrollView style={{ flex: 1, paddingLeft: 0, paddingRight: 0 }} onScroll={({ nativeEvent }) => {
-                if (isCloseToBottom(nativeEvent)) {
-                    handleOnEndReached();
-                }
-            }}>
-                {/* *********** PROFILE HEADER *********** */}
-                <View style={styles.profileHeader}>
-
-                    <View style={{ flexDirection: 'row', marginBottom: 20 }}>
-                        <View style={styles.profilePicture}>
-                            {(userAccount && userAccount.avatar) ?
-                                <Image
-                                    style={styles.avatar}
-                                    source={{ uri: userAccount.avatar._url }}
-                                /> :
-                                <Image
-                                    style={styles.avatar}
-                                    source={require('../../../../assets/default_user_1.png')}
-                                />
-                            }
-                            <Text style={styles.name}>
-                                @{userAccount.createdBy.get('username')}
-                            </Text>
-                        </View>
-
-                        <View style={{}}>
-                            <View style={styles.locationInfo}>
-                                <EvilIcons name={'location'} size={25} color={'#4C4C4C'} />
-                                <Text style={styles.titleTexts}>{userAccount.city}, {userAccount.state}</Text>
-                            </View>
-
-                            <View style={styles.aboutMeInfo}>
-                                <Text style={styles.aboutMeText}>
-                                    {userAccount.aboutMe}
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
-                        <TouchableOpacity onPress={handleEditProfile} style={styles.editInfoBtn}>
-                            <Text style={styles.editInfoBtnText}>Editar info pública</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
-                        <TouchableOpacity onPress={handleLogout} style={styles.editInfoBtn}>
-                            <Text style={styles.editInfoBtnText}>Cerrar sesión</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                </View>
-                {/* *********** FIN PROFILE HEADER *********** */}
-
-                {/* *********** ACTIVIDAD (POSTS) *********** */}
-                <View style={styles.activityContainer}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={styles.activityTitle}>Actividad</Text>
-                        <Text style={styles.activityExtraInfo}>
-                            {postsQty} <Text style={styles.activityExtraInfoDetail}>POSTS</Text>
-                        </Text>
-                    </View>
-
-                    <FeedListU onPress={handleOnUsernamePress} data={posts} />
-                    {isLoadingMore ?
-                        <ActivityIndicator
-                            size={"large"}
-                            color={colors.colmenaGreen}
-                        />
-                        : <View></View>}
-                </View>
-                {/* *********** FIN ACTIVIDAD (POSTS) *********** */}
-            </ScrollView>
+            <UserTab
+                posts={posts}
+                postsQty={postsQty}
+                isLoadingMore={isLoadingMore}
+                userAccount={userAccount}
+                loadMorePosts={loadMorePosts}
+            />
         );
     };
-    /******************************************************
-    * USER TAB
-    *****************************************************/
 
-    /******************************************************
-    * WASTE TAB
-    *****************************************************/
     const wasteTab = () => {
         return (
-            <ScrollView style={{}}>
-                {/* *********** RESIDUOS *********** */}
-                <View style={styles.wasteTabContainer}>
-
-                    <View style={styles.wasteItem}>
-                        <Image style={styles.wasteImage} source={require('../../../../assets/profile/profile_bottles.png')} />
-                        <Text style={styles.wasteDescription}>PET (2 Bolsas)</Text>
-                        <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={() => { }} style={styles.editInfoBtn}>
-                                <Text style={styles.editInfoBtnText}>Modificar</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={styles.wasteItem}>
-                        <Image style={styles.wasteImage} source={require('../../../../assets/profile/profile_caps.png')} />
-                        <Text style={styles.wasteDescription}>Tapitas (2 bolsas)</Text>
-                        <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={() => { }} style={styles.editInfoBtn}>
-                                <Text style={styles.editInfoBtnText}>Modificar</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    {/* {stock.map(item => {
-                                return (
-                                    <View key={item.objectId} style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                        <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>{item.wasteType.name}</Text>
-                                        <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>
-                                            {item.ammount} {item.ammount > 1 ? item.wasteType.containerPlural : item.wasteType.container}
-                                        </Text>
-                                    </View>
-                                );
-                            })} */}
-
-                </View>
-                {/* *********** FIN RESIDUOS *********** */}
-
-                {/* *********** DIRECCION *********** */}
-                <View style={styles.locationTabContainer}>
-                    <Image style={{ width: 24, height: 24, resizeMode: 'contain' }} source={require('../../../../assets/icons/location.png')} />
-                    <Text style={{ marginLeft: 10, fontFamily: 'Nunito-Light', fontSize: 16, color: '#4c4c4c' }}>{userAccount.city}, {userAccount.state}</Text>
-                </View>
-                {/* *********** FIN DIRECCION *********** */}
-
-                {/* *********** IMPACTO *********** */}
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                    <View style={styles.wasteCardsContainer}>
-                        <Text style={styles.wasteTitle}>
-                            Impacto
-                        </Text>
-                        <View style={styles.wasteCard}>
-                            <Text style={styles.impactTitle}>12 kg</Text>
-                            <Image style={styles.impactImage} source={require('../../../../assets/profile/profile_green_lungs.png')} />
-                            <Text style={styles.impactDescription}>Reducción de CO<Text style={{ fontSize: 10 }}>2</Text></Text>
-                        </View>
-                    </View>
-
-                    <View style={styles.wasteCardsContainer}>
-                        <View style={{ alignItems: 'flex-end', paddingHorizontal: 20 }}>
-                            <Image style={{ width: 130, height: 130, resizeMode: 'contain' }} source={require('../../../../assets/img/save_the_planet.png')} />
-                            <Text style={{ ...styles.impactDescription, fontSize: 14 }}>Retribución estimada</Text>
-                            <Text style={{ ...styles.impactTitle, fontSize: 40, letterSpacing: 2, fontFamily: 'Nunito-Bold' }}>400 jyc</Text>
-                        </View>
-                    </View>
-
-                </View>
-                {/* *********** FIN IMPACTO *********** */}
-            </ScrollView >
+            <WasteTab />
         );
     };
-    /******************************************************
-    * WASTE TAB
-    *****************************************************/
 
-    /******************************************************
-    * ACTIVITY TAB
-    *****************************************************/
-    const activiyTab = () => {
+    const pendantsTab = () => {
         return (
-            <View style={{ paddingHorizontal: 20 }}>
-                {transactions == null ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
-                    transactions.length > 0 ?
-                        transactions.map((transaction, index) => {
-                            return <Activity user={userAccount} transaction={transaction} key={index} />
-                        })
-                        :
-                        <View style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-                            <Image style={{ resizeMode: 'contain', width: '80%', height: '80%' }} source={require('../../../../assets/profile/empty_transactions.png')} />
-                            <Text style={{ paddingHorizontal: 20, fontFamily: 'Nunito-Light', fontSize: 18, color: '#4B4B4B' }}>
-                                No tenés actividades pendientes. Intenta con el menú de acciones.
-                            </Text>
-                        </View>
-                }
-            </View>
+            <PendantsTab userAccount={userAccount} transactions={transactions} />
         );
     };
-    /******************************************************
-    * ACTIVITY TAB
-    *****************************************************/
 
     const initialLayout = {
         width: Dimensions.get('window').width
@@ -296,7 +111,7 @@ const MyProfile = props => {
     const renderScene = SceneMap({
         user: userTab,
         waste: wasteTab,
-        pendantsList: activiyTab,
+        pendants: pendantsTab,
     });
 
     const renderTabBar = props => {
@@ -420,7 +235,6 @@ const styles = StyleSheet.create({
     },
     activityContainer: {
         flex: 3,
-        paddingHorizontal: 20
     },
     brandText: {
         fontFamily: 'Nunito-SemiBold',
