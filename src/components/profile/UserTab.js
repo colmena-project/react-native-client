@@ -46,7 +46,7 @@ const UserTab = props => {
             }
         }}>
             {/* *********** PROFILE HEADER *********** */}
-            <View style={{ ...styles.profileHeader, backgroundColor: 'red' }}>
+            <View style={{ ...styles.profileHeader }}>
 
                 <View style={{ flexDirection: 'row', marginBottom: 20 }}>
                     <View style={styles.profilePicture}>

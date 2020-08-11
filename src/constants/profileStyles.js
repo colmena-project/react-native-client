@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     profileHeader: {
         width: '100%',
         paddingVertical: 20,
-        paddingHorizontal: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#EDEDED'
     },

@@ -4,12 +4,9 @@ import { Parse } from 'parse/react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 
-
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
 import colors from '../../../constants/colors';
-
 
 import UserTab from '../../../components/profile/UserTab';
 import WasteTab from '../../../components/profile/WasteTab';
@@ -32,11 +29,11 @@ const MyProfile = props => {
             setUserAccount(account);
             props.navigation.setOptions({ title: `${account.firstName} ${account.lastName}` })
             const fetchPosts = new Parse.Query("Post");
-            fetchPosts.descending("createdAt").limit(POST_PER_LOAD_LIMIT);
+            fetchPosts.descending('createdAt').limit(POST_PER_LOAD_LIMIT);
             const result = await fetchPosts.find();
             const transactions = new Parse.Query('Transaction');
-            // transactions.equalTo('type', 'TRANSPORT');
-            transactions.equalTo('expiredAt', undefined);
+            transactions.equalTo('type', 'TRANSPORT');
+            transactions.descending('createdAt').equalTo('expiredAt', undefined);
             const transactionsResult = await transactions.find();
             const fetchPostsQty = new Parse.Query("Post");
             const qty = await fetchPostsQty.count();
