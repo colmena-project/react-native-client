@@ -1,85 +1,165 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, View, Image, StyleSheet, ScrollView, Dimensions, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Parse } from 'parse/react-native';
+import { TabView, SceneMap } from 'react-native-tab-view';
+import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import colors from '../../../constants/colors';
 
-const WasteActions = props => {
+import UserTab from '../../../components/profile/UserTab';
+import WasteTab from '../../../components/profile/WasteTab';
+import PendantsTab from '../../../components/profile/PendantsTab';
 
-    const handleStartRegisteringWaste = () => {
-        props.navigation.navigate('RegisterWaste');
+const MyProfile = props => {
+
+    const [transactions, setTransactions] = useState(null);
+    const [userAccount, setUserAccount] = useState(null);
+    const POST_PER_LOAD_LIMIT = 20;
+    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
+    const [posts, setPosts] = useState([]);
+    const [postsQty, setPostsQty] = useState(0);
+
+    const fetchData = async () => {
+        try {
+            setIsLoading(true);
+            const account = await Parse.Cloud.run("getMyAccount");
+            setUserAccount(account);
+            props.navigation.setOptions({ title: `${account.firstName} ${account.lastName}` })
+            const fetchPosts = new Parse.Query("Post");
+            fetchPosts.descending('createdAt').limit(POST_PER_LOAD_LIMIT);
+            const result = await fetchPosts.find();
+            const transactions = new Parse.Query('Transaction');
+            transactions.equalTo('type', 'TRANSPORT');
+            transactions.descending('createdAt').equalTo('expiredAt', undefined);
+            const transactionsResult = await transactions.find();
+            const fetchPostsQty = new Parse.Query("Post");
+            const qty = await fetchPostsQty.count();
+            setPostsQty(qty);
+            setTransactions(transactionsResult);
+            setPosts(result);
+            setIsLoading(false);
+        } catch (err) {
+            console.log('Profile Index error: ' + err);
+        }
+        setIsLoading(false);
     };
 
-    const handleRegisterInOtherMomment = () => {
-        Alert.alert('En otro momento!');
+    const loadMorePosts = async () => {
+        try {
+            setIsLoadingMore(true);
+            console.log('Length', posts.length);
+            const fetchPosts = new Parse.Query("Post");
+            fetchPosts.descending("createdAt").limit(POST_PER_LOAD_LIMIT).skip(posts.length);
+            const result = await fetchPosts.find();
+            const updatedPosts = [...posts, ...result];
+
+            setPosts(updatedPosts);
+            setIsLoadingMore(false);
+        } catch (err) {
+            console.log("Error!! " + err);
+        }
     };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    /******************************************************
+    * TABS VIEW 
+    *****************************************************/
+    const [index, setIndex] = useState(0);
+    const [routes] = useState([
+        { key: 'user', title: (<Feather name={'user'} size={25} />) },
+        { key: 'waste', title: (<FontAwesome5 name={'recycle'} size={25} />) },
+        { key: 'pendants', title: (<Feather name={'clipboard'} size={25} />) },
+    ]);
+
+    const userTab = () => {
+        return (
+            <UserTab
+                posts={posts}
+                postsQty={postsQty}
+                isLoadingMore={isLoadingMore}
+                userAccount={userAccount}
+                loadMorePosts={loadMorePosts}
+            />
+        );
+    };
+
+    const wasteTab = () => {
+        return (
+            <WasteTab />
+        );
+    };
+
+    const pendantsTab = () => {
+        return (
+            <PendantsTab userAccount={userAccount} transactions={transactions} />
+        );
+    };
+
+    const initialLayout = {
+        width: Dimensions.get('window').width
+    };
+
+    const renderScene = SceneMap({
+        user: userTab,
+        waste: wasteTab,
+        pendants: pendantsTab,
+    });
+
+    const renderTabBar = props => {
+        return (
+            <View style={styles.tabBar}>
+                {props.navigationState.routes.map((route, i) => {
+                    return (
+                        <TouchableOpacity
+                            key={i}
+                            style={{ ...styles.tabItem, borderBottomColor: index === i ? colors.colmenaGreen : '#ccc', alignItems: 'center' }}
+                            onPress={() => setIndex(i)}>
+                            <Text style={{ fontSize: 16, color: index === i ? colors.colmenaGrey : '#ccc' }}>{route.title}</Text>
+                        </TouchableOpacity>
+                    );
+                })}
+            </View>
+        );
+    };
+    /******************************************************
+     * END TABS VIEW 
+     *****************************************************/
 
     return (
-        <View style={styles.scrollViewWrapper} >
-
-            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
-                <Image style={{ width: 400, height: 300, resizeMode: 'contain' }} source={require('../../../../assets/img/1st_time_waste.png')} />
-            </View>
-
-
-            <Text style={{
-                paddingHorizontal: 40,
-                marginVertical: 25,
-                textAlign: 'justify',
-                fontSize: 16,
-                fontFamily: 'Nunito-Regular',
-                color: '#7f7f7f'
+        <AuthorizedScreen>
+            <View style={{
+                flex: 1,
+                padding: 0,
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                backgroundColor: colors.colmenaBackground,
             }}>
-                Registra tus residuos y recibe beneficios por tu reciclaje. La Comunidad Colmena comenzará a ver tus aportes.
-            </Text>
-
-
-            <View style={{ paddingHorizontal: 40 }}>
-                <TouchableOpacity onPress={handleStartRegisteringWaste} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
-                    <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
-                        EMPEZAR A REGISTRAR
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ marginVertical: 10 }} onPress={handleRegisterInOtherMomment} >
-                    <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
-                        EN OTRO MOMENTO
-                    </Text>
-                </TouchableOpacity>
+                {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                    <View style={styles.tabBarContainer}>
+                        <TabView
+                            navigationState={{ index, routes }}
+                            renderScene={renderScene}
+                            onIndexChange={setIndex}
+                            initialLayout={initialLayout}
+                            renderTabBar={renderTabBar}
+                        />
+                    </View>
+                }
             </View>
-        </View >
+        </AuthorizedScreen>
     );
 };
 
 const styles = StyleSheet.create({
-    scrollViewWrapper: {
-        flex: 1,
-        padding: 0,
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        backgroundColor: colors.colmenaBackground,
-    },
-    scrollView: {
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingTop: 8,
-        flex: 1,
-    },
-    brand: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 40,
-    },
-    brandText: {
-        fontFamily: 'Nunito-SemiBold',
-        fontWeight: '300',
-        fontSize: 26,
-        color: colors.colmenaGrey,
-        marginLeft: 30,
-    },
     headerIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -151,7 +231,6 @@ const styles = StyleSheet.create({
     },
     activityContainer: {
         flex: 3,
-        paddingHorizontal: 20
     },
     brandText: {
         fontFamily: 'Nunito-SemiBold',
@@ -348,4 +427,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default WasteActions;
+export default MyProfile;

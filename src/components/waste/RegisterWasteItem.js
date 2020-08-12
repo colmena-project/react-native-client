@@ -1,70 +1,130 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerWasteContainers } from '../../redux/waste/register/actions';
 import colors from '../../constants/colors';
 
-const RegisterWasteItem = props => {
+const RegisterwasteType = props => {
 
-    let wasteItem = props.wasteItem;
+    let wasteType = props.wasteType;
+    const [qty, setQty] = useState(0);
+    const dispatch = useDispatch();
+    const actualState = useSelector(state => state.registerWaste);
+
+    console.log(actualState);
 
     const handleAddWaste = () => {
-        // Apply some logic related to wastes
-        wasteItem.qty += 1;
-        props.updateWasteItem(wasteItem);
+        setQty(qty + 1);
+        dispatch(registerWasteContainers({ id: wasteType.id, qty: qty + 1 }));
     };
 
     const handleSubtractWaste = () => {
-        // Apply some logic related to wastes
-        if (wasteItem.qty != 0) wasteItem.qty -= 1;
-        props.updateWasteItem(wasteItem);
+        if (qty != 0) {
+            setQty(qty - 1);
+            dispatch(registerWasteContainers({ id: wasteType.id, qty: qty - 1 }));
+        }
     };
 
     return (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', width: '100%', borderBottomColor: '#EDEDED', borderBottomWidth: 1, paddingVertical: 10 }}>
+        <View style={styles.container}>
             <View>
                 <View>
-                    <Image style={{ width: 80, height: 80, resizeMode: 'contain' }} source={wasteItem.img} />
+                    <Image style={styles.image} source={{ uri: wasteType.get('iconFile')._url }} />
                 </View>
                 <View>
-                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5, textAlign: 'center' }}>{props.text}</Text>
+                    <Text style={styles.wasteDesc}>{wasteType.get('name')} {wasteType.get('code')}</Text>
                 </View>
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <View>
-                    <TouchableOpacity style={{
-                        alignItems: 'center',
-                        width: 30, height: 30,
-                        backgroundColor: wasteItem.qty == 0 ? '#7f7f7f' : colors.colmenaGreen,
-                        borderRadius: 50
-                    }}
+                    <TouchableOpacity style={{ ...styles.operationBnt, backgroundColor: qty == 0 ? '#7f7f7f' : colors.colmenaGreen, }}
                         onPress={handleSubtractWaste}>
-                        <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -12 }}>_</Text>
+                        <Text style={{ ...styles.operationText, top: -12 }}>_</Text>
                     </TouchableOpacity>
                 </View>
-                <View style={{ alignItems: 'center', marginHorizontal: 10 }}>
+                <View style={{ width: 50, alignItems: 'center', marginHorizontal: 10 }}>
                     <View>
-                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24 }}>{wasteItem.qty}</Text>
+                        <Text style={styles.qtyText}>{qty}</Text>
                     </View>
                     <View>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Bolsas</Text>
+                        <Text style={styles.containerDescriptionText}>{qty == 1 ? wasteType.get('container') : wasteType.get('containerPlural')}</Text>
                     </View>
                 </View>
                 <View>
-                    <TouchableOpacity style={{ alignItems: 'center', width: 30, height: 30, backgroundColor: colors.colmenaGreen, borderRadius: 50 }} onPress={handleAddWaste}>
-                        <Text style={{ textAlign: 'center', fontFamily: 'Nunito-SemiBold', fontSize: 24, color: 'white', position: 'absolute', top: -4 }}>+</Text>
+                    <TouchableOpacity style={styles.operationBnt} onPress={handleAddWaste}>
+                        <Text style={{ ...styles.operationText, top: -4 }}>+</Text>
                     </TouchableOpacity>
                 </View>
             </View>
             <View >
                 <View>
-                    <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 24, color: colors.colmenaGreen }}>100 jyc</Text>
+                    <Text style={styles.retributionAmount}>100 jyc</Text>
                 </View>
                 <View>
-                    <Text style={{ textAlign: 'center', fontFamily: 'Nunito-Regular', fontSize: 13, color: '#7f7f7f', marginTop: 5 }}>Estimado</Text>
+                    <Text style={styles.retributionDesc}>Estimado</Text>
                 </View>
             </View>
         </View>
     );
 };
 
-export default RegisterWasteItem;
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '100%',
+        borderBottomColor: '#EDEDED',
+        borderBottomWidth: 1,
+        paddingVertical: 10
+    },
+    image: {
+        width: 80,
+        height: 80,
+        resizeMode: 'contain'
+    },
+    wasteDesc: {
+        fontFamily: 'Nunito-Regular',
+        fontSize: 13,
+        color: '#7f7f7f',
+        marginTop: 5,
+        textAlign: 'center'
+    },
+    operationBnt: {
+        alignItems: 'center',
+        width: 30, height: 30,
+        borderRadius: 50,
+        backgroundColor: colors.colmenaGreen
+    },
+    operationText: {
+        textAlign: 'center',
+        fontFamily: 'Nunito-SemiBold',
+        fontSize: 24,
+        color: 'white',
+        position: 'absolute'
+    },
+    qtyText: {
+        fontFamily: 'Nunito-SemiBold',
+        fontSize: 24
+    },
+    containerDescriptionText: {
+        fontFamily: 'Nunito-Regular',
+        fontSize: 13,
+        color: '#7f7f7f',
+        marginTop: 5
+    },
+    retributionAmount: {
+        fontFamily: 'Nunito-SemiBold',
+        fontSize: 24,
+        color: colors.colmenaGreen
+    },
+    retributionDesc: {
+        textAlign: 'center',
+        fontFamily: 'Nunito-Regular',
+        fontSize: 13,
+        color: '#7f7f7f',
+        marginTop: 5
+    },
+})
+
+export default RegisterwasteType;

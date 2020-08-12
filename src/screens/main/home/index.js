@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator, Animated } from "react-native";
+import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, StatusBar, ActivityIndicator, Animated } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Installation from "../../../services/Installation";
 import { Parse } from "parse/react-native";
@@ -48,6 +48,11 @@ const HomeScreen = props => {
         }
     };
 
+    useEffect(() => {
+        Installation.setInstallation();
+        loadPosts();
+    }, []);
+
     const handleOnEndReached = () => {
         loadMorePosts();
     };
@@ -75,11 +80,6 @@ const HomeScreen = props => {
     };
 
     useEffect(() => {
-        Installation.setInstallation();
-        loadPosts();
-    }, []);
-
-    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             loadPosts();
         });
@@ -99,6 +99,8 @@ const HomeScreen = props => {
 
     return (
         <AuthorizedScreen>
+
+        <StatusBar barStyle="light-content" backgroundColor={colors.colmenaGreen} />
             <View style={styles.screen}>
                 <Animated.View
                     style={{

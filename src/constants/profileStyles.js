@@ -2,6 +2,16 @@ import { StyleSheet } from 'react-native';
 import colors from './colors';
 
 const styles = StyleSheet.create({
+    scrollViewWrapper: {
+        flex: 1,
+        backgroundColor: colors.colmenaBackground,
+    },
+    scrollView: {
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingTop: 8,
+        flex: 1,
+    },
     headerIcons: {
         flexDirection: 'row',
         justifyContent: 'space-between',

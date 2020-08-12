@@ -10,7 +10,6 @@ import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 
 import HomeScreen from '../screens/main/home';
 
-import FirstWasteActionsScreen from '../screens/main/waste/first';
 import MainWasteActionsScreen from '../screens/main/waste'
 
 import RegisterWasteScreen from '../screens/main/waste/register';
@@ -25,16 +24,17 @@ import TransportInEvaluationScreen from '../screens/main/waste/transport/inEvalu
 import PickWasteToManageScreen from '../screens/main/waste/manage';
 import ManageWasteScreen from '../screens/main/waste/manage/manageWaste';
 
+import SummaryScreen from '../screens/main/summary';
+import PendantsScreen from '../screens/main/pendants';
 import ProfileScreen from '../screens/main/profile';
 import EditProfile from '../screens/main/profile/edit';
 import OthersProfile from '../screens/main/profile/othersProfile';
 import TransportCancel from '../screens/main/profile/cancelTransport';
 import ChangePasswordScreen from '../screens/main/profile/changePassword';
 
-import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Feather, FontAwesome, AntDesign } from '@expo/vector-icons';
 import colors from '../constants/colors';
 
-import Auth from '../services/Auth';
 
 const RootNavigator = () => {
 
@@ -47,9 +47,10 @@ const RootNavigator = () => {
     const RegisterWasteStack = createStackNavigator();
     const TransportWasteStack = createStackNavigator();
 
+    const SummaryStack = createStackNavigator();
+    const PendantsStack = createStackNavigator();
     const ProfileStack = createStackNavigator();
     const isLoggedIn = useSelector(state => state.auth);
-    const dispatch = useDispatch();
 
     const setProfileHeaderOptions = (title) => {
         return {
@@ -75,14 +76,39 @@ const RootNavigator = () => {
         return (
             <WasteStack.Navigator>
                 <WasteStack.Screen name={'MainWasteActions'} component={MainWasteActionsScreen} options={setProfileHeaderOptions('¿Qué quieres hacer?')} />
+                <WasteStack.Screen name={'IndexManageWaste'} component={PickWasteToManageScreen} options={setProfileHeaderOptions('Gestionar Residuos')} />
+                <WasteStack.Screen name={'ManageWaste'} component={ManageWasteScreen} options={setProfileHeaderOptions('Elija los Residuos')} />
+                <WasteStack.Screen name={'RegisterWaste'} component={RegisterWasteScreen} options={setProfileHeaderOptions('Registrar Residuos')} />
+                <WasteStack.Screen name={'PickSourceAddress'} component={PickRegisterSourceAddressScreen} options={setProfileHeaderOptions('Seleccione el domicilio')} />
+                <WasteStack.Screen name={'Congratulations'} component={CongratulationsScreen} options={{ headerShown: false }} />
+                <WasteStack.Screen name={'PickWasteToTransport'} component={PickWasteToTransportScreen} options={setProfileHeaderOptions('Elija los Residuos')} />
+                <WasteStack.Screen name={'PickTransportDestiny'} component={PickTransportDestinyScreen} options={setProfileHeaderOptions('Elija el destino')} />
+                <WasteStack.Screen name={'VerifyTransportInfo'} component={VerifyTransportInfoScreen} options={setProfileHeaderOptions('Verificar información')} />
+                <WasteStack.Screen name={'TransportInEvaluation'} component={TransportInEvaluationScreen} options={{ headerShown: false }} />
             </WasteStack.Navigator>
+        );
+    };
+
+    const SummaryNavigator = () => {
+        return (
+            <SummaryStack.Navigator>
+                <SummaryStack.Screen name={'Summary'} component={SummaryScreen} options={setProfileHeaderOptions('Resumen')} />
+            </SummaryStack.Navigator>
+        );
+    };
+
+    const PendantsNavigator = () => {
+        return (
+            <PendantsStack.Navigator>
+                <PendantsStack.Screen name={'Pendants'} component={PendantsScreen} options={setProfileHeaderOptions('Pendientes')} />
+                <PendantsStack.Screen name={'Cancel Transport'} component={TransportCancel} options={setProfileHeaderOptions('Cancelar transporte')} />
+            </PendantsStack.Navigator>
         );
     };
 
     const RegisterWasteNavigator = () => {
         return (
             <RegisterWasteStack.Navigator>
-                <RegisterWasteStack.Screen name={'First'} component={FirstWasteActionsScreen} options={setProfileHeaderOptions('Registrar Residuos')} />
                 <RegisterWasteStack.Screen name={'RegisterWaste'} component={RegisterWasteScreen} options={setProfileHeaderOptions('Registrar Residuos')} />
                 <RegisterWasteStack.Screen name={'PickSourceAddress'} component={PickRegisterSourceAddressScreen} options={setProfileHeaderOptions('Seleccione el domicilio')} />
                 <RegisterWasteStack.Screen name={'Congratulations'} component={CongratulationsScreen} options={{ headerShown: false }} />
@@ -119,7 +145,6 @@ const RootNavigator = () => {
 
                 <ProfileStack.Screen name={'EditProfile'} component={EditProfile} options={setProfileHeaderOptions('Editar perfil')} />
                 <ProfileStack.Screen name={'OthersProfile'} component={OthersProfile} options={setProfileHeaderOptions('Ver perfil')} />
-                <ProfileStack.Screen name={'Cancel Transport'} component={TransportCancel} options={setProfileHeaderOptions('Cancelar transporte')} />
             </ProfileStack.Navigator>
         );
     };
@@ -140,17 +165,38 @@ const RootNavigator = () => {
                         ),
                     }}
                 />
-                {/* <HomeTabs.Screen
+                <HomeTabs.Screen
+                    name={'Summary'}
+                    component={SummaryNavigator}
+                    options={{
+                        tabBarLabel: 'Summary',
+                        tabBarIcon: ({ color, size }) => (
+                            <AntDesign name="appstore-o" color={color} size={size} />
+                        ),
+                    }}
+                />
+                <HomeTabs.Screen
                     name={'Waste'}
                     component={WasteNavigator}
                     options={{
                         tabBarLabel: 'Waste',
                         tabBarIcon: ({ color, size }) => (
-                            <FontAwesome name="recycle" color={color} size={size} />
+                            <FontAwesome name="recycle" color={color} size={size + 8} />
                         ),
                     }}
-                /> */}
+                />
                 <HomeTabs.Screen
+                    name={'Pendants'}
+                    component={PendantsNavigator}
+                    options={setProfileHeaderOptions('Pendientes')}
+                    options={{
+                        tabBarLabel: 'Summary',
+                        tabBarIcon: ({ color, size }) => (
+                            <AntDesign name="clockcircleo" color={color} size={size} />
+                        ),
+                    }}
+                />
+                {/* <HomeTabs.Screen
                     name={'RegisterWaste'}
                     component={RegisterWasteNavigator}
                     options={{
@@ -179,7 +225,7 @@ const RootNavigator = () => {
                             <FontAwesome name="truck" color={color} size={size} />
                         ),
                     }}
-                />
+                /> */}
                 <HomeTabs.Screen
                     name={'User'}
                     component={ProfileNavigator}

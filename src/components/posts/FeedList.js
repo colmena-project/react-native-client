@@ -43,7 +43,7 @@ const FeedList = props => {
 
     return (
         <View style={styles.feedList}>
-            <FlatList style={{ ...styles.mainFeed, paddingTop: props.paddingTop }}
+            <FlatList style={{ ...styles.mainFeed, paddingTop: props.paddingTop + 5 }}
                 ListHeaderComponent={props.ListHeaderComponent}
                 onScroll={handleOnScroll}
                 nestedScrollEnabled={false}
