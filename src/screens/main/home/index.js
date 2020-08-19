@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, ScrollView, TouchableOpacity, StatusBar, ActivityIndicator, Animated } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity, StatusBar, ActivityIndicator, Animated } from "react-native";
+import { useDispatch } from 'react-redux';
+
+import UserService from '../../../services/User';
+
 import { useNavigation } from "@react-navigation/native";
 import Installation from "../../../services/Installation";
 import { Parse } from "parse/react-native";
@@ -20,10 +24,12 @@ const HomeScreen = props => {
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [posts, setPosts] = useState([]);
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
-    const loadPosts = async () => {
+    const fetchAllData = async () => {
         try {
             setIsLoading(true);
+            UserService.getData(dispatch);
             const fetchPosts = new Parse.Query("Post");
             fetchPosts.include('createdBy').descending("createdAt").limit(POST_PER_LOAD_LIMIT);
             const result = await fetchPosts.find();
@@ -50,7 +56,7 @@ const HomeScreen = props => {
 
     useEffect(() => {
         Installation.setInstallation();
-        loadPosts();
+        fetchAllData();
     }, []);
 
     const handleOnEndReached = () => {
@@ -69,7 +75,7 @@ const HomeScreen = props => {
                 post.set('image', postImage);
             }
             await post.save();
-            loadPosts();
+            fetchAllData();
         } catch (err) {
             console.log("Error!! " + err);
         }
@@ -81,7 +87,7 @@ const HomeScreen = props => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            loadPosts();
+            fetchAllData();
         });
         return unsubscribe;
     }, [navigation]);
@@ -100,7 +106,7 @@ const HomeScreen = props => {
     return (
         <AuthorizedScreen>
 
-        <StatusBar barStyle="light-content" backgroundColor={colors.colmenaGreen} />
+            <StatusBar barStyle="light-content" backgroundColor={colors.colmenaGreen} />
             <View style={styles.screen}>
                 <Animated.View
                     style={{

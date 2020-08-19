@@ -7,7 +7,7 @@ import styles from '../../../constants/profileStyles';
 
 const WasteActions = props => {
 
-    const hasWasteContainers = true;
+    const hasWasteContainers = false;
 
     const handleStartRegisteringWaste = () => {
         props.navigation.navigate('RegisterWaste');

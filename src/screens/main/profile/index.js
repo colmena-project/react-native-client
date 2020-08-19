@@ -63,10 +63,6 @@ const UserProfile = props => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        console.log(userAccount);
-    }, userAccount);
-
     const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
         return layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
     };

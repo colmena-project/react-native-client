@@ -74,16 +74,7 @@ const OthersProfile = props => {
     };
 
     return (
-        <View style={{
-            flex: 1,
-            padding: 0,
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            backgroundColor: colors.colmenaBackground,
-        }}>
+        <View style={{ ...styles.scrollViewWrapper }}>
             {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
                 <ScrollView style={styles.scrollView} onScroll={({ nativeEvent }) => {
                     if (isCloseToBottom(nativeEvent)) {
@@ -109,7 +100,8 @@ const OthersProfile = props => {
                             <View style={{}}>
                                 <View style={styles.locationInfo}>
                                     <EvilIcons name={'location'} size={25} color={'#4C4C4C'} />
-                                    <Text style={styles.titleTexts}>{userAccount.city}, {userAccount.state}</Text>
+                                    <Text style={styles.titleTexts}>Posadas, Misiones</Text>
+                                    {/* <Text style={styles.titleTexts}>{userAccount.city}, {userAccount.state}</Text> */}
                                 </View>
 
                                 <View style={styles.aboutMeInfo}>
@@ -123,7 +115,7 @@ const OthersProfile = props => {
 
                         {/* *********** ACTIVIDAD (POSTS) *********** */}
                         <View style={styles.activityContainer}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 15 }}>
                                 <Text style={styles.activityTitle}>Actividad</Text>
                                 <Text style={styles.activityExtraInfo}>
                                     {postsQty} <Text style={styles.activityExtraInfoDetail}>{postsQty === 1 ? 'POST' : 'POSTS'}</Text>
@@ -303,17 +295,14 @@ const styles = StyleSheet.create({
     },
     activityContainer: {
         flex: 3,
-        paddingHorizontal: 20
     },
     activityTitle: {
         fontFamily: 'Nunito-SemiBold',
         fontWeight: '300',
-        marginLeft: 30,
         fontSize: 18,
         color: '#4C4C4C',
         paddingVertical: 10,
-        marginLeft: 0,
-        marginTop: 15
+        marginTop: 15,
     },
     activityExtraInfo: {
         fontFamily: 'Nunito-SemiBold',
