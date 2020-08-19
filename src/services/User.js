@@ -1,5 +1,5 @@
 import Parse from 'parse/react-native';
-import { setUserAccount, setUserAddress } from '../redux/user/actions';
+import { setUserAccount, setUserAddress, setUserStock } from '../redux/user/actions';
 
 const dispatch = null;
 
@@ -11,26 +11,37 @@ const getDispatcher = () => {
     return dispatch;
 }
 
-const setAccount = async dispatch => {
-    const userAccount = await Parse.Cloud.run("getMyAccount");
-    dispatch(setUserAccount({ userAccount }));
+const fetchAccount = async dispatch => {
+    try {
+        const userAccountJSON = await Parse.Cloud.run("getMyAccount");
+        const accountObject = new Parse.Query('Account');
+        const userAccountParse = await accountObject.get(userAccountJSON.objectId);
+        dispatch(setUserAccount(userAccountParse));
+        dispatch(setUserStock(userAccountJSON.stock));
+    } catch (error) {
+        console.log('UserService - fetchAccount: ', error.message);
+    }
 };
 
-const setAddress = async dispatch => {
-    const parseAddress = new Parse.Query('Address');
-    parseAddress.equalTo('default', true);
-    const userAddress = await parseAddress.first();
-    dispatch(setUserAddress({ userAddress }));
+const fetchAddress = async dispatch => {
+    try {
+        const parseAddress = new Parse.Query('Address');
+        parseAddress.equalTo('default', true);
+        const userAddress = await parseAddress.first();
+        dispatch(setUserAddress(userAddress));
+    } catch (error) {
+        console.log('UserService - fetchAddress: ', error.message);
+    }
 };
 
-const getData = dispatch => {
-    setAccount(dispatch);
-    setAddress(dispatch);
+const fetchData = dispatch => {
+    fetchAccount(dispatch);
+    fetchAddress(dispatch);
 };
 
 export default {
     setDispatcher,
-    setAccount,
-    setAddress,
-    getData,
+    fetchAccount,
+    fetchAddress,
+    fetchData,
 };

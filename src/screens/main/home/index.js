@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Image, TouchableOpacity, StatusBar, ActivityIndicator, Animated } from "react-native";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import UserService from '../../../services/User';
 
@@ -25,11 +25,14 @@ const HomeScreen = props => {
     const [posts, setPosts] = useState([]);
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const actualState = useSelector(state => state.user);
+
+    console.log(actualState);
 
     const fetchAllData = async () => {
         try {
             setIsLoading(true);
-            UserService.getData(dispatch);
+            UserService.fetchData(dispatch);
             const fetchPosts = new Parse.Query("Post");
             fetchPosts.include('createdBy').descending("createdAt").limit(POST_PER_LOAD_LIMIT);
             const result = await fetchPosts.find();
