@@ -25,9 +25,6 @@ const HomeScreen = props => {
     const [posts, setPosts] = useState([]);
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const actualState = useSelector(state => state.user);
-
-    console.log(actualState);
 
     const fetchAllData = async () => {
         try {

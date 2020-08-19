@@ -1,5 +1,5 @@
 import Parse from 'parse/react-native';
-import { setUserAccount, setUserAddress, setUserStock } from '../redux/user/actions';
+import { setUserAccount, setUserAddress, setUserStock, setUserTransactions } from '../redux/user/actions';
 
 const dispatch = null;
 
@@ -34,14 +34,28 @@ const fetchAddress = async dispatch => {
     }
 };
 
+const fetchTransactions = async dispatch => {
+    try {
+        const transactions = new Parse.Query('Transaction');
+        // transactions.equalTo('type', 'TRANSPORT');
+        transactions.descending('createdAt').equalTo('expiredAt', undefined);
+        const userTransactions = await transactions.find();
+        dispatch(setUserTransactions(userTransactions));
+    } catch (error) {
+        console.log('UserService - fetchTransactions: ', error.message);
+    }
+};
+
 const fetchData = dispatch => {
     fetchAccount(dispatch);
     fetchAddress(dispatch);
+    fetchTransactions(dispatch);
 };
 
 export default {
     setDispatcher,
     fetchAccount,
     fetchAddress,
+    fetchTransactions,
     fetchData,
 };
