@@ -50,7 +50,7 @@ const RootNavigator = () => {
     const SummaryStack = createStackNavigator();
     const PendantsStack = createStackNavigator();
     const ProfileStack = createStackNavigator();
-    const isLoggedIn = useSelector(state => state.auth);
+    const isLoggedIn = useSelector(state => state.isLoggedIn);
 
     const setProfileHeaderOptions = (title) => {
         return {

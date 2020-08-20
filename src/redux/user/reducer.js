@@ -7,27 +7,27 @@ const userReducer = (userData = initialState, action) => {
         case SET_USER_ACCOUNT:
             return {
                 ...userData,
-                userAccount: action.data,
+                account: action.data,
             };
         case SET_USER_ADDRESS:
             return {
                 ...userData,
-                userAddress: action.data,
+                address: action.data,
             };
         case SET_USER_POSTS:
             return {
                 ...userData,
-                userPosts: action.data,
+                posts: action.data,
             };
         case SET_USER_STOCK:
             return {
                 ...userData,
-                userStock: action.data,
+                stock: action.data,
             };
         case SET_USER_TRANSACTIONS:
             return {
                 ...userData,
-                userTransactions: action.data,
+                transactions: action.data,
             };
         default:
             return userData;

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { useSelector } from 'react-redux';
+import { useNavigation } from "@react-navigation/native";
 import colors from '../../../constants/colors';
 import styles from '../../../constants/profileStyles';
 import Activity from '../../../components/pendants/Activity';
@@ -10,6 +12,10 @@ const PendantsScreen = props => {
     const [transactions, setTransactions] = useState(null);
     const [userAccount, setUserAccount] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const actualState = useSelector(state => state);
+    const navigation = useNavigation();
+
+    console.log(actulState);
 
     const fetchData = async () => {
         try {
@@ -27,6 +33,14 @@ const PendantsScreen = props => {
         }
         setIsLoading(false);
     };
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            console.log('ASD');
+            console.log(actualState);
+        });
+        return unsubscribe;
+    }, [navigation]);
 
     useEffect(() => {
         fetchData();

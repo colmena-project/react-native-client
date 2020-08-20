@@ -4,7 +4,7 @@ import authReducer from '../auth/reducer';
 import registerWasteReducer from '../waste/register/reducer';
 
 const rootReducer = combineReducers({
-    auth: authReducer,
+    isLoggedIn: authReducer,
     user: userReducer,
     registerWaste: registerWasteReducer,
 });

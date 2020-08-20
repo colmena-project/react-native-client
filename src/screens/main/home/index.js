@@ -26,6 +26,10 @@ const HomeScreen = props => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
+    const actualState = useSelector(state => state);
+
+    console.log(actualState);
+
     const fetchAllData = async () => {
         try {
             setIsLoading(true);
