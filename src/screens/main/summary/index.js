@@ -1,45 +1,58 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import colors from '../../../constants/colors';
+import { useSelector } from 'react-redux';
 import styles from '../../../constants/profileStyles';
 
-
 const SummaryScreen = () => {
+
+    const stock = useSelector(state => state.user.stock);
+    const getContainers = () => {
+        const formatted = [];
+        stock.forEach(item => {
+            const type = item.wasteType.name;
+            if (!(type in formatted))
+                formatted[type] = [];
+            formatted[type] = item;
+        })
+        return formatted;
+    };
+    const containers = getContainers();
 
     return (
         <ScrollView style={{ ...styles.scrollViewWrapper, paddingTop: 30 }}>
             {/* *********** RESIDUOS *********** */}
             <View style={styles.wasteTabContainer}>
 
-                <View style={styles.wasteItem}>
-                    <Image style={styles.wasteImage} source={require('../../../../assets/profile/profile_bottles.png')} />
-                    <Text style={styles.wasteDescription}>PET (2 Bolsas)</Text>
-                    <View style={styles.btnContainer}>
-                        <TouchableOpacity onPress={() => { }} style={styles.editInfoBtn}>
-                            <Text style={styles.editInfoBtnText}>Modificar</Text>
-                        </TouchableOpacity>
+                {containers && containers['PET'] ?
+                    <View style={styles.wasteItem}>
+                        <Image style={styles.wasteImage} source={require('../../../../assets/profile/profile_bottles.png')} />
+                        <Text style={styles.wasteDescription}>
+                            PET ({containers['PET'].ammount} {containers['PET'].ammount == 1 ? containers['PET'].wasteType.container : containers['PET'].wasteType.containerPlural})
+                            </Text>
+                        <View style={styles.btnContainer}>
+                            <TouchableOpacity onPress={() => { }} style={styles.editInfoBtn}>
+                                <Text style={styles.editInfoBtnText}>Modificar</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-                <View style={styles.wasteItem}>
-                    <Image style={styles.wasteImage} source={require('../../../../assets/profile/profile_caps.png')} />
-                    <Text style={styles.wasteDescription}>Tapitas (2 bolsas)</Text>
-                    <View style={styles.btnContainer}>
-                        <TouchableOpacity onPress={() => { }} style={styles.editInfoBtn}>
-                            <Text style={styles.editInfoBtnText}>Modificar</Text>
-                        </TouchableOpacity>
+                    :
+                    <View></View>
+                }
+                {containers && containers['Tapitas'] ?
+                    <View style={styles.wasteItem}>
+                        <Image style={styles.wasteImage} source={require('../../../../assets/profile/profile_caps.png')} />
+                        <Text style={styles.wasteDescription}>
+                            Tapitas ({containers['Tapitas'].ammount} {containers['Tapitas'].ammount == 1 ? containers['Tapitas'].wasteType.container : containers['Tapitas'].wasteType.containerPlural})
+                            </Text>
+                        <View style={styles.btnContainer}>
+                            <TouchableOpacity onPress={() => { }} style={styles.editInfoBtn}>
+                                <Text style={styles.editInfoBtnText}>Modificar</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-                {/* {stock.map(item => {
-                            return (
-                                <View key={item.objectId} style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                                    <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>{item.wasteType.name}</Text>
-                                    <Text style={{ ...styles.headerExtraInfoText, fontSize: 12 }}>
-                                        {item.ammount} {item.ammount > 1 ? item.wasteType.containerPlural : item.wasteType.container}
-                                    </Text>
-                                </View>
-                            );
-                        })} */}
-
+                    :
+                    <View></View>
+                }
             </View>
             {/* *********** FIN RESIDUOS *********** */}
 

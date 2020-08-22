@@ -21,7 +21,7 @@ const CongratulationsScreen = props => {
             formatted[type].push(code);
         })
         return formatted;
-    }
+    };
     const containers = getContainers();
 
     console.log(containers);
