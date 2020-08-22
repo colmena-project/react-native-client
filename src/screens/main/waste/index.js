@@ -9,8 +9,8 @@ import styles from '../../../constants/profileStyles';
 const WasteActions = props => {
 
     const actualState = useSelector(state => state);
-    // const hasWasteContainers = actualState.user.transactions.length > 0 ? true : false;
-    const hasWasteContainers = false;
+    const recovers = actualState.user.transactions.filter(transaction => transaction.get('type') === 'RECOVER');
+    const hasWasteContainers = recovers.length > 0 ? true : false;
 
     const handleStartRegisteringWaste = () => {
         props.navigation.navigate('RegisterWaste');

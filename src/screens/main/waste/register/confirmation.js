@@ -1,13 +1,17 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetWasteContainers } from '../../../../redux/waste/register/actions';
 import Parse from 'parse/react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../../../constants/colors';
 
+import UserService from '../../../../services/User';
+import WasteService from '../../../../services/Waste';
+
 const CongratulationsScreen = props => {
 
+    const [isLoading, setIsLoading] = useState(false);
     const wastesToRegister = useSelector(state => state.registerWaste);
     const account = useSelector(state => state.user.account);
     const address = useSelector(state => state.user.address);
@@ -15,6 +19,7 @@ const CongratulationsScreen = props => {
 
     const handleRegisterButton = async () => {
         try {
+            setIsLoading(true);
             const containers = wastesToRegister.map(waste => { return { typeId: waste.id, qty: waste.qty } });
             const addressId = address.id;
             const params = {
@@ -22,89 +27,96 @@ const CongratulationsScreen = props => {
                 addressId
             };
             const result = await Parse.Cloud.run('registerRecover', params);
-            dispatch(resetWasteContainers(true))
+            dispatch(resetWasteContainers(true));
+            UserService.fetchData(dispatch);
+            WasteService.fetchData(dispatch);
+            setIsLoading(false);
             props.navigation.navigate('Congratulations', { data: result });
         } catch (error) {
+            setIsLoading(false);
             console.log(error);
         }
     };
 
     return (
-        <ScrollView style={styles.scrollViewWrapper} >
+        <View style={{ flex: 1 }}>
+            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                <ScrollView style={styles.scrollViewWrapper} >
+                    <View style={{ width: '100%', height: 175, justifyContent: 'center', alignItems: 'center' }}>
+                        <Image style={{ width: '50%', resizeMode: 'contain' }} source={require('../../../../../assets/img/save_the_planet.png')} />
+                    </View>
 
-            <View style={{ width: '100%', height: 175, justifyContent: 'center', alignItems: 'center' }}>
-                <Image style={{ width: '50%', resizeMode: 'contain' }} source={require('../../../../../assets/img/save_the_planet.png')} />
-            </View>
-
-            <View>
-                <Text style={{
-                    textAlign: 'center',
-                    paddingHorizontal: 40,
-                    marginBottom: 20,
-                    fontSize: 20,
-                    fontFamily: 'Nunito-Regular',
-                    color: '#5a5d6c'
-                }}>
-                    <Text style={{ fontWeight: 'bold' }}>@{account.get('user').get('username')}</Text>, verificá que la información sea correcta!
+                    <View>
+                        <Text style={{
+                            textAlign: 'center',
+                            paddingHorizontal: 40,
+                            marginBottom: 20,
+                            fontSize: 20,
+                            fontFamily: 'Nunito-Regular',
+                            color: '#5a5d6c'
+                        }}>
+                            <Text style={{ fontWeight: 'bold' }}>@{account.get('user').get('username')}</Text>, verificá que la información sea correcta!
                 </Text>
-            </View>
+                    </View>
 
-            <View>
-                <Text style={{
-                    textAlign: 'center',
-                    paddingHorizontal: 40,
-                    marginBottom: 20,
-                    fontSize: 16,
-                    fontFamily: 'Nunito-Regular',
-                    color: '#7f7f7f'
-                }}>
-                    Estás por registrar residuos, si toda la información está correcta, presioná <Text style={{ fontFamily: 'Nunito-Bold' }}>REGISTRAR</Text> para continuar
+                    <View>
+                        <Text style={{
+                            textAlign: 'center',
+                            paddingHorizontal: 40,
+                            marginBottom: 20,
+                            fontSize: 16,
+                            fontFamily: 'Nunito-Regular',
+                            color: '#7f7f7f'
+                        }}>
+                            Estás por registrar residuos, si toda la información está correcta, presioná <Text style={{ fontFamily: 'Nunito-Bold' }}>REGISTRAR</Text> para continuar
                 </Text>
-            </View>
+                    </View>
 
-            <View style={{ paddingHorizontal: 50, paddingVertical: 20, flexDirection: 'row', justifyContent: 'space-between', }}>
-                <View>
-                    {wastesToRegister ?
-                        wastesToRegister.map(wasteType => {
-                            return (
-                                <View key={wasteType.id} style={{}}>
-                                    <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>
-                                        {wasteType.item.get('name')}
-                                        <Text style={{ fontSize: 14 }}>  {wasteType.qty} {wasteType.qty == 1 ? wasteType.item.get('container') : wasteType.item.get('containerPlural')}</Text>
-                                    </Text>
-                                </View>
-                            )
-                        })
-                        : <View><Text>No registraste residuos</Text></View>
-                    }
-                </View>
-            </View>
+                    <View style={{ paddingHorizontal: 50, paddingVertical: 20, flexDirection: 'row', justifyContent: 'space-between', }}>
+                        <View>
+                            {wastesToRegister ?
+                                wastesToRegister.map(wasteType => {
+                                    return (
+                                        <View key={wasteType.id} style={{}}>
+                                            <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>
+                                                {wasteType.item.get('name')}
+                                                <Text style={{ fontSize: 14 }}>  {wasteType.qty} {wasteType.qty == 1 ? wasteType.item.get('container') : wasteType.item.get('containerPlural')}</Text>
+                                            </Text>
+                                        </View>
+                                    )
+                                })
+                                : <View><Text>No registraste residuos</Text></View>
+                            }
+                        </View>
+                    </View>
 
-            <View style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderBottomWidth: 1,
-                borderBottomColor: colors.separator,
-                borderTopWidth: 1,
-                borderTopColor: colors.separator,
-                paddingVertical: 5,
-                marginVertical: 20
-            }}>
-                <MaterialCommunityIcons name="map-marker-radius" color={'black'} size={30} />
-                <Text style={{ maxWidth: '80%', padding: 15, marginHorizontal: 10, color: colors.greyText }}>
-                    {address.get('street')} - {address.get('city')}, {address.get('state')}
-                </Text>
-            </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderBottomWidth: 1,
+                        borderBottomColor: colors.separator,
+                        borderTopWidth: 1,
+                        borderTopColor: colors.separator,
+                        paddingVertical: 5,
+                        marginVertical: 20
+                    }}>
+                        <MaterialCommunityIcons name="map-marker-radius" color={'black'} size={30} />
+                        <Text style={{ maxWidth: '80%', padding: 15, marginHorizontal: 10, color: colors.greyText }}>
+                            {address.get('street')} - {address.get('city')}, {address.get('state')}
+                        </Text>
+                    </View>
 
-            <View style={{ paddingHorizontal: 40, marginBottom: 20, }}>
-                <TouchableOpacity onPress={handleRegisterButton} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
-                    <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
-                        REGISTRAR
+                    <View style={{ paddingHorizontal: 40, marginBottom: 20, }}>
+                        <TouchableOpacity onPress={handleRegisterButton} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
+                            <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                                REGISTRAR
                     </Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView >
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView >
+            }
+        </View>
     );
 };
 

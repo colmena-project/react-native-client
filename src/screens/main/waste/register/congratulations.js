@@ -27,7 +27,7 @@ const CongratulationsScreen = props => {
     console.log(containers);
 
     const handleExitButton = () => {
-        props.navigation.navigate('RegisterWaste');
+        props.navigation.navigate('MainWasteActions');
     };
 
     return (
@@ -65,30 +65,37 @@ const CongratulationsScreen = props => {
 
             <View style={{ paddingHorizontal: 50, flexDirection: 'row', justifyContent: 'space-between', }}>
 
-                <View>
-                    <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
-                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>PET <Text style={{ fontSize: 14 }}>({containers['PET'].length})</Text></Text>
-                    </View>
+                {containers && containers['PET'] ?
                     <View>
-                        {containers['PET'].map(container => {
-                            return (
-                                <Text key={container} style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>{container}</Text>
-                            );
-                        })}
+                        <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                            <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>PET <Text style={{ fontSize: 14 }}>({containers['PET'].length})</Text></Text>
+                        </View>
+                        <View>
+                            {containers['PET'].map(container => {
+                                return (
+                                    <Text key={container} style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>{container}</Text>
+                                );
+                            })}
+                        </View>
                     </View>
-                </View>
-                <View>
-                    <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
-                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>Tapitas <Text style={{ fontSize: 14 }}>({containers['Tapitas'].length})</Text></Text>
-                    </View>
+                    :
+                    <View></View>}
+                {containers && containers['Tapitas'] ?
                     <View>
-                        {containers['Tapitas'].map(container => {
-                            return (
-                                <Text key={container} style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>{container}</Text>
-                            );
-                        })}
+                        <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                            <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>Tapitas <Text style={{ fontSize: 14 }}>({containers['Tapitas'].length})</Text></Text>
+                        </View>
+                        <View>
+                            {containers['Tapitas'].map(container => {
+                                return (
+                                    <Text key={container} style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>{container}</Text>
+                                );
+                            })}
+                        </View>
                     </View>
-                </View>
+                    :
+                    <View></View>
+                }
             </View>
 
             <View style={{
