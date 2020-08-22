@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import colors from '../../../../constants/colors';
 
 const CongratulationsScreen = props => {
+
+    const account = useSelector(state => state.user.account);
+    const data = props.route.params.data;
+    const address = useSelector(state => state.user.address);
+    const getContainers = () => {
+        const formatted = [];
+        data.details.forEach(transaction => {
+            const container = transaction.container;
+            const code = container.get('code');
+            const type = container.get('type').get('name');
+            if (!(type in formatted))
+                formatted[type] = [];
+            formatted[type].push(code);
+        })
+        return formatted;
+    }
+    const containers = getContainers();
+
+    console.log(containers);
 
     const handleExitButton = () => {
         props.navigation.navigate('RegisterWaste');
@@ -26,10 +46,9 @@ const CongratulationsScreen = props => {
                     fontFamily: 'Nunito-Regular',
                     color: '#5a5d6c'
                 }}>
-                    <Text style={{ fontWeight: 'bold' }}>@wara</Text> tus residuos se han registrado correctamente!
+                    <Text style={{ fontWeight: 'bold' }}>Felicidades @{account.get('user').get('username')}!</Text> Tus residuos se han registrado correctamente!
                 </Text>
             </View>
-
 
             <View>
                 <Text style={{
@@ -45,26 +64,29 @@ const CongratulationsScreen = props => {
             </View>
 
             <View style={{ paddingHorizontal: 50, flexDirection: 'row', justifyContent: 'space-between', }}>
+
                 <View>
                     <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
-                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>PET <Text style={{ fontSize: 14 }}>(3)</Text></Text>
+                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>PET <Text style={{ fontSize: 14 }}>({containers['PET'].length})</Text></Text>
                     </View>
                     <View>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PET 1234</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PET 1235</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PET 1236</Text>
+                        {containers['PET'].map(container => {
+                            return (
+                                <Text key={container} style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>{container}</Text>
+                            );
+                        })}
                     </View>
                 </View>
                 <View>
                     <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
-                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>Tapitas <Text style={{ fontSize: 14 }}>(5)</Text></Text>
+                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>Tapitas <Text style={{ fontSize: 14 }}>({containers['Tapitas'].length})</Text></Text>
                     </View>
                     <View>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1234</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1235</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1236</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1237</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1238</Text>
+                        {containers['Tapitas'].map(container => {
+                            return (
+                                <Text key={container} style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>{container}</Text>
+                            );
+                        })}
                     </View>
                 </View>
             </View>
@@ -82,10 +104,9 @@ const CongratulationsScreen = props => {
             }}>
                 <MaterialCommunityIcons name="map-marker-radius" color={'black'} size={30} />
                 <Text style={{ maxWidth: '80%', padding: 15, marginHorizontal: 10, color: colors.greyText }}>
-                    Calle falsa 123 Campo Viera Misiones
+                    {address.get('street')} - {address.get('city')}, {address.get('state')}
                 </Text>
             </View>
-
 
             <View style={{ paddingHorizontal: 40, marginBottom: 20, }}>
                 <TouchableOpacity onPress={handleExitButton} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >

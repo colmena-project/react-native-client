@@ -6,22 +6,24 @@ import colors from '../../constants/colors';
 
 const RegisterwasteType = props => {
 
+    const qtys = useSelector(state => state.registerWaste);
+    const getQty = () => {
+        const qty = qtys.filter(qty => qty.id === wasteType.id);
+        return qty[0] ? qty[0].qty : 0;
+    };
     let wasteType = props.wasteType;
-    const [qty, setQty] = useState(0);
+    const [qty, setQty] = useState(getQty());
     const dispatch = useDispatch();
-    const actualState = useSelector(state => state.registerWaste);
-
-    console.log(actualState);
 
     const handleAddWaste = () => {
         setQty(qty + 1);
-        dispatch(registerWasteContainers({ id: wasteType.id, qty: qty + 1 }));
+        dispatch(registerWasteContainers({ id: wasteType.id, qty: qty + 1, item: wasteType }));
     };
 
     const handleSubtractWaste = () => {
         if (qty != 0) {
             setQty(qty - 1);
-            dispatch(registerWasteContainers({ id: wasteType.id, qty: qty - 1 }));
+            dispatch(registerWasteContainers({ id: wasteType.id, qty: qty - 1, name: wasteType }));
         }
     };
 

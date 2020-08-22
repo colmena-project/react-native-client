@@ -14,6 +14,7 @@ import MainWasteActionsScreen from '../screens/main/waste'
 
 import RegisterWasteScreen from '../screens/main/waste/register';
 import PickRegisterSourceAddressScreen from '../screens/main/waste/register/pickAddress';
+import RegisterConfirmationScreen from '../screens/main/waste/register/confirmation';
 import CongratulationsScreen from '../screens/main/waste/register/congratulations';
 
 import PickWasteToTransportScreen from '../screens/main/waste/transport';
@@ -80,6 +81,7 @@ const RootNavigator = () => {
                 <WasteStack.Screen name={'ManageWaste'} component={ManageWasteScreen} options={setProfileHeaderOptions('Elija los Residuos')} />
                 <WasteStack.Screen name={'RegisterWaste'} component={RegisterWasteScreen} options={setProfileHeaderOptions('Registrar Residuos')} />
                 <WasteStack.Screen name={'PickSourceAddress'} component={PickRegisterSourceAddressScreen} options={setProfileHeaderOptions('Seleccione el domicilio')} />
+                <WasteStack.Screen name={'RegisterConfirmation'} component={RegisterConfirmationScreen} options={{ headerShown: false }} />
                 <WasteStack.Screen name={'Congratulations'} component={CongratulationsScreen} options={{ headerShown: false }} />
                 <WasteStack.Screen name={'PickWasteToTransport'} component={PickWasteToTransportScreen} options={setProfileHeaderOptions('Elija los Residuos')} />
                 <WasteStack.Screen name={'PickTransportDestiny'} component={PickTransportDestinyScreen} options={setProfileHeaderOptions('Elija el destino')} />

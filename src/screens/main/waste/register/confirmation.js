@@ -1,48 +1,110 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
-import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-
-import MapPicker from '../../../../components/address/MapPicker';
+import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetWasteContainers } from '../../../../redux/waste/register/actions';
+import Parse from 'parse/react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../../../constants/colors';
 
-const PickAddressScreen = props => {
+const CongratulationsScreen = props => {
 
+    const wastesToRegister = useSelector(state => state.registerWaste);
+    const account = useSelector(state => state.user.account);
     const address = useSelector(state => state.user.address);
+    const dispatch = useDispatch();
 
-    const handleNextButton = () => {
-        props.navigation.navigate('RegisterConfirmation');
+    const handleRegisterButton = async () => {
+        try {
+            const containers = wastesToRegister.map(waste => { return { typeId: waste.id, qty: waste.qty } });
+            const addressId = address.id;
+            const params = {
+                containers,
+                addressId
+            };
+            const result = await Parse.Cloud.run('registerRecover', params);
+            dispatch(resetWasteContainers(true))
+            props.navigation.navigate('Congratulations', { data: result });
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    console.log();
-
     return (
-        <View style={styles.scrollViewWrapper} >
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                <FontAwesome name="map-marker" color={'black'} size={30} />
-                <Text style={{ flex: 1, padding: 15, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
+        <ScrollView style={styles.scrollViewWrapper} >
+
+            <View style={{ width: '100%', height: 175, justifyContent: 'center', alignItems: 'center' }}>
+                <Image style={{ width: '50%', resizeMode: 'contain' }} source={require('../../../../../assets/img/save_the_planet.png')} />
+            </View>
+
+            <View>
+                <Text style={{
+                    textAlign: 'center',
+                    paddingHorizontal: 40,
+                    marginBottom: 20,
+                    fontSize: 20,
+                    fontFamily: 'Nunito-Regular',
+                    color: '#5a5d6c'
+                }}>
+                    <Text style={{ fontWeight: 'bold' }}>@{account.get('user').get('username')}</Text>, verificá que la información sea correcta!
+                </Text>
+            </View>
+
+            <View>
+                <Text style={{
+                    textAlign: 'center',
+                    paddingHorizontal: 40,
+                    marginBottom: 20,
+                    fontSize: 16,
+                    fontFamily: 'Nunito-Regular',
+                    color: '#7f7f7f'
+                }}>
+                    Estás por registrar residuos, si toda la información está correcta, presioná <Text style={{ fontFamily: 'Nunito-Bold' }}>REGISTRAR</Text> para continuar
+                </Text>
+            </View>
+
+            <View style={{ paddingHorizontal: 50, paddingVertical: 20, flexDirection: 'row', justifyContent: 'space-between', }}>
+                <View>
+                    {wastesToRegister ?
+                        wastesToRegister.map(wasteType => {
+                            return (
+                                <View key={wasteType.id} style={{}}>
+                                    <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>
+                                        {wasteType.item.get('name')}
+                                        <Text style={{ fontSize: 14 }}>  {wasteType.qty} {wasteType.qty == 1 ? wasteType.item.get('container') : wasteType.item.get('containerPlural')}</Text>
+                                    </Text>
+                                </View>
+                            )
+                        })
+                        : <View><Text>No registraste residuos</Text></View>
+                    }
+                </View>
+            </View>
+
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderBottomWidth: 1,
+                borderBottomColor: colors.separator,
+                borderTopWidth: 1,
+                borderTopColor: colors.separator,
+                paddingVertical: 5,
+                marginVertical: 20
+            }}>
+                <MaterialCommunityIcons name="map-marker-radius" color={'black'} size={30} />
+                <Text style={{ maxWidth: '80%', padding: 15, marginHorizontal: 10, color: colors.greyText }}>
                     {address.get('street')} - {address.get('city')}, {address.get('state')}
                 </Text>
-                <MaterialCommunityIcons onPress={() => console.log('EDIT ADDRESS')} name="pencil" color={colors.colmenaGreen} size={26} />
             </View>
 
-            <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
-                <MapPicker
-                    styles={{ height: '100%', marginTop: 0 }}
-                    coords={{ latitude: address.get('latLng')._latitude, longitude: address.get('latLng')._longitude }}
-                    marker={<MaterialCommunityIcons name="map-marker-radius" color={'black'} size={50} />}
-                    getCoords={console.log}
-                />
-            </View>
-
-            <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
-                <TouchableOpacity onPress={handleNextButton} >
-                    <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
-                        SIGUIENTE
+            <View style={{ paddingHorizontal: 40, marginBottom: 20, }}>
+                <TouchableOpacity onPress={handleRegisterButton} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
+                    <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                        REGISTRAR
                     </Text>
                 </TouchableOpacity>
             </View>
-        </View >
+        </ScrollView >
     );
 };
 
@@ -347,4 +409,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default PickAddressScreen;
+export default CongratulationsScreen;

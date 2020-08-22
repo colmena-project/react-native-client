@@ -9,13 +9,7 @@ import { useEffect } from 'react';
 
 const RegisterWasteScreen = props => {
 
-    const [isLoading, setIsLoading] = useState(true);
-    const wasteTypesStore = useSelector(state => state.wasteTypes);
-    const [wasteTypes, setWasteTypes] = useState(wasteTypesStore);
-
-    useEffect(() => {
-        console.log('REGISTER WASTE INDEX', wasteTypes);
-    }, []);
+    const wasteTypes = useSelector(state => state.wasteTypes);
 
     const handleNextButton = () => {
         props.navigation.navigate('PickSourceAddress');
@@ -36,7 +30,7 @@ const RegisterWasteScreen = props => {
                 </Text>
 
                 <View style={{ width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1 }}>
-                    {wasteTypes != null ?
+                    {wasteTypes != null && wasteTypes.length > 0 ?
                         wasteTypes.map(wasteType => {
                             return <RegisterWasteItem key={wasteType.id} wasteType={wasteType} />
                         })
