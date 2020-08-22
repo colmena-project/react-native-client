@@ -3,7 +3,6 @@ import { IS_LOGGED_IN, SET_LOGGED_IN } from './actions';
 const initialState = false;
 
 const authReducer = (isLoggedIn = initialState, action) => {
-    console.log(action);
     switch (action.type) {
         case SET_LOGGED_IN:
             isLoggedIn = action.data;

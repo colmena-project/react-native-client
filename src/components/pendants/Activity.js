@@ -22,10 +22,10 @@ const Activity = props => {
             <View style={{ flexDirection: 'row' }}>
                 <Image
                     style={styles.actionButtonIcon}
-                    source={{ uri: user.avatar._url }}
+                    source={{ uri: user.get('avatar')._url }}
                 />
                 <View style={{ marginLeft: 15 }}>
-                    <Text style={styles.actionButtonText}>de Guillermo Colotti</Text>
+                    <Text style={styles.actionButtonText}>{transaction.get('from') ? '@' + transaction.get('from').get('username') : ''}</Text>
                     <Text style={styles.actionButtonTextSecondary}>{type}</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.actionButtonTextSecondary}>{date} - {hour}</Text>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#eeeeee',
     },
     actionButtonText: {
-        fontFamily: 'Nunito-Regular',
+        fontFamily: 'Nunito-Bold',
         fontSize: 16,
     },
     actionButtonTextSecondary: {

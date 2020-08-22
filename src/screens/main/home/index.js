@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Image, TouchableOpacity, StatusBar, ActivityIndicator, Animated } from "react-native";
-import { useDispatch, useSelector } from 'react-redux';
-
-import UserService from '../../../services/User';
-
+import { useDispatch } from 'react-redux';
 import { useNavigation } from "@react-navigation/native";
 import Installation from "../../../services/Installation";
+import UserService from '../../../services/User';
+import WasteService from '../../../services/Waste';
 import { Parse } from "parse/react-native";
 import colors from "../../../constants/colors";
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -26,14 +25,11 @@ const HomeScreen = props => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-    const actualState = useSelector(state => state);
-
-    console.log(actualState);
-
     const fetchAllData = async () => {
         try {
             setIsLoading(true);
             UserService.fetchData(dispatch);
+            WasteService.fetchData(dispatch);
             const fetchPosts = new Parse.Query("Post");
             fetchPosts.include('createdBy').descending("createdAt").limit(POST_PER_LOAD_LIMIT);
             const result = await fetchPosts.find();

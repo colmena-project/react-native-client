@@ -1,34 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import Parse from 'parse/react-native';
-
+import { useSelector } from 'react-redux';
 import RegisterWasteItem from '../../../../components/waste/RegisterWasteItem';
-
 import colors from '../../../../constants/colors';
 import styles from '../../../../constants/profileStyles';
 import { useEffect } from 'react';
 
+
 const RegisterWasteScreen = props => {
 
-    const [wasteTypes, setWasteTypes] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-
-    const fetchData = async () => {
-        try {
-            setIsLoading(true);
-            const wasteTypesQuery = new Parse.Query('WasteType');
-            wasteTypesQuery.equalTo('active', true);
-            const result = await wasteTypesQuery.find();
-            setWasteTypes(result);
-            setIsLoading(false);
-        } catch (err) {
-            console.log('Register waste error: ' + err);
-        }
-        setIsLoading(false);
-    };
+    const wasteTypesStore = useSelector(state => state.wasteTypes);
+    const [wasteTypes, setWasteTypes] = useState(wasteTypesStore);
 
     useEffect(() => {
-        fetchData();
+        console.log('REGISTER WASTE INDEX', wasteTypes);
     }, []);
 
     const handleNextButton = () => {

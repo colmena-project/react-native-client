@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import { AntDesign } from '@expo/vector-icons';
@@ -7,6 +8,8 @@ import styles from '../../../constants/profileStyles';
 
 const WasteActions = props => {
 
+    const actualState = useSelector(state => state);
+    // const hasWasteContainers = actualState.user.transactions.length > 0 ? true : false;
     const hasWasteContainers = false;
 
     const handleStartRegisteringWaste = () => {

@@ -12,21 +12,16 @@ const PendantsScreen = props => {
     const [transactions, setTransactions] = useState(null);
     const [userAccount, setUserAccount] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const actualState = useSelector(state => state);
+    const actualState = useSelector(state => state.user);
     const navigation = useNavigation();
-
-    console.log(actulState);
 
     const fetchData = async () => {
         try {
             setIsLoading(true);
-            const account = await Parse.Cloud.run("getMyAccount");
-            setUserAccount(account);
-            const transactions = new Parse.Query('Transaction');
-            // transactions.equalTo('type', 'TRANSPORT');
-            transactions.descending('createdAt').equalTo('expiredAt', undefined);
-            const transactionsResult = await transactions.find();
-            setTransactions(transactionsResult);
+            // const transportTransactions = actualState.transactions;
+            const transportTransactions = actualState.transactions.filter(transaction => transaction.get('type') === 'TRANSPORT');
+            setUserAccount(actualState.account);
+            setTransactions(transportTransactions);
             setIsLoading(false);
         } catch (err) {
             console.log('Profile Index error: ' + err);
@@ -36,8 +31,7 @@ const PendantsScreen = props => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            console.log('ASD');
-            console.log(actualState);
+            fetchData();
         });
         return unsubscribe;
     }, [navigation]);
