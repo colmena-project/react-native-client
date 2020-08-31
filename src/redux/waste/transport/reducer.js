@@ -1,4 +1,4 @@
-import { ADD_CONTAINER_TO_TRANSPORT, REMOVE_CONTAINER_TO_TRANSPORT, SET_RECYCLE_CENTER } from './actions';
+import { ADD_CONTAINER_TO_TRANSPORT, REMOVE_CONTAINER_TO_TRANSPORT, SET_RECYCLE_CENTER, RESET_TRANSPORT } from './actions';
 
 const initialState = {
     containers: [],
@@ -14,6 +14,12 @@ const transportWasteReducer = (transportInfo = initialState, action) => {
         case REMOVE_CONTAINER_TO_TRANSPORT:
             const containers = transportInfo.containers.filter(container => container.id != action.data.id);
             transportInfo.containers = containers;
+            return transportInfo;
+
+        case RESET_TRANSPORT:
+            console.log('RESETEANDO...');
+            transportInfo = initialState
+            console.log('liSTO');
             return transportInfo;
 
         case SET_RECYCLE_CENTER:

@@ -59,7 +59,7 @@ const CongratulationsScreen = props => {
                     fontFamily: 'Nunito-Regular',
                     color: '#7f7f7f'
                 }}>
-                    Los siguientes códigos son importantes para identificar tus residuos. Pegalos en cada bolsa / caja / botella que utilices.
+                    Los siguientes códigos son importantes para identificar tus residuos. Pegalos en cada bolsa que utilices.
                 </Text>
             </View>
 
@@ -118,7 +118,7 @@ const CongratulationsScreen = props => {
             <View style={{ paddingHorizontal: 40, marginBottom: 20, }}>
                 <TouchableOpacity onPress={handleExitButton} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
                     <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
-                        SALIR
+                        FINALIZAR
                     </Text>
                 </TouchableOpacity>
             </View>

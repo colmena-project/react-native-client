@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { useSelector } from 'react-redux';
-import { CommonActions, StackActions } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { resetTransport } from '../../../redux/waste/transport/actions';
 
 import colors from '../../../constants/colors';
 import { AntDesign } from '@expo/vector-icons';
@@ -12,6 +12,15 @@ const WasteActions = props => {
     const transactions = useSelector(state => state.user.transactions);
     const recovers = transactions.filter(transaction => transaction.get('type') === 'RECOVER');
     const hasWasteContainers = recovers.length > 0 ? true : false;
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            dispatch(resetTransport());
+            console.log('ASDASDASDASD');
+        });
+        return unsubscribe;
+    }, [props.navigation]);
 
     const handleStartRegisteringWaste = () => {
         props.navigation.navigate('RegisterWaste');
@@ -29,18 +38,7 @@ const WasteActions = props => {
         Alert.alert('En otro momento!');
     };
 
-    // useEffect(() => {
-    //     const unsubscribe = props.navigation.addListener('focus', () => {
-    //         console.log(props.navigation);
-    //         // props.navigation.dispatch(
-    //         //     CommonActions.reset({
-    //         //         index: 0
-    //         //     })
-    //         // );
-    //         props.navigation.dispatch(StackActions.pop(0))
-    //     });
-    //     return unsubscribe;
-    // }, [props.navigation]);
+
 
     return (
         <>
@@ -54,7 +52,7 @@ const WasteActions = props => {
                         fontFamily: 'Nunito-Regular',
                         color: '#7f7f7f'
                     }}>
-                        Ya registraste tus residuos. Ahora podés <Text style={{ color: colors.colmenaGreen }}>transportar</Text> a un centro de reciclaje o bien <Text style={{ color: colors.colmenaGreen }}>gestionar</Text> la cantidad.
+                        Ya registraste tus residuos. Ahora podés <Text style={{ color: colors.colmenaGreen }}>transportarlos</Text> a un centro de reciclaje o bien <Text style={{ color: colors.colmenaGreen }}>gestionar</Text> la cantidad.
                     </Text>
                     <View style={{ width: '100%', alignItems: 'center', paddingBottom: 27, borderBottomWidth: 1, borderBottomColor: colors.separator }}>
                         <TouchableOpacity onPress={handleTransportWaste} style={{ width: '75%', }}>

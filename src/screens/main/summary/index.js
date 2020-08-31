@@ -3,13 +3,15 @@ import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import styles from '../../../constants/profileStyles';
 
-const SummaryScreen = () => {
+const SummaryScreen = props => {
 
     const stock = useSelector(state => state.user.stock);
+    const recoveredContainers = useSelector(state => state.user.recoveredContainers);
     const getContainers = () => {
         const formatted = [];
         stock.forEach(item => {
             const type = item.wasteType.name;
+            item.type = type;
             if (!(type in formatted))
                 formatted[type] = [];
             formatted[type] = item;
@@ -17,6 +19,11 @@ const SummaryScreen = () => {
         return formatted;
     };
     const containers = getContainers();
+
+    const handleManageProductPress = type => {
+        const data = recoveredContainers.filter(item => item.get('type').get('name') == type);
+        props.navigation.navigate('ManageWaste', { type, data })
+    };
 
     return (
         <ScrollView style={{ ...styles.scrollViewWrapper, paddingTop: 30 }}>
@@ -30,7 +37,7 @@ const SummaryScreen = () => {
                             PET ({containers['PET'].ammount} {containers['PET'].ammount == 1 ? containers['PET'].wasteType.container : containers['PET'].wasteType.containerPlural})
                             </Text>
                         <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={() => { }} style={styles.editInfoBtn}>
+                            <TouchableOpacity onPress={() => handleManageProductPress(containers['PET'].type)} style={styles.editInfoBtn}>
                                 <Text style={styles.editInfoBtnText}>Modificar</Text>
                             </TouchableOpacity>
                         </View>
@@ -45,7 +52,7 @@ const SummaryScreen = () => {
                             Tapitas ({containers['Tapitas'].ammount} {containers['Tapitas'].ammount == 1 ? containers['Tapitas'].wasteType.container : containers['Tapitas'].wasteType.containerPlural})
                             </Text>
                         <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={() => { }} style={styles.editInfoBtn}>
+                            <TouchableOpacity onPress={() => handleManageProductPress(containers['Tapitas'].type)} style={styles.editInfoBtn}>
                                 <Text style={styles.editInfoBtnText}>Modificar</Text>
                             </TouchableOpacity>
                         </View>

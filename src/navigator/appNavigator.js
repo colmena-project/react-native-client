@@ -154,7 +154,7 @@ const RootNavigator = () => {
     const homeTabsNavigator = () => {
         return (
             <HomeTabs.Navigator tabBarOptions={{
-                showLabel: false,
+                showLabel: true,
                 activeTintColor: colors.colmenaGreen,
             }}>
                 <HomeTabs.Screen
@@ -171,7 +171,7 @@ const RootNavigator = () => {
                     name={'Summary'}
                     component={SummaryNavigator}
                     options={{
-                        tabBarLabel: 'Summary',
+                        tabBarLabel: 'Mi actividad',
                         tabBarIcon: ({ color, size }) => (
                             <AntDesign name="appstore-o" color={color} size={size} />
                         ),
@@ -181,9 +181,9 @@ const RootNavigator = () => {
                     name={'Waste'}
                     component={WasteNavigator}
                     options={{
-                        tabBarLabel: 'Waste',
+                        tabBarLabel: 'Acciones',
                         tabBarIcon: ({ color, size }) => (
-                            <FontAwesome name="recycle" color={color} size={size + 8} />
+                            <FontAwesome name="recycle" color={color} size={size + 2} />
                         ),
                     }}
                 />
@@ -192,7 +192,7 @@ const RootNavigator = () => {
                     component={PendantsNavigator}
                     options={setProfileHeaderOptions('Pendientes')}
                     options={{
-                        tabBarLabel: 'Summary',
+                        tabBarLabel: 'Pendientes',
                         tabBarIcon: ({ color, size }) => (
                             <AntDesign name="clockcircleo" color={color} size={size} />
                         ),
@@ -232,7 +232,7 @@ const RootNavigator = () => {
                     name={'User'}
                     component={ProfileNavigator}
                     options={{
-                        tabBarLabel: 'Perfil',
+                        tabBarLabel: 'Mi Perfil',
                         tabBarIcon: ({ color, size }) => (
                             <FontAwesome name="user-o" color={color} size={size - 2} />
                         ),

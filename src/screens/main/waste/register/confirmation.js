@@ -55,7 +55,7 @@ const CongratulationsScreen = props => {
                             fontFamily: 'Nunito-Regular',
                             color: '#5a5d6c'
                         }}>
-                            <Text style={{ fontWeight: 'bold' }}>@{account.get('user').get('username')}</Text>, verificá que la información sea correcta!
+                            <Text style={{ fontWeight: 'bold' }}>@{account.get('user').get('username')}</Text>, verificá que la información es correcta!
                 </Text>
                     </View>
 
@@ -68,7 +68,7 @@ const CongratulationsScreen = props => {
                             fontFamily: 'Nunito-Regular',
                             color: '#7f7f7f'
                         }}>
-                            Estás por registrar residuos, si toda la información está correcta, presioná <Text style={{ fontFamily: 'Nunito-Bold' }}>REGISTRAR</Text> para continuar
+                            Estás por registrar residuos, si toda la información es correcta, presioná <Text style={{ fontFamily: 'Nunito-Bold' }}>REGISTRAR</Text> para continuar
                 </Text>
                     </View>
 

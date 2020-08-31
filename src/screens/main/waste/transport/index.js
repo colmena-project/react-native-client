@@ -121,8 +121,6 @@ const PickWasteForTransport = props => {
     );
 };
 
-
-
 const styles = StyleSheet.create({
     scrollViewWrapper: {
         flex: 1,
@@ -413,8 +411,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito-Light',
         marginLeft: 10,
     },
-
-
 });
 
 export default PickWasteForTransport;

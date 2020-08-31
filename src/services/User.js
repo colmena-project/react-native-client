@@ -9,7 +9,7 @@ const setDispatcher = dispatch => {
 
 const getDispatcher = () => {
     return dispatch;
-}
+};
 
 const fetchAccount = async dispatch => {
     try {
