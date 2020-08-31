@@ -1,110 +1,148 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Parse from 'parse/react-native';
+
+import UserService from '../../../../services/User';
 
 import colors from '../../../../constants/colors';
 
 const VerifyInfo = props => {
 
-    const handleTransportButton = () => {
-        props.navigation.navigate('TransportInEvaluation');
+    const PPId = 'GIw8hv4Dle';
+    const PETId = 'WTMdIFLUFV';
+    const recyclingCenter = 'rgptTXn8HS';
+    const containersToTransport = useSelector(state => state.transportInfo.containers);
+    const petContainers = containersToTransport.filter(container => container.get('type').id === PETId);
+    const ppContainers = containersToTransport.filter(container => container.get('type').id === PPId);
+    const [isLoading, setIsLoading] = useState(false);
+    const dispatch = useDispatch();
+
+    const handleTransportButton = async () => {
+        try {
+            setIsLoading(true);
+            const params = {
+                containers: containersToTransport.map(container => container.id),
+                to: recyclingCenter
+            };
+            const result = await Parse.Cloud.run('registerTransport', params);
+            console.log(result);
+            UserService.fetchData(dispatch);
+            setIsLoading(false);
+            props.navigation.navigate('TransportInEvaluation');
+        } catch (error) {
+            setIsLoading(false);
+            console.log(error);
+        }
     };
 
     return (
-        <ScrollView style={styles.scrollViewWrapper} >
+        <View style={{ flex: 1 }}>
+            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                <ScrollView style={styles.scrollViewWrapper} >
 
-            <View>
-                <Text style={{
-                    textAlign: 'center',
-                    paddingHorizontal: 40,
-                    marginVertical: 20,
-                    fontSize: 20,
-                    fontFamily: 'Nunito-Regular',
-                    color: '#5a5d6c'
-                }}>
-                    <Text style={{ fontWeight: 'bold' }}>@wara</Text> verifica si la información del transporte es correcta.
+                    <View>
+                        <Text style={{
+                            textAlign: 'center',
+                            paddingHorizontal: 30,
+                            marginVertical: 20,
+                            fontSize: 20,
+                            fontFamily: 'Nunito-Regular',
+                            color: '#5a5d6c'
+                        }}>
+                            <Text style={{ fontWeight: 'bold' }}>@colmenapp</Text> verifica si la información del transporte es correcta.
                 </Text>
-            </View>
-
-            <View style={{ paddingHorizontal: 50, flexDirection: 'row', justifyContent: 'space-between', }}>
-                <View>
-                    <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
-                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>PET <Text style={{ fontSize: 14 }}>(3 bolsas)</Text></Text>
                     </View>
-                    <View>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PET 1234</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PET 1235</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PET 1236</Text>
+
+                    <View style={{ paddingHorizontal: 50, flexDirection: 'row', justifyContent: 'space-between', }}>
+                        <View>
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                                <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>PET <Text style={{ fontSize: 14 }}></Text></Text>
+                            </View>
+                            <View>
+                                {petContainers && petContainers.length > 0 ?
+                                    petContainers.map(container => {
+                                        return <Text key={container.id} style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>{container.get('code')}</Text>
+                                    })
+                                    :
+                                    <View></View>
+                                }
+                            </View>
+                        </View>
+                        <View>
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                                <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>Tapitas <Text style={{ fontSize: 14 }}></Text></Text>
+                            </View>
+                            <View>
+                                {ppContainers && ppContainers.length > 0 ?
+                                    ppContainers.map(container => {
+                                        return <Text key={container.id} style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>{container.get('code')}</Text>
+                                    })
+                                    :
+                                    <View></View>
+                                }
+                            </View>
+                        </View>
                     </View>
-                </View>
-                <View>
-                    <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
-                        <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: colors.greyText }}>Tapitas <Text style={{ fontSize: 14 }}>(5 bolsas)</Text></Text>
+
+                    <View style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        borderBottomWidth: 1,
+                        borderBottomColor: colors.separator,
+                        borderTopWidth: 1,
+                        borderTopColor: colors.separator,
+                        paddingVertical: 5,
+                        marginTop: 20,
+                        paddingHorizontal: 30,
+                    }}>
+                        <View style={{ paddingRight: 10, paddingVertical: 10 }}>
+                            <Text style={{ fontWeight: 'bold', marginHorizontal: 10, color: colors.greyText }}>
+                                Destino: Centro de reciclaje CPO Viera
+                    </Text>
+                            <Text style={{ marginHorizontal: 10, color: colors.greyText }}>
+                                Av. Libertad 100 Cpo Viera (a 30km)
+                    </Text>
+                        </View>
+                        <MaterialCommunityIcons name="pencil" color={colors.colmenaGreen} size={30} />
                     </View>
-                    <View>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1234</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1235</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1236</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1237</Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>PP 1238</Text>
+
+                    <View style={{ paddingHorizontal: 40 }}>
+                        <View style={{ width: '100%', alignItems: 'flex-end', paddingVertical: 5 }}>
+                            <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>Por acopiar aprox</Text>
+                            <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 26, color: colors.colmenaGreen }}>300 jyc</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingVertical: 5 }}>
+                            <View>
+                                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>Distancia <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>30km</Text></Text>
+                                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>x Km <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>1 jyc / bolsa</Text></Text>
+                            </View>
+                            <View style={{ alignItems: 'flex-end', paddingLeft: 30 }}>
+                                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>Por transportar aprox</Text>
+                                <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 26, color: colors.colmenaGreen }}>90 jyc</Text>
+                            </View>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingTop: 10, paddingBottom: 25 }}>
+                            <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>
+                                Estimado <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 40, color: colors.colmenaGreen }}>390 jyc</Text>
+                            </Text>
+                        </View>
                     </View>
-                </View>
-            </View>
-
-            <View style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                borderBottomWidth: 1,
-                borderBottomColor: colors.separator,
-                borderTopWidth: 1,
-                borderTopColor: colors.separator,
-                paddingVertical: 5,
-                marginTop: 20,
-                paddingHorizontal: 30,
-            }}>
-                <View style={{ paddingRight: 10, paddingVertical: 10 }}>
-                    <Text style={{ fontWeight: 'bold', marginHorizontal: 10, color: colors.greyText }}>
-                        Destino: Centro de reciclaje CPO Viera
-                    </Text>
-                    <Text style={{ marginHorizontal: 10, color: colors.greyText }}>
-                        Av. Libertad 100 Cpo Viera (a 30km)
-                    </Text>
-                </View>
-                <MaterialCommunityIcons name="pencil" color={colors.colmenaGreen} size={30} />
-            </View>
-
-            <View style={{ paddingHorizontal: 40 }}>
-                <View style={{ width: '100%', alignItems: 'flex-end', paddingVertical: 5 }}>
-                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>Por acopiar aprox</Text>
-                    <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 26, color: colors.colmenaGreen }}>300 jyc</Text>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingVertical: 5 }}>
-                    <View>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>Distancia <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>30km</Text></Text>
-                        <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>x Km <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>1 jyc / bolsa</Text></Text>
-                </View>
-                <View style={{ alignItems: 'flex-end', paddingLeft: 30 }}>
-                    <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 12, color: colors.greyText }}>Por transportar aprox</Text>
-                    <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 26, color: colors.colmenaGreen }}>90 jyc</Text>
-                </View>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingTop: 10, paddingBottom: 25 }}>
-                <Text style={{ fontFamily: 'Nunito-Regular', fontSize: 20, color: colors.greyText }}>
-                    Estimado <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 40, color: colors.colmenaGreen }}>390 jyc</Text>
-                    </Text>
-            </View>
-            </View>
 
 
-        <View style={{ paddingHorizontal: 40, marginBottom: 20, }}>
-            <TouchableOpacity onPress={handleTransportButton} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
-                <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
-                    TRANSPORTAR
+                    <View style={{ paddingHorizontal: 40, marginBottom: 20, }}>
+                        <TouchableOpacity onPress={handleTransportButton} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
+                            <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                                TRANSPORTAR
                     </Text>
-            </TouchableOpacity>
+                        </TouchableOpacity>
+                    </View>
+
+                </ScrollView >
+            }
         </View>
-        </ScrollView >
     );
 };
 

@@ -1,5 +1,5 @@
 import Parse from 'parse/react-native';
-import { setUserAccount, setUserAddress, setUserStock, setUserTransactions } from '../redux/user/actions';
+import { setUserAccount, setUserAddress, setUserStock, setUserTransactions, setRecoveredContainers } from '../redux/user/actions';
 
 const dispatch = null;
 
@@ -46,10 +46,22 @@ const fetchTransactions = async dispatch => {
     }
 };
 
+const fetchRecoveredContainers = async dispatch => {
+    try {
+        const query = new Parse.Query('Container');
+        query.equalTo('status', 'RECOVERED').include('type');
+        const result = await query.find();
+        dispatch(setRecoveredContainers(result));
+    } catch (error) {
+        console.log('Waste Service - fetchWasteTypes: ', error.message);
+    }
+};
+
 const fetchData = dispatch => {
     fetchAccount(dispatch);
     fetchAddress(dispatch);
     fetchTransactions(dispatch);
+    fetchRecoveredContainers(dispatch);
 };
 
 export default {
@@ -57,5 +69,6 @@ export default {
     fetchAccount,
     fetchAddress,
     fetchTransactions,
+    fetchRecoveredContainers,
     fetchData,
 };

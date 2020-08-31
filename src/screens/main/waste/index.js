@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
+import { CommonActions, StackActions } from '@react-navigation/native';
 
 import colors from '../../../constants/colors';
 import { AntDesign } from '@expo/vector-icons';
@@ -8,8 +9,8 @@ import styles from '../../../constants/profileStyles';
 
 const WasteActions = props => {
 
-    const actualState = useSelector(state => state);
-    const recovers = actualState.user.transactions.filter(transaction => transaction.get('type') === 'RECOVER');
+    const transactions = useSelector(state => state.user.transactions);
+    const recovers = transactions.filter(transaction => transaction.get('type') === 'RECOVER');
     const hasWasteContainers = recovers.length > 0 ? true : false;
 
     const handleStartRegisteringWaste = () => {
@@ -27,6 +28,19 @@ const WasteActions = props => {
     const handleRegisterInOtherMomment = () => {
         Alert.alert('En otro momento!');
     };
+
+    // useEffect(() => {
+    //     const unsubscribe = props.navigation.addListener('focus', () => {
+    //         console.log(props.navigation);
+    //         // props.navigation.dispatch(
+    //         //     CommonActions.reset({
+    //         //         index: 0
+    //         //     })
+    //         // );
+    //         props.navigation.dispatch(StackActions.pop(0))
+    //     });
+    //     return unsubscribe;
+    // }, [props.navigation]);
 
     return (
         <>

@@ -5,7 +5,7 @@ const initialState = [];
 const wasteTypesReducer = (wasteTypes = initialState, action) => {
     switch (action.type) {
         case SET_WASTE_TYPES:
-            wasteTypes = action.data;
+            wasteTypes = action.data;            
             return wasteTypes;
 
         default:

@@ -1,11 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
-
+import { useDispatch, useSelector } from 'react-redux';
 import TransportWasteItem from '../../../../components/waste/TransportWasteItem';
-
+import { addContainerToTransport, removeContainerToTransport } from '../../../../redux/waste/transport/actions';
 import colors from '../../../../constants/colors';
 
 const PickWasteForTransport = props => {
+
+    const containers = useSelector(state => state.user.recoveredContainers);
+    const PPId = 'GIw8hv4Dle';
+    const PETId = 'WTMdIFLUFV';
+    const containersToTransport = useSelector(state => state.transportInfo.containers);
+    const hasTransport = containersToTransport.length > 0 ? true : false;
+    const dispatch = useDispatch();
+    const [qtyToTransport, setQtyToTransport] = useState(0);
+
+    useEffect(() => {
+        console.log(containersToTransport);
+    }, [containersToTransport]);
+
+    const handleToogleCheck = (isChecked, container) => {
+        if (isChecked) {
+            setQtyToTransport(qtyToTransport + 1);
+            dispatch(addContainerToTransport(container));
+        } else {
+            setQtyToTransport(qtyToTransport - 1);
+            dispatch(removeContainerToTransport(container));
+        }
+    };
 
     const handleNextButton = () => {
         props.navigation.navigate('PickTransportDestiny');
@@ -33,21 +55,21 @@ const PickWasteForTransport = props => {
                             Plástico PET
                         </Text>
                         <View style={{ backgroundColor: colors.colmenaGreen, paddingVertical: 7, paddingHorizontal: 12, borderRadius: 3, position: 'absolute', top: 40 }}>
-                            <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: 'white' }}>8</Text>
+                            <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: 'white' }}>38</Text>
                         </View>
                     </View>
                     <ScrollView style={{ marginTop: 10, width: '80%' }}>
                         <View>
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
+                            {containers && containers.length > 0 ?
+                                containers.map(container => {
+                                    if (container.get('type').id == PETId) {
+                                        return <TransportWasteItem key={container.id} toogleCheck={isChecked => handleToogleCheck(isChecked, container)} container={container} />
+                                    }
+                                    return <View key={container.id}></View>
+                                })
+                                :
+                                <View></View>
+                            }
                         </View>
                     </ScrollView>
                 </View>
@@ -59,15 +81,21 @@ const PickWasteForTransport = props => {
                             Tapitas PP
                         </Text>
                         <View style={{ backgroundColor: colors.colmenaGreen, paddingVertical: 7, paddingHorizontal: 12, borderRadius: 3, position: 'absolute', top: 40 }}>
-                            <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: 'white' }}>4</Text>
+                            <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: 'white' }}>27</Text>
                         </View>
                     </View>
                     <ScrollView style={{ marginTop: 10, width: '80%' }}>
                         <View>
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
-                            <TransportWasteItem isChecked={() => { }} />
+                            {containers && containers.length > 0 ?
+                                containers.map(container => {
+                                    if (container.get('type').id == PPId) {
+                                        return <TransportWasteItem key={container.id} toogleCheck={isChecked => handleToogleCheck(isChecked, container)} container={container} />
+                                    }
+                                    return <View key={container.id}></View>
+                                })
+                                :
+                                <View></View>
+                            }
                         </View>
                     </ScrollView>
                 </View>
@@ -78,8 +106,12 @@ const PickWasteForTransport = props => {
                 <Text style={{ textAlign: 'center', color: colors.greyText, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
                     Estimado: <Text style={{ color: 'black', fontSize: 20 }}>300 jyc</Text>
                 </Text>
-                <TouchableOpacity style={{ marginVertical: 15 }} onPress={handleNextButton} >
-                    <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+                <TouchableOpacity
+                    disabled={!qtyToTransport}
+                    style={{ marginVertical: 15 }}
+                    onPress={handleNextButton} >
+                    <Text
+                        style={{ textAlign: 'center', color: qtyToTransport ? colors.colmenaGreen : colors.colmenaLightGrey, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
                         SIGUIENTE
                     </Text>
                 </TouchableOpacity>

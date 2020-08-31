@@ -7,7 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 const TransportInEvaluationScreen = props => {
 
     const handleSeePendingRequests = () => {
-        props.navigation.navigate('User');
+        props.navigation.navigate('Pendants');
     };
 
     return (

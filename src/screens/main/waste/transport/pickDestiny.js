@@ -16,7 +16,7 @@ const PickDestinyScreen = props => {
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
                 <FontAwesome name="map-marker" color={'black'} size={30} />
                 <Text style={{ flex: 1, padding: 15, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
-                    Calle falsa 123 Campo Viera Misiones
+                    Centro de Reciclaje "Campo Viera"
                 </Text>
                 <TouchableOpacity>
                     <AntDesign name={"search1"} size={30} color="black" />

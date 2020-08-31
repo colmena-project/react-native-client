@@ -1,4 +1,4 @@
-import { SET_USER_ACCOUNT, SET_USER_ADDRESS, SET_USER_POSTS, SET_USER_STOCK, SET_USER_TRANSACTIONS } from './actions';
+import { SET_USER_ACCOUNT, SET_USER_ADDRESS, SET_USER_POSTS, SET_USER_STOCK, SET_USER_TRANSACTIONS, SET_RECOVERED_CONTAINERS } from './actions';
 
 const initialState = [];
 
@@ -28,6 +28,11 @@ const userReducer = (userData = initialState, action) => {
             return {
                 ...userData,
                 transactions: action.data,
+            };
+        case SET_RECOVERED_CONTAINERS:
+            return {
+                ...userData,
+                recoveredContainers: action.data,
             };
         default:
             return userData;

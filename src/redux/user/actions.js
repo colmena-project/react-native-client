@@ -3,6 +3,7 @@ export const SET_USER_ADDRESS = 'SET_USER_ADDRESS';
 export const SET_USER_POSTS = 'SET_USER_POSTS';
 export const SET_USER_STOCK = 'SET_USER_STOCK';
 export const SET_USER_TRANSACTIONS = 'SET_USER_TRANSACTIONS';
+export const SET_RECOVERED_CONTAINERS = 'SET_RECOVERED_CONTAINERS';
 
 export const setUserAccount = data => {
     return { type: SET_USER_ACCOUNT, data };
@@ -22,4 +23,8 @@ export const setUserStock = data => {
 
 export const setUserTransactions = data => {
     return { type: SET_USER_TRANSACTIONS, data };
+};
+
+export const setRecoveredContainers = data => {
+    return { type: SET_RECOVERED_CONTAINERS, data };
 };

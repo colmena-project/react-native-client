@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { addContainerToTransport, removeContainerToTransport } from '../../redux/waste/transport/actions';
+import { useDispatch } from 'react-redux';
 
-import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../../constants/colors';
 
 const TransportWasteItem = props => {
 
     const [isChecked, setIsChecked] = useState(false);
+    const container = props.container;
 
     const toogleCheck = () => {
-        props.isChecked(!isChecked);
+        props.toogleCheck(!isChecked);
         setIsChecked(!isChecked);
     };
 
     return (
         <TouchableOpacity onPress={toogleCheck} style={{ ...styles.container, backgroundColor: isChecked ? colors.colmenaGreen : '#f9f9f9' }}>
             <Text style={{ ...styles.text, color: isChecked ? 'white' : '#7c7c7c', }}>
-                PET-1234
+                {container.get('code')}
             </Text>
         </TouchableOpacity>
     );

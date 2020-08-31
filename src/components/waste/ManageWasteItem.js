@@ -20,7 +20,7 @@ const ManageWasteItem = props => {
 
             </View>
             <Text style={{ ...styles.text, color: isChecked ? colors.colmenaGreen : '#7c7c7c', }}>
-                {wasteContainer.name} - {wasteContainer.id}
+                {wasteContainer.container.get('code')}
             </Text>
             <View style={styles.icon}>
                 <TouchableOpacity onPress={toogleCheck}>
