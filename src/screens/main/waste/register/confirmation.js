@@ -7,7 +7,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../../../../constants/colors';
 
 import UserService from '../../../../services/User';
-import WasteService from '../../../../services/Waste';
 
 const CongratulationsScreen = props => {
 
@@ -28,8 +27,8 @@ const CongratulationsScreen = props => {
             };
             const result = await Parse.Cloud.run('registerRecover', params);
             dispatch(resetWasteContainers(true));
-            UserService.fetchData(dispatch);
-            WasteService.fetchData(dispatch);
+            UserService.fetchRecoveredContainers(dispatch);
+            UserService.fetchTransactions(dispatch);
             setIsLoading(false);
             props.navigation.navigate('Congratulations', { data: result });
         } catch (error) {
@@ -119,8 +118,6 @@ const CongratulationsScreen = props => {
         </View>
     );
 };
-
-
 
 const styles = StyleSheet.create({
     scrollViewWrapper: {
@@ -417,8 +414,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Nunito-Light',
         marginLeft: 10,
     },
-
-
 });
 
 export default CongratulationsScreen;

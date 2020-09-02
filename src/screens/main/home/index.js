@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Image, TouchableOpacity, StatusBar, ActivityIndicator, Animated } from "react-native";
 import { useDispatch } from 'react-redux';
-import { useNavigation } from "@react-navigation/native";
 import Installation from "../../../services/Installation";
 import UserService from '../../../services/User';
 import WasteService from '../../../services/Waste';
@@ -22,14 +21,13 @@ const HomeScreen = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
     const [posts, setPosts] = useState([]);
-    const navigation = useNavigation();
     const dispatch = useDispatch();
 
     const fetchAllData = async () => {
         try {
             setIsLoading(true);
-            UserService.fetchData(dispatch);
-            WasteService.fetchData(dispatch);
+            await UserService.fetchData(dispatch);
+            await WasteService.fetchData(dispatch);
             const fetchPosts = new Parse.Query("Post");
             fetchPosts.include('createdBy').descending("createdAt").limit(POST_PER_LOAD_LIMIT);
             const result = await fetchPosts.find();
@@ -86,11 +84,11 @@ const HomeScreen = props => {
     };
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
             fetchAllData();
         });
         return unsubscribe;
-    }, [navigation]);
+    }, [props.navigation]);
 
     const handleOthersProfile = (user) => {
         props.navigation.navigate("OthersProfile", { user });

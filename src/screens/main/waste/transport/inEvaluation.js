@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 
 import colors from '../../../../constants/colors';
-import { AntDesign } from '@expo/vector-icons';
 
 const TransportInEvaluationScreen = props => {
 

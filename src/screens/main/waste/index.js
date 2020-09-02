@@ -17,7 +17,6 @@ const WasteActions = props => {
     useEffect(() => {
         const unsubscribe = props.navigation.addListener('focus', () => {
             dispatch(resetTransport());
-            console.log('ASDASDASDASD');
         });
         return unsubscribe;
     }, [props.navigation]);
@@ -37,8 +36,6 @@ const WasteActions = props => {
     const handleRegisterInOtherMomment = () => {
         Alert.alert('En otro momento!');
     };
-
-
 
     return (
         <>

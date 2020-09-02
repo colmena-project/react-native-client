@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useNavigation } from "@react-navigation/native";
 import colors from '../../../constants/colors';
 import styles from '../../../constants/profileStyles';
 import Activity from '../../../components/pendants/Activity';
-import Parse from 'parse/react-native';
+import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 
 const PendantsScreen = props => {
 
@@ -13,16 +12,13 @@ const PendantsScreen = props => {
     const [userAccount, setUserAccount] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const actualState = useSelector(state => state.user);
-    const navigation = useNavigation();
 
     const fetchData = async () => {
+        setIsLoading(true);
         try {
-            setIsLoading(true);
-            // const transportTransactions = actualState.transactions;
             const transportTransactions = actualState.transactions.filter(transaction => transaction.get('type') === 'TRANSPORT');
             setUserAccount(actualState.account);
             setTransactions(transportTransactions);
-            setIsLoading(false);
         } catch (err) {
             console.log('Profile Index error: ' + err);
         }
@@ -30,18 +26,14 @@ const PendantsScreen = props => {
     };
 
     useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
             fetchData();
         });
         return unsubscribe;
-    }, [navigation]);
-
-    useEffect(() => {
-        fetchData();
-    }, []);
+    }, [props.navigation]);
 
     return (
-        <View style={{ ...styles.scrollViewWrapper, paddingHorizontal: 20, paddingTop: 20 }}>
+        <AuthorizedScreen style={{ ...styles.scrollViewWrapper, paddingHorizontal: 20, paddingTop: 20 }}>
             {isLoading ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
                 transactions && transactions.length > 0 ?
                     <ScrollView style={{ flex: 1 }}>
@@ -57,7 +49,7 @@ const PendantsScreen = props => {
                     </Text>
                     </View>
             }
-        </View>
+        </AuthorizedScreen>
     );
 };
 

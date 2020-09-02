@@ -24,8 +24,6 @@ const CongratulationsScreen = props => {
     };
     const containers = getContainers();
 
-    console.log(containers);
-
     const handleExitButton = () => {
         props.navigation.navigate('MainWasteActions');
     };

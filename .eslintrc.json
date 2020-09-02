@@ -1,0 +1,24 @@
+{
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
+    "plugins": [
+        "react-hooks"
+    ],
+    "env": {
+        "es6": true,
+        "node": true,
+        "mocha": true
+    },
+    "parser": "babel-eslint",
+    "rules": {
+        "no-console": "warn",
+        "no-use-before-define": "warn",
+        "spaced-comment": "warn",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
+    },
+    "extends": [
+        "standard"
+    ]
+}

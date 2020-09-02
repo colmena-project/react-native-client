@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import RegisterWasteItem from '../../../../components/waste/RegisterWasteItem';
 import colors from '../../../../constants/colors';
 import styles from '../../../../constants/profileStyles';
-import { useEffect } from 'react';
-
 
 const RegisterWasteScreen = props => {
 

@@ -1,99 +1,116 @@
-import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useDispatch } from 'react-redux';
 import styles from '../../../constants/profileStyles';
+import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
+import ManageWasteCategory from '../../../components/waste/ManageWasteCategory';
+import colors from '../../../constants/colors';
+import UserService from '../../../services/User';
+import WasteService from '../../../services/Waste';
 
 const SummaryScreen = props => {
 
-    const stock = useSelector(state => state.user.stock);
-    const recoveredContainers = useSelector(state => state.user.recoveredContainers);
-    const getContainers = () => {
+    const [recoveredContainers, setRecoveredContainers] = useState(null);
+    const [stockCategories, setStockCategories] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
+
+    const __formattedStock__ = (wasteTypes, fetchedStock) => {
         const formatted = [];
-        stock.forEach(item => {
-            const type = item.wasteType.name;
-            item.type = type;
-            if (!(type in formatted))
-                formatted[type] = [];
-            formatted[type] = item;
-        })
-        return formatted;
+        if (fetchedStock && fetchedStock.length > 0) {
+            fetchedStock.forEach(item => {
+                const type = item.wasteType.name;
+                item.type = type;
+                if (!(type in formatted))
+                    formatted[type] = [];
+                formatted[type] = item;
+            })
+            return formatted;
+        }
+        return null;
     };
-    const containers = getContainers();
+
+    const formattedStock = (wasteTypes, fetchedStock) => {
+        const categories = wasteTypes.map(wasteType => {
+            let ammount = 0;
+            fetchedStock.forEach(stockType => {
+                if (stockType.wasteType.objectId == wasteType.id) {
+                    ammount = stockType.ammount;
+                }
+            });
+            const category = {
+                ...wasteType,
+                code: wasteType.get('code'),
+                name: wasteType.get('name'),
+                container: wasteType.get('container'),
+                containerPlural: wasteType.get('containerPlural'),
+                image: wasteType.get('iconFile'),
+                ammount
+            };
+            return category;
+        });
+        return categories;
+    };
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        try {
+            const wasteTypes = await WasteService.fetchWasteTypes(dispatch);
+            const fetchedStock = await UserService.fetchStock(dispatch);
+            const fetchedRecoveredContainers = await UserService.fetchRecoveredContainers(dispatch);
+            setStockCategories(formattedStock(wasteTypes, fetchedStock));
+            setRecoveredContainers(fetchedRecoveredContainers);
+        } catch (error) {
+            console.log('My Activity - error: ', error);
+        }
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            fetchData();
+        });
+        return unsubscribe;
+    }, [props.navigation]);
 
     const handleManageProductPress = type => {
-        const data = recoveredContainers.filter(item => item.get('type').get('name') == type);
-        props.navigation.navigate('ManageWaste', { type, data })
+        props.navigation.navigate('ManageWaste', { type });
     };
 
     return (
-        <ScrollView style={{ ...styles.scrollViewWrapper, paddingTop: 30 }}>
-            {/* *********** RESIDUOS *********** */}
-            <View style={styles.wasteTabContainer}>
-
-                {containers && containers['PET'] ?
-                    <View style={styles.wasteItem}>
-                        <Image style={styles.wasteImage} source={require('../../../../assets/profile/profile_bottles.png')} />
-                        <Text style={styles.wasteDescription}>
-                            PET ({containers['PET'].ammount} {containers['PET'].ammount == 1 ? containers['PET'].wasteType.container : containers['PET'].wasteType.containerPlural})
+        <AuthorizedScreen>
+            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                <ScrollView style={{ ...styles.scrollViewWrapper, paddingTop: 30 }}>
+                    <View style={styles.wasteTabContainer}>
+                        {stockCategories ? stockCategories.map(stockCategory => {
+                            return <ManageWasteCategory key={stockCategory.id} onPress={handleManageProductPress} data={stockCategory} />
+                        })
+                            :
+                            <View></View>
+                        }
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <View style={styles.wasteCardsContainer}>
+                            <Text style={styles.wasteTitle}>
+                                Impacto
                             </Text>
-                        <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={() => handleManageProductPress(containers['PET'].type)} style={styles.editInfoBtn}>
-                                <Text style={styles.editInfoBtnText}>Modificar</Text>
-                            </TouchableOpacity>
+                            <View style={styles.wasteCard}>
+                                <Text style={styles.impactTitle}>12 kg</Text>
+                                <Image style={styles.impactImage} source={require('../../../../assets/profile/profile_green_lungs.png')} />
+                                <Text style={styles.impactDescription}>Reducción de CO<Text style={{ fontSize: 10 }}>2</Text></Text>
+                            </View>
+                        </View>
+                        <View style={styles.wasteCardsContainer}>
+                            <View style={{ alignItems: 'flex-end', paddingHorizontal: 20 }}>
+                                <Image style={{ width: 130, height: 130, resizeMode: 'contain' }} source={require('../../../../assets/img/save_the_planet.png')} />
+                                <Text style={{ ...styles.impactDescription, fontSize: 14 }}>Retribución estimada</Text>
+                                <Text style={{ ...styles.impactTitle, fontSize: 40, letterSpacing: 2, fontFamily: 'Nunito-Bold' }}>400 jyc</Text>
+                            </View>
                         </View>
                     </View>
-                    :
-                    <View></View>
-                }
-                {containers && containers['Tapitas'] ?
-                    <View style={styles.wasteItem}>
-                        <Image style={styles.wasteImage} source={require('../../../../assets/profile/profile_caps.png')} />
-                        <Text style={styles.wasteDescription}>
-                            Tapitas ({containers['Tapitas'].ammount} {containers['Tapitas'].ammount == 1 ? containers['Tapitas'].wasteType.container : containers['Tapitas'].wasteType.containerPlural})
-                            </Text>
-                        <View style={styles.btnContainer}>
-                            <TouchableOpacity onPress={() => handleManageProductPress(containers['Tapitas'].type)} style={styles.editInfoBtn}>
-                                <Text style={styles.editInfoBtnText}>Modificar</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    :
-                    <View></View>
-                }
-            </View>
-            {/* *********** FIN RESIDUOS *********** */}
-
-            {/* *********** DIRECCION *********** */}
-            {/* <View style={styles.locationTabContainer}>
-                <Image style={{ width: 24, height: 24, resizeMode: 'contain' }} source={require('../../../../assets/icons/location.png')} />
-                <Text style={{ marginLeft: 10, fontFamily: 'Nunito-Light', fontSize: 16, color: '#4c4c4c' }}>{userAccount.city}, {userAccount.state}</Text>
-            </View> */}
-            {/* *********** FIN DIRECCION *********** */}
-
-            {/* *********** IMPACTO *********** */}
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                <View style={styles.wasteCardsContainer}>
-                    <Text style={styles.wasteTitle}>
-                        Impacto
-                    </Text>
-                    <View style={styles.wasteCard}>
-                        <Text style={styles.impactTitle}>12 kg</Text>
-                        <Image style={styles.impactImage} source={require('../../../../assets/profile/profile_green_lungs.png')} />
-                        <Text style={styles.impactDescription}>Reducción de CO<Text style={{ fontSize: 10 }}>2</Text></Text>
-                    </View>
-                </View>
-
-                <View style={styles.wasteCardsContainer}>
-                    <View style={{ alignItems: 'flex-end', paddingHorizontal: 20 }}>
-                        <Image style={{ width: 130, height: 130, resizeMode: 'contain' }} source={require('../../../../assets/img/save_the_planet.png')} />
-                        <Text style={{ ...styles.impactDescription, fontSize: 14 }}>Retribución estimada</Text>
-                        <Text style={{ ...styles.impactTitle, fontSize: 40, letterSpacing: 2, fontFamily: 'Nunito-Bold' }}>400 jyc</Text>
-                    </View>
-                </View>
-
-            </View>
-            {/* *********** FIN IMPACTO *********** */}
-        </ScrollView >
+                </ScrollView >
+            }
+        </AuthorizedScreen>
     );
 };
 

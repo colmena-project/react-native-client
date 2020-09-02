@@ -35,6 +35,7 @@ import ChangePasswordScreen from '../screens/main/profile/changePassword';
 
 import { Feather, FontAwesome, AntDesign } from '@expo/vector-icons';
 import colors from '../constants/colors';
+import { View } from 'react-native';
 
 
 const RootNavigator = () => {
@@ -94,7 +95,8 @@ const RootNavigator = () => {
     const SummaryNavigator = () => {
         return (
             <SummaryStack.Navigator>
-                <SummaryStack.Screen name={'Summary'} component={SummaryScreen} options={setProfileHeaderOptions('Resumen')} />
+                <SummaryStack.Screen name={'Summary'} component={SummaryScreen} options={setProfileHeaderOptions('Mi Actividad')} />
+                <SummaryStack.Screen name={'ManageWaste'} component={ManageWasteScreen} options={setProfileHeaderOptions('Elija los Residuos')} />
             </SummaryStack.Navigator>
         );
     };
@@ -163,7 +165,9 @@ const RootNavigator = () => {
                     options={{
                         tabBarLabel: 'Inicio',
                         tabBarIcon: ({ color, size }) => (
-                            <Feather name="home" color={color} size={size} />
+                            <View style={{ paddingTop: 8 }}>
+                                <Feather name="home" color={color} size={size-2} />
+                            </View>
                         ),
                     }}
                 />
@@ -173,7 +177,9 @@ const RootNavigator = () => {
                     options={{
                         tabBarLabel: 'Mi actividad',
                         tabBarIcon: ({ color, size }) => (
-                            <AntDesign name="appstore-o" color={color} size={size} />
+                            <View style={{ paddingTop: 8 }}>
+                                <AntDesign name="appstore-o" color={color} size={size-2} />
+                            </View>
                         ),
                     }}
                 />
@@ -183,7 +189,9 @@ const RootNavigator = () => {
                     options={{
                         tabBarLabel: 'Acciones',
                         tabBarIcon: ({ color, size }) => (
-                            <FontAwesome name="recycle" color={color} size={size + 2} />
+                            <View style={{ paddingTop: 8 }}>
+                                <FontAwesome name="recycle" color={color} size={size} />
+                            </View>
                         ),
                     }}
                 />
@@ -194,7 +202,9 @@ const RootNavigator = () => {
                     options={{
                         tabBarLabel: 'Pendientes',
                         tabBarIcon: ({ color, size }) => (
-                            <AntDesign name="clockcircleo" color={color} size={size} />
+                            <View style={{ paddingTop: 8 }}>
+                                <AntDesign name="clockcircleo" color={color} size={size-2} />
+                            </View>
                         ),
                     }}
                 />
@@ -234,7 +244,9 @@ const RootNavigator = () => {
                     options={{
                         tabBarLabel: 'Mi Perfil',
                         tabBarIcon: ({ color, size }) => (
-                            <FontAwesome name="user-o" color={color} size={size - 2} />
+                            <View style={{ paddingTop: 8 }}>
+                                <FontAwesome name="user-o" color={color} size={size-2} />
+                            </View>
                         ),
                     }}
                 />

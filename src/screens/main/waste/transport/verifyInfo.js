@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { resetTransport } from '../../../../redux/waste/transport/actions'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Parse from 'parse/react-native';
 
@@ -27,7 +28,7 @@ const VerifyInfo = props => {
                 to: recyclingCenter
             };
             const result = await Parse.Cloud.run('registerTransport', params);
-            console.log(result);
+            dispatch(resetTransport());
             UserService.fetchData(dispatch);
             setIsLoading(false);
             props.navigation.navigate('TransportInEvaluation');

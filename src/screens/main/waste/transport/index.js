@@ -10,14 +10,8 @@ const PickWasteForTransport = props => {
     const containers = useSelector(state => state.user.recoveredContainers);
     const PPId = 'GIw8hv4Dle';
     const PETId = 'WTMdIFLUFV';
-    const containersToTransport = useSelector(state => state.transportInfo.containers);
-    const hasTransport = containersToTransport.length > 0 ? true : false;
     const dispatch = useDispatch();
     const [qtyToTransport, setQtyToTransport] = useState(0);
-
-    useEffect(() => {
-        console.log(containersToTransport);
-    }, [containersToTransport]);
 
     const handleToogleCheck = (isChecked, container) => {
         if (isChecked) {

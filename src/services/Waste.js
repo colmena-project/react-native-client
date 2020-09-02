@@ -11,18 +11,21 @@ const getDispatcher = () => {
     return dispatch;
 };
 
-const fetchWasteTypes = async dispatch => {
+const fetchWasteTypes = async (dispatch = null) => {
     try {
         const query = new Parse.Query('WasteType');
         query.equalTo('active', true);
         const result = await query.find();
-        dispatch(setWasteTypes(result));
+        if (dispatch) {
+            dispatch(setWasteTypes(result));
+        }
+        return result;
     } catch (error) {
         console.log('Waste Service - fetchWasteTypes: ', error.message);
     }
 };
 
-const fetchData = dispatch => {
+const fetchData = async (dispatch = null) => {
     fetchWasteTypes(dispatch);
 };
 

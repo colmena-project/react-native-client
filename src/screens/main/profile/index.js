@@ -60,8 +60,11 @@ const UserProfile = props => {
     };
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            fetchData();
+        });
+        return unsubscribe;
+    }, [props.navigation]);
 
     const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
         return layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;

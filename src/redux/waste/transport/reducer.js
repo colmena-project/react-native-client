@@ -17,9 +17,10 @@ const transportWasteReducer = (transportInfo = initialState, action) => {
             return transportInfo;
 
         case RESET_TRANSPORT:
-            console.log('RESETEANDO...');
-            transportInfo = initialState
-            console.log('liSTO');
+            transportInfo = {
+                containers: [],
+                to: ''
+            };
             return transportInfo;
 
         case SET_RECYCLE_CENTER:
