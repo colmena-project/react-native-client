@@ -4,7 +4,7 @@ import colors from './colors';
 const styles = StyleSheet.create({
     scrollViewWrapper: {
         flex: 1,
-        backgroundColor: colors.colmenaBackground,
+        backgroundColor: 'white',
     },
     scrollView: {
         paddingLeft: 30,

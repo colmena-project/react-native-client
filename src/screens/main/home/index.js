@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Image, TouchableOpacity, StatusBar, ActivityIndicator, Animated } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity, StatusBar, Text, ActivityIndicator, Animated } from "react-native";
 import { useDispatch } from 'react-redux';
 import Installation from "../../../services/Installation";
 import UserService from '../../../services/User';
@@ -103,7 +103,6 @@ const HomeScreen = props => {
 
     return (
         <AuthorizedScreen>
-
             <StatusBar barStyle="light-content" backgroundColor={colors.colmenaGreen} />
             <View style={styles.screen}>
                 <Animated.View
@@ -134,8 +133,20 @@ const HomeScreen = props => {
                             size={"large"}
                             color={colors.colmenaGreen}
                         />
-                    ) : (
-                            <FeedList paddingTop={TOP_NAVBAR_HEIGHT} onPress={handleOthersProfile} data={posts} onScroll={value => scrollY.setValue(value)} onEndReached={handleOnEndReached} />
+                    ) : (posts.length > 0 ?
+                        <FeedList paddingTop={TOP_NAVBAR_HEIGHT} onPress={handleOthersProfile} data={posts} onScroll={value => scrollY.setValue(value)} onEndReached={handleOnEndReached} />
+                        :
+                        <View style={{ justifyContent: 'flex-start', alignItems: 'center', padding: 20 }}>
+                            <Image style={{ resizeMode: 'contain', width: '70%', height: '70%' }} source={require('../../../../assets/profile/empty_transactions.png')} />
+                            <Text style={{ paddingHorizontal: 20, textAlign: 'center', fontFamily: 'Nunito-Light', fontSize: 18, color: '#4B4B4B' }}>
+                                Todavía no hay posts... empieza por agregar uno!
+                            </Text>
+                            <TouchableOpacity onPress={() => setIsAddMode(true)} style={{ marginBottom: 5, marginTop: 30, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
+                                <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16, paddingHorizontal: 20 }}>
+                                    NUEVO POST
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                         )}
                     {isLoadingMore ?
                         <ActivityIndicator

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from '../../../constants/profileStyles';
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 import ManageWasteCategory from '../../../components/waste/ManageWasteCategory';
@@ -9,25 +9,13 @@ import UserService from '../../../services/User';
 import WasteService from '../../../services/Waste';
 
 const SummaryScreen = props => {
-    
+
     const [stockCategories, setStockCategories] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const transactions = useSelector(state => state.user.transactions);
+    const recovers = transactions.filter(transaction => transaction.get('type') === 'RECOVER');
+    const hasWasteContainers = recovers.length > 0 ? true : false;
     const dispatch = useDispatch();
-
-    const __formattedStock__ = (wasteTypes, fetchedStock) => {
-        const formatted = [];
-        if (fetchedStock && fetchedStock.length > 0) {
-            fetchedStock.forEach(item => {
-                const type = item.wasteType.name;
-                item.type = type;
-                if (!(type in formatted))
-                    formatted[type] = [];
-                formatted[type] = item;
-            })
-            return formatted;
-        }
-        return null;
-    };
 
     const formattedStock = (wasteTypes, fetchedStock) => {
         const categories = wasteTypes.map(wasteType => {
@@ -74,38 +62,53 @@ const SummaryScreen = props => {
         props.navigation.navigate('ManageWaste', { type });
     };
 
+    const handleRegisterWasteBtn = () => {
+        props.navigation.navigate('Waste');
+    };
+
     return (
         <AuthorizedScreen>
             {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
-                <ScrollView style={{ ...styles.scrollViewWrapper, paddingTop: 30 }}>
-                    <View style={styles.wasteTabContainer}>
-                        {stockCategories ? stockCategories.map(stockCategory => {
-                            return <ManageWasteCategory key={stockCategory.id} onPress={handleManageProductPress} data={stockCategory} />
-                        })
-                            :
-                            <View></View>
-                        }
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                        <View style={styles.wasteCardsContainer}>
-                            <Text style={styles.wasteTitle}>
-                                Impacto
+                <View style={styles.scrollViewWrapper}>
+                    {hasWasteContainers ?
+                        <ScrollView style={{ paddingTop: 30 }}>
+                            <View style={styles.wasteTabContainer}>
+                                {stockCategories ? stockCategories.map(stockCategory => {
+                                    return <ManageWasteCategory key={stockCategory.id} onPress={handleManageProductPress} data={stockCategory} />
+                                })
+                                    :
+                                    <View></View>
+                                }
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                                <View style={styles.wasteCardsContainer}>
+                                    <Text style={styles.wasteTitle}>
+                                        Impacto
                             </Text>
-                            <View style={styles.wasteCard}>
-                                <Text style={styles.impactTitle}>12 kg</Text>
-                                <Image style={styles.impactImage} source={require('../../../../assets/profile/profile_green_lungs.png')} />
-                                <Text style={styles.impactDescription}>Reducción de CO<Text style={{ fontSize: 10 }}>2</Text></Text>
+                                    <View style={styles.wasteCard}>
+                                        <Text style={styles.impactTitle}>12 kg</Text>
+                                        <Image style={styles.impactImage} source={require('../../../../assets/profile/profile_green_lungs.png')} />
+                                        <Text style={styles.impactDescription}>Reducción de CO<Text style={{ fontSize: 10 }}>2</Text></Text>
+                                    </View>
+                                </View>
+                                <View style={styles.wasteCardsContainer}>
+                                    <View style={{ alignItems: 'flex-end', paddingHorizontal: 20 }}>
+                                        <Image style={{ width: 130, height: 130, resizeMode: 'contain' }} source={require('../../../../assets/img/save_the_planet.png')} />
+                                        <Text style={{ ...styles.impactDescription, fontSize: 14 }}>Retribución estimada</Text>
+                                        <Text style={{ ...styles.impactTitle, fontSize: 40, letterSpacing: 2, fontFamily: 'Nunito-Bold' }}>400 jyc</Text>
+                                    </View>
+                                </View>
                             </View>
+                        </ScrollView >
+                        :
+                        <View style={{ justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20 }}>
+                            <Image style={{ resizeMode: 'contain', width: '70%', height: '70%' }} source={require('../../../../assets/profile/empty_transactions.png')} />
+                            <Text style={{ paddingHorizontal: 20, textAlign: 'center', fontFamily: 'Nunito-Light', fontSize: 18, color: '#4B4B4B' }}>
+                                No tenés actividades pendientes. Intenta con el menú de acciones.
+                            </Text>
                         </View>
-                        <View style={styles.wasteCardsContainer}>
-                            <View style={{ alignItems: 'flex-end', paddingHorizontal: 20 }}>
-                                <Image style={{ width: 130, height: 130, resizeMode: 'contain' }} source={require('../../../../assets/img/save_the_planet.png')} />
-                                <Text style={{ ...styles.impactDescription, fontSize: 14 }}>Retribución estimada</Text>
-                                <Text style={{ ...styles.impactTitle, fontSize: 40, letterSpacing: 2, fontFamily: 'Nunito-Bold' }}>400 jyc</Text>
-                            </View>
-                        </View>
-                    </View>
-                </ScrollView >
+                    }
+                </View>
             }
         </AuthorizedScreen>
     );

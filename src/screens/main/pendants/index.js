@@ -33,22 +33,24 @@ const PendantsScreen = props => {
     }, [props.navigation]);
 
     return (
-        <AuthorizedScreen style={{ ...styles.scrollViewWrapper, paddingHorizontal: 20, paddingTop: 20 }}>
-            {isLoading ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
-                transactions && transactions.length > 0 ?
-                    <ScrollView style={{ flex: 1 }}>
-                        {transactions.map((transaction, index) => {
-                            return <Activity user={userAccount} transaction={transaction} key={index} />
-                        })}
-                    </ScrollView>
-                    :
-                    <View style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-                        <Image style={{ resizeMode: 'contain', width: '80%', height: '80%' }} source={require('../../../../assets/profile/empty_transactions.png')} />
-                        <Text style={{ paddingHorizontal: 20, fontFamily: 'Nunito-Light', fontSize: 18, color: '#4B4B4B' }}>
-                            No tenés actividades pendientes. Intenta con el menú de acciones.
-                    </Text>
-                    </View>
-            }
+        <AuthorizedScreen>
+            <View style={{ ...styles.scrollViewWrapper, paddingHorizontal: 20, paddingTop: 20 }}>
+                {isLoading ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.colmenaGreen} /> :
+                    transactions && transactions.length > 0 ?
+                        <ScrollView style={{ flex: 1 }}>
+                            {transactions.map((transaction, index) => {
+                                return <Activity user={userAccount} transaction={transaction} key={index} />
+                            })}
+                        </ScrollView>
+                        :
+                        <View style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
+                            <Image style={{ resizeMode: 'contain', width: '70%', height: '70%' }} source={require('../../../../assets/profile/empty_transactions.png')} />
+                            <Text style={{ paddingHorizontal: 20, textAlign: 'center', fontFamily: 'Nunito-Light', fontSize: 18, color: '#4B4B4B' }}>
+                                No tenés actividades pendientes. Intenta con el menú de acciones.
+                        </Text>
+                        </View>
+                }
+            </View>
         </AuthorizedScreen>
     );
 };
