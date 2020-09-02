@@ -9,8 +9,7 @@ import UserService from '../../../services/User';
 import WasteService from '../../../services/Waste';
 
 const SummaryScreen = props => {
-
-    const [recoveredContainers, setRecoveredContainers] = useState(null);
+    
     const [stockCategories, setStockCategories] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
@@ -57,9 +56,7 @@ const SummaryScreen = props => {
         try {
             const wasteTypes = await WasteService.fetchWasteTypes(dispatch);
             const fetchedStock = await UserService.fetchStock(dispatch);
-            const fetchedRecoveredContainers = await UserService.fetchRecoveredContainers(dispatch);
             setStockCategories(formattedStock(wasteTypes, fetchedStock));
-            setRecoveredContainers(fetchedRecoveredContainers);
         } catch (error) {
             console.log('My Activity - error: ', error);
         }
