@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { useDispatch } from 'react-redux';
 import styles from '../../../constants/profileStyles';
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
