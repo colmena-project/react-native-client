@@ -94,11 +94,11 @@ const WasteActions = props => {
                                 EMPEZAR A REGISTRAR
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ marginVertical: 10 }} onPress={handleRegisterInOtherMomment} >
+                        {/* <TouchableOpacity style={{ marginVertical: 10 }} onPress={handleRegisterInOtherMomment} >
                             <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
                                 EN OTRO MOMENTO
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
                 </View >}
         </>
