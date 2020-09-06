@@ -13,7 +13,7 @@ const ManageWasteScreen = props => {
     const wasteType = props.route.params.type;
     const address = useSelector(state => state.user.address);
     const [wasteContainers, setWasteContainers] = useState(null);
-    const [checkedContainers, setCheckedContainers] = useState(null);
+    const [checkedContainers, setCheckedContainers] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
 
@@ -68,7 +68,7 @@ const ManageWasteScreen = props => {
     const filterCheckedContainers = () => {
         if (wasteContainers && wasteContainers.length > 0) {
             const chkContainers = wasteContainers.filter(wasteContainer => wasteContainer.isChecked);
-            setCheckedContainers(chkContainers);
+            setCheckedContainers(chkContainers.length);
         };
     };
 
@@ -83,9 +83,8 @@ const ManageWasteScreen = props => {
                     }
                 });
                 const result = await Parse.Cloud.run('deleteContainers', { containers: containersInput });
-                await UserService.fetchRecoveredContainers(dispatch);
-                await UserService.fetchTransactions(dispatch);
-                fetchWasteData();
+                setCheckedContainers(0);
+                await fetchWasteData();
             };
             setIsLoading(false);
         } catch (error) {
@@ -145,12 +144,12 @@ const ManageWasteScreen = props => {
 
 
                     <View style={componentStyles.dataContainer}>
-                        {checkedContainers && checkedContainers.length > 0 ?
+                        {checkedContainers > 0 ?
                             <View>
                                 <TouchableOpacity onPress={handleConfirmDeleteCheckedContainers} style={componentStyles.btn}>
                                     <Ionicons style={componentStyles.btnIcon} name={'md-trash'} size={26} color={colors.colmenaGreen} />
                                 </TouchableOpacity>
-                                <Text style={componentStyles.btnText}>Eliminar ({checkedContainers.length})</Text>
+                                <Text style={componentStyles.btnText}>Eliminar ({checkedContainers})</Text>
                             </View>
                             :
                             <View>
