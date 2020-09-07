@@ -1,45 +1,92 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { FontAwesome, AntDesign } from '@expo/vector-icons';
-
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { setRecyclingCenter } from '../../../../redux/waste/transport/actions';
+import { FontAwesome } from '@expo/vector-icons';
+import RCService from '../../../../services/RecyclingCenter';
+import AuthorizedScreen from '../../../../components/auth/AuthorizedScreen';
 import MapPicker from '../../../../components/address/MapPicker';
 import colors from '../../../../constants/colors';
 
 const PickDestinyScreen = props => {
 
+    const [cr, setCr] = useState(null);
+    const [crs, setCrs] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        try {
+            const data = await RCService.fetchRecyclingCenters();
+            if (data) {
+                setCr(data[0])
+                setCrs(data);
+            }
+        } catch (error) {
+            console.log('Waste Service - fetchWasteTypes: ', error.message);
+        }
+        setIsLoading(false);
+    };
+
+    const handleCRSelected = value => {
+        console.log(value);
+        setCr(value);
+
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (cr) {
+            console.log(cr.get('latLng').latitude);
+        }
+    }, [cr]);
+
     const handleNextButton = () => {
+        dispatch(setRecyclingCenter(cr.id));
         props.navigation.navigate('VerifyTransportInfo');
     };
 
     return (
-        <View style={styles.scrollViewWrapper} >
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                <FontAwesome name="map-marker" color={'black'} size={30} />
-                <Text style={{ flex: 1, padding: 15, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
-                    Centro de Reciclaje "Campo Viera"
-                </Text>
-                <TouchableOpacity>
-                    <AntDesign name={"search1"} size={30} color="black" />
-                </TouchableOpacity>
-            </View>
+        <AuthorizedScreen>
+            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                <View style={styles.scrollViewWrapper} >
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                        <FontAwesome name="map-marker" color={'black'} size={30} />
+                        <View style={{ flex: 1, padding: 0, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
+                            <Picker style={styles.picker}
+                                selectedValue={cr}
+                                onValueChange={value => handleCRSelected(value)}
+                            >
+                                {crs.map(cr => {
+                                    return <Picker.Item key={cr.id} label={cr.get('description')} value={cr.id} />
+                                })}
+                            </Picker>
+                        </View>
+                    </View>
 
-            <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
-                <MapPicker
-                    styles={{ height: '100%', marginTop: 0 }}
-                    coords={{ latitude: -27.3715333, longitude: -55.9170078 }}
-                    marker={<FontAwesome style={{backgroundColor: 'white', borderRadius: 50}} name={"circle-o"} color={colors.colmenaGreen} size={34} />}
-                    getCoords={console.log}
-                />
-            </View>
+                    <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
+                        <MapPicker
+                            styles={{ height: '100%', marginTop: 0 }}
+                            coords={{ latitude: cr ? cr.get('latLng').latitude : -27.3715333, longitude: cr ? cr.get('latLng').longitude : -55.9170078 }}
+                            marker={<FontAwesome style={{ backgroundColor: 'white', borderRadius: 50 }} name={"circle-o"} color={colors.colmenaGreen} size={34} />}
+                            getCoords={console.log}
+                        />
+                    </View>
 
-            <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
-                <TouchableOpacity onPress={handleNextButton} >
-                    <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
-                        SIGUIENTE
+                    <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
+                        <TouchableOpacity onPress={handleNextButton} >
+                            <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
+                                SIGUIENTE
                     </Text>
-                </TouchableOpacity>
-            </View>
-        </View >
+                        </TouchableOpacity>
+                    </View>
+                </View >
+            }
+        </AuthorizedScreen>
     );
 };
 

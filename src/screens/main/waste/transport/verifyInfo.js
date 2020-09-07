@@ -8,12 +8,13 @@ import Parse from 'parse/react-native';
 import UserService from '../../../../services/User';
 
 import colors from '../../../../constants/colors';
+import { useEffect } from 'react';
 
 const VerifyInfo = props => {
 
     const PPId = 'GIw8hv4Dle';
     const PETId = 'WTMdIFLUFV';
-    const recyclingCenter = 'rgptTXn8HS';
+    const recyclingCenter = useSelector(state => state.transportInfo.to);
     const containersToTransport = useSelector(state => state.transportInfo.containers);
     const petContainers = containersToTransport.filter(container => container.get('type').id === PETId);
     const ppContainers = containersToTransport.filter(container => container.get('type').id === PPId);
@@ -36,7 +37,7 @@ const VerifyInfo = props => {
             setIsLoading(false);
             console.log(error);
         }
-    };
+    };    
 
     return (
         <View style={{ flex: 1 }}>

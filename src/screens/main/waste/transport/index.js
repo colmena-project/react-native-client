@@ -48,9 +48,9 @@ const PickWasteForTransport = props => {
                         <Text style={styles.wasteDescription}>
                             Plástico PET
                         </Text>
-                        <View style={{ backgroundColor: colors.colmenaGreen, paddingVertical: 7, paddingHorizontal: 12, borderRadius: 3, position: 'absolute', top: 40 }}>
+                        {/* <View style={{ backgroundColor: colors.colmenaGreen, paddingVertical: 7, paddingHorizontal: 12, borderRadius: 3, position: 'absolute', top: 40 }}>
                             <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: 'white' }}>38</Text>
-                        </View>
+                        </View> */}
                     </View>
                     <ScrollView style={{ marginTop: 10, width: '80%' }}>
                         <View>
@@ -74,9 +74,9 @@ const PickWasteForTransport = props => {
                         <Text style={styles.wasteDescription}>
                             Tapitas PP
                         </Text>
-                        <View style={{ backgroundColor: colors.colmenaGreen, paddingVertical: 7, paddingHorizontal: 12, borderRadius: 3, position: 'absolute', top: 40 }}>
+                        {/* <View style={{ backgroundColor: colors.colmenaGreen, paddingVertical: 7, paddingHorizontal: 12, borderRadius: 3, position: 'absolute', top: 40 }}>
                             <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: 'white' }}>27</Text>
-                        </View>
+                        </View> */}
                     </View>
                     <ScrollView style={{ marginTop: 10, width: '80%' }}>
                         <View>

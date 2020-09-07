@@ -1,4 +1,4 @@
-import { ADD_CONTAINER_TO_TRANSPORT, REMOVE_CONTAINER_TO_TRANSPORT, SET_RECYCLE_CENTER, RESET_TRANSPORT } from './actions';
+import { ADD_CONTAINER_TO_TRANSPORT, REMOVE_CONTAINER_TO_TRANSPORT, SET_RECYCLING_CENTER, RESET_TRANSPORT } from './actions';
 
 const initialState = {
     containers: [],
@@ -23,7 +23,7 @@ const transportWasteReducer = (transportInfo = initialState, action) => {
             };
             return transportInfo;
 
-        case SET_RECYCLE_CENTER:
+        case SET_RECYCLING_CENTER:
             transportInfo.to = action.data;
             return transportInfo;
 
