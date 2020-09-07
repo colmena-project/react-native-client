@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, Alert, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Parse } from 'parse/react-native';
-
+import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 import colors from '../../../constants/colors';
 
 const TransportCancel = props => {
 
     const [reason, setReason] = useState('');
     const transaction = props.route.params.transaction;
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleShowConfirmationAlert = () => {
         try {
@@ -36,14 +37,17 @@ const TransportCancel = props => {
     };
 
     const handleRegisterTransportCancel = async () => {
+        setIsLoading(true);
         try {
             await Parse.Cloud.run('registerTransportCancel', { transactionId: transaction.id });
             transaction.set('reason', 'Motivo');
             transaction.save();
             Alert.alert('Transacción cancelada', 'La transacción fue correctamente cancelada.');
+            props.navigation.navigate('Pendants');
         } catch (error) {
             Alert.alert(error.message);
         }
+        setIsLoading(false);
     };
 
     const handleUpdateReason = value => {
@@ -51,34 +55,37 @@ const TransportCancel = props => {
     };
 
     return (
-        <ScrollView style={{ flex: 1 }}>
-            <View style={styles.container}>
+        <AuthorizedScreen style={{ flex: 1 }}>
+            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                <ScrollView style={{ flex: 1 }}>
+                    <View style={styles.container}>
+                        <View>
+                            <Text style={styles.text}>Estás por cancelar el transporte</Text>
+                        </View>
 
-                <View>
-                    <Text style={styles.text}>Estás por cancelar el transporte</Text>
-                </View>
+                        <View style={styles.reasonInputContainer}>
+                            <Text style={styles.text}>Explica el motivo</Text>
+                            <View style={{ width: '100%', height: 200 }}>
+                                <TextInput
+                                    style={styles.textInput}
+                                    autoFocus={true}
+                                    multiline={true}
+                                    numberOfLines={18}
+                                    value={reason}
+                                    onChangeText={handleUpdateReason}
+                                />
+                            </View>
+                        </View>
 
-                <View style={styles.reasonInputContainer}>
-                    <Text style={styles.text}>Explica el motivo</Text>
-                    <View style={{ width: '100%', height: 200 }}>
-                        <TextInput
-                            style={styles.textInput}
-                            autoFocus={true}
-                            multiline={true}
-                            numberOfLines={18}
-                            value={reason}
-                            onChangeText={handleUpdateReason}
-                        />
+                        <View style={styles.btnContainer}>
+                            <TouchableOpacity style={styles.btn} onPress={handleShowConfirmationAlert}>
+                                <Text style={styles.btnSubmitText}>ENVIAR</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-
-                <View style={styles.btnContainer}>
-                    <TouchableOpacity style={styles.btn} onPress={handleShowConfirmationAlert}>
-                        <Text style={styles.btnSubmitText}>ENVIAR</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </ScrollView>
+                </ScrollView>
+            }
+        </AuthorizedScreen>
     );
 };
 
