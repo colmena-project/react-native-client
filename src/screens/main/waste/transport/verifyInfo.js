@@ -4,11 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { resetTransport } from '../../../../redux/waste/transport/actions'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Parse from 'parse/react-native';
-
 import UserService from '../../../../services/User';
-
 import colors from '../../../../constants/colors';
-import { useEffect } from 'react';
 
 const VerifyInfo = props => {
 
@@ -138,7 +135,7 @@ const VerifyInfo = props => {
                         <TouchableOpacity onPress={handleTransportButton} style={{ marginBottom: 5, height: 45, backgroundColor: colors.colmenaGreen, borderRadius: 5, justifyContent: 'center', }} >
                             <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
                                 TRANSPORTAR
-                    </Text>
+                            </Text>
                         </TouchableOpacity>
                     </View>
 

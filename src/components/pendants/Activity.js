@@ -12,6 +12,7 @@ const Activity = props => {
     const date = `${transaction.get('createdAt').getDate()}/${transaction.get('createdAt').getMonth() + 1}/${transaction.get('createdAt').getFullYear()}`;
     const hour = `${transaction.get('createdAt').getHours()}:${transaction.get('createdAt').getMinutes()}`;
     const type = 'En tránsito';
+    const defaultUserImg = require('../../../assets/default_user_1.png');
 
     const handleAskReason = () => {
         navigation.navigate('Cancel Transport', { transaction });
@@ -22,7 +23,7 @@ const Activity = props => {
             <View style={{ flexDirection: 'row' }}>
                 <Image
                     style={styles.actionButtonIcon}
-                    source={{ uri: user.get('avatar')._url }}
+                    source={user && user.get('avatar') ? { uri: user.get('avatar')._url } : require('../../../assets/default_user_1.png')}
                 />
                 <View style={{ marginLeft: 15 }}>
                     <Text style={styles.actionButtonText}>{transaction.get('from') ? '@' + transaction.get('from').get('username') : ''}</Text>

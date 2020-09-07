@@ -44,6 +44,7 @@ const SummaryScreen = props => {
         try {
             const wasteTypes = await WasteService.fetchWasteTypes(dispatch);
             const fetchedStock = await UserService.fetchStock(dispatch);
+            console.log('FETCHEDSTOCK - Summary index', fetchedStock);
             setStockCategories(formattedStock(wasteTypes, fetchedStock));
         } catch (error) {
             console.log('My Activity - error: ', error);

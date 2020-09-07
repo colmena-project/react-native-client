@@ -5,6 +5,7 @@ import colors from '../../../constants/colors';
 import styles from '../../../constants/profileStyles';
 import Activity from '../../../components/pendants/Activity';
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
+import UserService from '../../../services/User';
 
 const PendantsScreen = props => {
 
@@ -16,11 +17,14 @@ const PendantsScreen = props => {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const transportTransactions = actualState.transactions.filter(transaction => transaction.get('type') === 'TRANSPORT');
-            setUserAccount(actualState.account);
+            const fetchedAccount = await UserService.fetchAccount();
+            console.log(fetchedAccount);
+            const fetchedTransactions = await UserService.fetchTransactions();            
+            const transportTransactions = fetchedTransactions.filter(transaction => transaction.get('type') === 'TRANSPORT');
+            setUserAccount(fetchedAccount);
             setTransactions(transportTransactions);
         } catch (err) {
-            console.log('Profile Index error: ' + err);
+            console.log('Pendants Screen - Error: ' + err);
         }
         setIsLoading(false);
     };
