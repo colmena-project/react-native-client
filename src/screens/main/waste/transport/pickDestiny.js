@@ -30,23 +30,15 @@ const PickDestinyScreen = props => {
     };
 
     const handleCRSelected = value => {
-        console.log(value);
         setCr(value);
-
     };
 
     useEffect(() => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        if (cr) {
-            console.log(cr.get('latLng').latitude);
-        }
-    }, [cr]);
-
     const handleNextButton = () => {
-        dispatch(setRecyclingCenter(cr.id));
+        dispatch(setRecyclingCenter(cr));
         props.navigation.navigate('VerifyTransportInfo');
     };
 

@@ -1,336 +1,109 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
-
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
+import styles from '../../../../constants/profileStyles';
 import colors from '../../../../constants/colors';
 
 const TransportInEvaluationScreen = props => {
+
+    const materialRetribution = useSelector(state => state.transportInfo.materialRetribution);
+    const transportRetribution = useSelector(state => state.transportInfo.transportRetribution);
 
     const handleSeePendingRequests = () => {
         props.navigation.navigate('Pendants');
     };
 
     return (
-        <View style={styles.scrollViewWrapper} >
-
-            <View style={{ width: '100%', alignItems: 'center', paddingBottom: 15, }}>
-                <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 5 }}>
-                    <Image style={{ height: 175, resizeMode: 'contain' }} source={require('../../../../../assets/img/waste_transport.png')} />
+        <View style={{ ...styles.scrollViewWrapper, paddingTop: 60 }} >
+            <View style={componentStyle.imageContainer}>
+                <View style={componentStyle.imageWrapper}>
+                    <Image style={componentStyle.image} source={require('../../../../../assets/img/waste_transport.png')} />
                 </View>
             </View>
-
-            <Text style={{
-                paddingHorizontal: 40,
-                marginVertical: 20,
-                textAlign: 'justify',
-                fontSize: 20,
-                fontFamily: 'Nunito-Regular',
-                color: '#7f7f7f'
-            }}>
+            <Text style={componentStyle.descriptionText}>
                 Tu petición de transporte está siendo evaluada. Se te enviará un mensaje con los avances.
             </Text>
-
-            <TouchableOpacity onPress={handleSeePendingRequests} style={{ marginTop: 60 }}>
-                <Text style={{ textAlignVertical: 'center', textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
+            <View style={componentStyle.retributionContainer}>
+                {/* <View style={{ width: '100%', alignItems: 'flex-end', paddingVertical: 5 }}>
+                            <Text style={componentStyle.smallGreyText}>Por acopiar aprox</Text>
+                            <Text style={componentStyle.normalGrayText}>300 JYC</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingVertical: 5 }}>
+                            <View>
+                                <Text style={componentStyle.smallGreyText}>Distancia <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>30km</Text></Text>
+                                <Text style={componentStyle.smallGreyText}>x Km <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>1 JYC / bolsa</Text></Text>
+                            </View>
+                            <View style={{ alignItems: 'flex-end', paddingLeft: 30 }}>
+                                <Text style={componentStyle.smallGreyText}>Por transportar aprox</Text>
+                                <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 26, color: colors.colmenaGreen }}>90 JYC</Text>
+                            </View>
+                        </View> */}
+                <View style={componentStyle.estimatedContainer}>
+                    <Text style={componentStyle.estimatedText}>
+                        Estimado:
+                            </Text>
+                    <Text style={componentStyle.estimatedAmmount}>{(materialRetribution + transportRetribution).toFixed(2)} JYC</Text>
+                </View>
+            </View>
+            <TouchableOpacity onPress={handleSeePendingRequests}>
+                <Text style={componentStyle.btn}>
                     VER PETICIONES PENDIENTES
                 </Text>
             </TouchableOpacity>
-
         </View >
     );
 };
 
-const styles = StyleSheet.create({
-    scrollViewWrapper: {
-        flex: 1,
-        backgroundColor: colors.colmenaBackground,
+const componentStyle = StyleSheet.create({
+    imageContainer: {
+        width: '100%',
+        alignItems: 'center',
+        paddingBottom: 15,
+    },
+    imageWrapper: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 5
+    },
+    image: {
+        height: 175,
+        resizeMode: 'contain'
+    },
+    descriptionText: {
+        paddingHorizontal: 40,
+        marginVertical: 20,
+        textAlign: 'justify',
+        fontSize: 20,
+        fontFamily: 'Nunito-Regular',
+        color: '#7f7f7f'
+    },
+    retributionContainer: {
+        paddingHorizontal: 40,
         justifyContent: 'center'
     },
-    scrollView: {
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingTop: 8,
-        flex: 1,
-    },
-    brand: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 40,
-    },
-    brandText: {
-        fontFamily: 'Nunito-SemiBold',
-        fontWeight: '300',
-        fontSize: 26,
-        color: colors.colmenaGrey,
-        marginLeft: 30,
-    },
-    headerIcons: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    profileHeader: {
-        width: '100%',
-        paddingVertical: 20,
-        paddingHorizontal: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EDEDED'
-    },
-    profilePicture: {
+    estimatedContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 15,
+        paddingTop: 10,
+        paddingBottom: 25
     },
-    avatar: {
-        width: 60,
-        height: 60,
-        borderRadius: 50,
-        overflow: 'hidden',
-    },
-    name: {
+    estimatedText: {
         fontFamily: 'Nunito-Regular',
-        fontSize: 12
+        fontSize: 20,
+        color: colors.greyText
     },
-    locationInfo: {
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        marginTop: 5,
+    estimatedAmmount: {
+        fontFamily: 'Nunito-SemiBold',
+        fontSize: 45,
+        color: colors.primaryGunMetal
     },
-    titleTexts: {
-        color: '#4C4C4C',
-        fontFamily: 'Nunito-Regular'
-    },
-    aboutMeInfo: {
-        margin: 5,
-    },
-    aboutMeText: {
-        textAlign: 'justify',
-        fontFamily: 'Nunito-Light',
-        color: '#4C4C4C',
-    },
-    btnContainer: {
-        width: '100%',
-        marginTop: 10,
-    },
-    editInfoBtn: {
-        backgroundColor: 'white',
-        borderWidth: 1,
-        borderColor: colors.colmenaGreen,
-        borderRadius: 5,
-        paddingVertical: 5,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-        elevation: 2,
-    },
-    editInfoBtnText: {
+    btn: {
+        textAlignVertical: 'center',
         textAlign: 'center',
         color: colors.colmenaGreen,
-        fontFamily: 'Nunito-Regular',
+        fontFamily: 'Nunito-SemiBold',
         fontSize: 16
     },
-    activityContainer: {
-        flex: 3,
-        paddingHorizontal: 20
-    },
-    brandText: {
-        fontFamily: 'Nunito-SemiBold',
-        fontWeight: '300',
-        fontSize: 30,
-        color: colors.colmenaGrey,
-        marginLeft: 30,
-    },
-    activityTitle: {
-        fontFamily: 'Nunito-SemiBold',
-        fontWeight: '300',
-        fontSize: 30,
-        color: colors.colmenaGrey,
-        marginLeft: 30,
-        fontSize: 18,
-        color: '#4C4C4C',
-        paddingVertical: 10,
-        marginLeft: 0,
-        marginTop: 15
-    },
-    activityExtraInfo: {
-        fontFamily: 'Nunito-SemiBold',
-        fontWeight: '300',
-        fontSize: 30,
-        color: colors.colmenaGrey,
-        marginLeft: 30,
-        fontSize: 18,
-        color: '#4C4C4C',
-        paddingVertical: 10,
-        marginLeft: 0,
-        marginTop: 15
-    },
-    activityExtraInfoDetail: {
-        fontSize: 12,
-        fontFamily: 'Nunito-Light',
-        marginLeft: 10,
-    },
-    tabBarContainer: {
-        flex: 1,
-    },
-    tabBar: {  // Íconos de los tabs
-        flexDirection: 'row',
-        marginTop: 15,
-    },
-    tabItem: {
-        flex: 1,
-        alignItems: 'flex-start',
-        padding: 10,
-        marginLeft: 0,
-        borderBottomWidth: 3,
-    },
-    tabContent: {
-        flex: 1,
-        justifyContent: 'flex-start',
-    },
-
-
-    wasteTabContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
-        paddingVertical: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EDEDED'
-    },
-    locationTabContainer: {
-        flexDirection: 'row',
-        paddingVertical: 20,
-        paddingHorizontal: 30,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EDEDED'
-    },
-
-
-    wasteInfoContainer: {
-        flexDirection: 'row',
-        borderBottomWidth: 1,
-        borderBottomColor: '#EDEDED'
-    },
-    wasteCardsContainer: {
-        paddingVertical: 20,
-        paddingLeft: 20,
-    },
-    wasteTitle: {
-        fontFamily: 'Nunito-SemiBold',
-        fontSize: 18,
-        color: '#4c4c4c',
-        marginBottom: 10,
-    },
-    wasteCardTitle: {
-        fontFamily: 'Nunito-SemiBold',
-        fontSize: 10,
-        color: '#6E7989',
-        backgroundColor: '#D8DAE0',
-        paddingVertical: 2,
-        paddingHorizontal: 10,
-        borderRadius: 3,
-        marginBottom: 5,
-        textTransform: 'uppercase',
-    },
-    wasteDescription: {
-        textAlign: 'left',
-        fontFamily: 'Nunito-Regular',
-        fontSize: 16,
-        color: '#4C4C4C',
-    },
-    impactDescription: {
-        textAlign: 'left',
-        fontFamily: 'Nunito-Regular',
-        fontSize: 16,
-        color: '#4C4C4C',
-    },
-    wasteCard: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 115,
-        height: 165,
-        padding: 10,
-        marginRight: 10,
-        borderRadius: 5,
-        backgroundColor: 'white',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 1,
-        },
-        shadowOpacity: 0.22,
-        shadowRadius: 2.22,
-        elevation: 3,
-    },
-    wasteItem: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '40%',
-        height: 165,
-        padding: 10,
-        marginRight: 10,
-    },
-    impactTitle: {
-        color: colors.colmenaGreen,
-        fontFamily: 'Nunito-Regular',
-        fontSize: 20
-    },
-    impactImage: {
-        width: 60,
-        height: 60,
-        resizeMode: 'contain'
-    },
-    wasteImage: {
-        width: 100,
-        height: 100,
-        resizeMode: 'contain'
-    },
-    impactDescription: {
-        textAlign: 'center',
-        fontFamily: 'Nunito-Regular',
-        fontSize: 16,
-        color: '#4C4C4C',
-    },
-    activityContainer: {
-        flex: 3,
-        paddingHorizontal: 20
-    },
-    activityTitle: {
-        fontFamily: 'Nunito-SemiBold',
-        fontWeight: '300',
-        fontSize: 30,
-        color: colors.colmenaGrey,
-        marginLeft: 30,
-        fontSize: 18,
-        color: '#4C4C4C',
-        paddingVertical: 10,
-        marginLeft: 0,
-        marginTop: 15
-    },
-    activityExtraInfo: {
-        fontFamily: 'Nunito-SemiBold',
-        fontWeight: '300',
-        fontSize: 30,
-        color: colors.colmenaGrey,
-        marginLeft: 30,
-        fontSize: 18,
-        color: '#4C4C4C',
-        paddingVertical: 10,
-        marginLeft: 0,
-        marginTop: 15
-    },
-    activityExtraInfoDetail: {
-        fontSize: 12,
-        fontFamily: 'Nunito-Light',
-        marginLeft: 10,
-    },
-
-
 });
 
 export default TransportInEvaluationScreen;
