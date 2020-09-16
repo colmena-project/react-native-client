@@ -28,18 +28,15 @@ const UserProfile = props => {
             setIsLoading(true);
             const account = await Parse.Cloud.run("getMyAccount");
             setUserAccount(account);
-            console.log('PERFIL USUARIOOOOOOOO',account);
             props.navigation.setOptions({ title: `${account.firstName} ${account.lastName}` });
             const fetchPosts = new Parse.Query("Post");
-            fetchPosts.equalTo().descending('createdAt').limit(POST_PER_LOAD_LIMIT);
+            fetchPosts.equalTo('createdBy', account.user).descending('createdAt').limit(POST_PER_LOAD_LIMIT);
             const result = await fetchPosts.find();
-            const fetchPostsQty = new Parse.Query("Post");
-            const qty = await fetchPostsQty.count();
-            setPostsQty(qty);
+            setPostsQty(result.length);
             setPosts(result);
             setIsLoading(false);
         } catch (err) {
-            console.log('Profile Index error: ' + err);
+            console.log('fetchData - User Profile' + err);
         }
         setIsLoading(false);
     };
@@ -47,16 +44,15 @@ const UserProfile = props => {
     const loadMorePosts = async () => {
         try {
             setIsLoadingMore(true);
-            console.log('Length', posts.length);
             const fetchPosts = new Parse.Query("Post");
-            fetchPosts.descending("createdAt").limit(POST_PER_LOAD_LIMIT).skip(posts.length);
+            fetchPosts.equalTo('createdBy', userAccount.user).descending("createdAt").limit(POST_PER_LOAD_LIMIT).skip(posts.length);
             const result = await fetchPosts.find();
             const updatedPosts = [...posts, ...result];
-
+            setPostsQty(updatedPosts.length);
             setPosts(updatedPosts);
             setIsLoadingMore(false);
         } catch (err) {
-            console.log("Error!! " + err);
+            console.log("loadMorePosts - User Profile" + err);
         }
     };
 
