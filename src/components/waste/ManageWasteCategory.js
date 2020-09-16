@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import styles from '../../constants/profileStyles';
@@ -7,17 +7,30 @@ import UserService from '../../services/User';
 
 const ManageWasteCategory = props => {
 
-    const data = props.data;
+    const wasteType = props.wasteType;
+    const containers = props.containers;
+    const [qty, setQty] = useState(null);
+
+    const handleToogleCheck = (isChecked, container) => {
+        props.handleToogleCheck(isChecked, container);
+    };
+
+    useEffect(() => {
+        if (containers && wasteType) {
+            const result = containers.filter(container => container.get('type').id == wasteType.id);
+            setQty(result.length);
+        }
+    }, [containers]);
 
     const handleManageProductPress = () => {
-        props.onPress(data);
+        props.onPress(wasteType);
     };
 
     return (
         <View style={styles.wasteItem}>
-            <Image style={styles.wasteImage} source={{ uri: data.image._url }} />
+            <Image style={styles.wasteImage} source={{ uri: wasteType.get('iconFile')._url }} />
             <Text style={styles.wasteDescription}>
-                {data.name} ({data.ammount} {data.ammount == 1 ? data.container : data.containerPlural})
+                {wasteType.get('name')} ({qty} {qty == 1 ? wasteType.get('container') : wasteType.get('containerPlural')})
                     </Text>
             <View style={styles.btnContainer}>
                 <TouchableOpacity onPress={handleManageProductPress} style={styles.editInfoBtn}>

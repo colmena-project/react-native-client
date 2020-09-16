@@ -4,15 +4,12 @@ import { Avatar } from 'react-native-elements';
 import { Parse } from 'parse/react-native';
 import Input from '../../../components/form/Input';
 import ImagerPicker from '../../../components/form/ImagePicker';
-
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
 import MapPicker from '../../../components/address/MapPicker';
-
 import colors from '../../../constants/colors';
 import validate from '../../../services/Validate';
-
 import { Feather } from '@expo/vector-icons';
+
 
 const EditProfile = props => {
 
@@ -30,7 +27,6 @@ const EditProfile = props => {
         addressDescription: '',
         coords: { latitude: -27.3715333, longitude: -55.9170078 }
     };
-
     const [inputs, setInputs] = useState(fields);
     const [errorMessages, setErrorMessages] = useState(fields);
     const [userAccount, setUserAccount] = useState(null);

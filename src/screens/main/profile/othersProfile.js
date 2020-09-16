@@ -91,7 +91,12 @@ const OthersProfile = props => {
                                         style={styles.avatar}
                                         source={{ uri: userAccount.avatar.url }}
                                     />
-                                    : <View style={styles.avatar}><Text>asd</Text></View>}
+                                    :
+                                    <Image
+                                        style={styles.avatar}
+                                        source={require('../../../../assets/default_user_1.png')}
+                                    />
+                                }
                                 <Text style={styles.name}>
                                     @{user.get('username')}
                                 </Text>

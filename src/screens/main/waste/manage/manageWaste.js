@@ -122,9 +122,9 @@ const ManageWasteScreen = props => {
                 <View style={styles.scrollViewWrapper} >
                     <View style={styles.wasteTabContainer}>
                         <View style={componentStyles.imageContainer}>
-                            <Image style={componentStyles.image} source={{ uri: wasteType.image._url }} />
+                            <Image style={componentStyles.image} source={{ uri: wasteType.get('iconFile')._url }} />
                             <Text style={styles.wasteDescription}>
-                                {wasteType.name} ({wasteContainers && wasteContainers.length > 0 ? wasteContainers.filter(item => !item.isDeleted).length : '0'} {wasteContainers && wasteContainers.length == 1 ? wasteType.container : wasteType.containerPlural})
+                                {wasteType.get('name')} ({wasteContainers && wasteContainers.length > 0 ? wasteContainers.filter(item => !item.isDeleted).length : '0'} {wasteContainers && wasteContainers.length == 1 ? wasteType.get('container') : wasteType.get('containerPlural')})
                             </Text>
                         </View>
 

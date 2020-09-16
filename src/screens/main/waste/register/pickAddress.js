@@ -1,48 +1,69 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
-
 import MapPicker from '../../../../components/address/MapPicker';
 import colors from '../../../../constants/colors';
+import UserService from '../../../../services/User';
+import { Alert } from 'react-native';
 
 const PickAddressScreen = props => {
 
-    const address = useSelector(state => state.user.address);
+    const [address, setAddress] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const dispatch = useDispatch();
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        try {
+            const result = await UserService.fetchAddress(dispatch);
+            Alert.alert('Latitude: ' + result.get('latLng')._latitude);
+            setAddress(result);
+        } catch (error) {
+            console.log('Register Waste - fetchData', error);
+        }
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [])
 
     const handleNextButton = () => {
         props.navigation.navigate('RegisterConfirmation');
     };
 
-    console.log();
-
     return (
-        <View style={styles.scrollViewWrapper} >
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
-                <FontAwesome name="map-marker" color={'black'} size={30} />
-                <Text style={{ flex: 1, padding: 15, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
-                    {address.get('street')} - {address.get('city')}, {address.get('state')}
-                </Text>
-                <MaterialCommunityIcons onPress={() => console.log('EDIT ADDRESS')} name="pencil" color={colors.colmenaGreen} size={26} />
-            </View>
+        <>
+            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                <View style={styles.scrollViewWrapper} >
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                        <FontAwesome name="map-marker" color={'black'} size={30} />
+                        <Text style={{ flex: 1, padding: 15, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
+                            {address.get('street')} - {address.get('city')}, {address.get('state')}
+                        </Text>
+                        <MaterialCommunityIcons onPress={() => console.log('EDIT ADDRESS')} name="pencil" color={colors.colmenaGreen} size={26} />
+                    </View>
 
-            <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
-                <MapPicker
-                    styles={{ height: '100%', marginTop: 0 }}
-                    coords={{ latitude: address.get('latLng')._latitude, longitude: address.get('latLng')._longitude }}
-                    marker={<MaterialCommunityIcons name="map-marker-radius" color={'black'} size={50} />}
-                    getCoords={console.log}
-                />
-            </View>
+                    <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
+                        <MapPicker
+                            styles={{ height: '100%', marginTop: 0 }}
+                            coords={{ latitude: address.get('latLng')._latitude, longitude: address.get('latLng')._longitude }}
+                            marker={<MaterialCommunityIcons name="map-marker-radius" color={'black'} size={50} />}
+                            getCoords={console.log}
+                        />
+                    </View>
 
-            <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
-                <TouchableOpacity onPress={handleNextButton} >
-                    <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
-                        SIGUIENTE
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </View >
+                    <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
+                        <TouchableOpacity onPress={handleNextButton} >
+                            <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
+                                SIGUIENTE
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View >
+            }
+        </>
     );
 };
 

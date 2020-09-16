@@ -22,7 +22,7 @@ const TransportWasteCategory = props => {
     }, [containers]);
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{  }}>
             {filteredContainers && wasteType ?
                 <View style={{ alignItems: 'center', width: 200 }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -34,16 +34,14 @@ const TransportWasteCategory = props => {
                             <Text style={{ fontFamily: 'Nunito-SemiBold', fontSize: 22, color: 'white' }}>{filteredContainers.length}</Text>
                         </View>
                     </View>
-                    <ScrollView style={{ marginTop: 10, width: '80%' }}>
-                        <View>
-                            {filteredContainers && filteredContainers.length > 0 ?
-                                filteredContainers.map(container => {
-                                    return <TransportWasteItem key={container.id} toogleCheck={isChecked => handleToogleCheck(isChecked, container)} container={container} />
-                                })
-                                :
-                                <View></View>
-                            }
-                        </View>
+                    <ScrollView style={{ height: 200, marginTop: 10, width: '85%' }}>
+                        {filteredContainers && filteredContainers.length > 0 ?
+                            filteredContainers.map(container => {
+                                return <TransportWasteItem key={container.id} toogleCheck={isChecked => handleToogleCheck(isChecked, container)} container={container} />
+                            })
+                            :
+                            <View></View>
+                        }
                     </ScrollView>
                 </View>
                 :

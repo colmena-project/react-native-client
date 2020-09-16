@@ -116,7 +116,7 @@ const HomeScreen = props => {
                             style={{ width: '34%', height: 45 }}
                             source={require("../../../../assets/colmena_logo.png")}
                         />
-                        <EvilIcons name={'cart'} size={30} color={'#cccccc'} />
+                        {/* <EvilIcons name={'cart'} size={30} color={'#cccccc'} /> */}
                     </View>
                 </Animated.View>
                 <PostModal

@@ -138,8 +138,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
     },
-
-
     wasteTabContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',

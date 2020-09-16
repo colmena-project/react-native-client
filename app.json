@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "colmena-expo",
-    "slug": "colmena-expo",
+    "name": "Colmena",
+    "slug": "Colmena",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/colmena_icon.png",
@@ -21,7 +21,12 @@
     },
     "android": {
       "package": "com.colmena.colmenapp",
-      "versionCode": 1
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBYgeJha-cKWg2J4S5djZvRQQU-4ksxRHA"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -21,7 +21,7 @@ const TransportInEvaluationScreen = props => {
                 </View>
             </View>
             <Text style={componentStyle.descriptionText}>
-                Tu petición de transporte está siendo evaluada. Se te enviará un mensaje con los avances.
+                Felicidades! Ya podés llevar tus residuos al Centro de Reciclaje elegido!
             </Text>
             <View style={componentStyle.retributionContainer}>
                 {/* <View style={{ width: '100%', alignItems: 'flex-end', paddingVertical: 5 }}>
@@ -40,14 +40,14 @@ const TransportInEvaluationScreen = props => {
                         </View> */}
                 <View style={componentStyle.estimatedContainer}>
                     <Text style={componentStyle.estimatedText}>
-                        Estimado:
+                        Retribución estimada:
                             </Text>
                     <Text style={componentStyle.estimatedAmmount}>{(materialRetribution + transportRetribution).toFixed(2)} JYC</Text>
                 </View>
             </View>
             <TouchableOpacity onPress={handleSeePendingRequests}>
                 <Text style={componentStyle.btn}>
-                    VER PETICIONES PENDIENTES
+                    VER ACTIVIDADES PENDIENTES
                 </Text>
             </TouchableOpacity>
         </View >
@@ -72,7 +72,7 @@ const componentStyle = StyleSheet.create({
     descriptionText: {
         paddingHorizontal: 40,
         marginVertical: 20,
-        textAlign: 'justify',
+        textAlign: 'center',
         fontSize: 20,
         fontFamily: 'Nunito-Regular',
         color: '#7f7f7f'

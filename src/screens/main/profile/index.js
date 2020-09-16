@@ -28,9 +28,10 @@ const UserProfile = props => {
             setIsLoading(true);
             const account = await Parse.Cloud.run("getMyAccount");
             setUserAccount(account);
-            props.navigation.setOptions({ title: `${account.firstName} ${account.lastName}` })
+            console.log('PERFIL USUARIOOOOOOOO',account);
+            props.navigation.setOptions({ title: `${account.firstName} ${account.lastName}` });
             const fetchPosts = new Parse.Query("Post");
-            fetchPosts.descending('createdAt').limit(POST_PER_LOAD_LIMIT);
+            fetchPosts.equalTo().descending('createdAt').limit(POST_PER_LOAD_LIMIT);
             const result = await fetchPosts.find();
             const fetchPostsQty = new Parse.Query("Post");
             const qty = await fetchPostsQty.count();

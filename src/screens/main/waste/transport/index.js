@@ -113,6 +113,7 @@ const componentStyle = StyleSheet.create({
         color: '#7f7f7f'
     },
     footerContainer: {
+        // backgroundColor: 'white',
         height: 100,
         paddingTop: 10,
         paddingHorizontal: 40

@@ -10,7 +10,7 @@ import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 
 import HomeScreen from '../screens/main/home';
 
-import MainWasteActionsScreen from '../screens/main/waste'
+import MainWasteActionsScreen from '../screens/main/waste';
 
 import RegisterWasteScreen from '../screens/main/waste/register';
 import PickRegisterSourceAddressScreen from '../screens/main/waste/register/pickAddress';
@@ -42,16 +42,13 @@ const RootNavigator = () => {
 
     const AppStack = createStackNavigator();
     const HomeTabs = createBottomTabNavigator();
+
     const HomeStack = createStackNavigator();
-
-    const WasteStack = createStackNavigator();
-    const ManageWasteStack = createStackNavigator();
-    const RegisterWasteStack = createStackNavigator();
-    const TransportWasteStack = createStackNavigator();
-
     const SummaryStack = createStackNavigator();
+    const WasteStack = createStackNavigator();
     const PendantsStack = createStackNavigator();
     const ProfileStack = createStackNavigator();
+    
     const isLoggedIn = useSelector(state => state.isLoggedIn);
 
     const setProfileHeaderOptions = (title) => {
@@ -110,43 +107,11 @@ const RootNavigator = () => {
         );
     };
 
-    const RegisterWasteNavigator = () => {
-        return (
-            <RegisterWasteStack.Navigator>
-                <RegisterWasteStack.Screen name={'RegisterWaste'} component={RegisterWasteScreen} options={setProfileHeaderOptions('Registrar Residuos')} />
-                <RegisterWasteStack.Screen name={'PickSourceAddress'} component={PickRegisterSourceAddressScreen} options={setProfileHeaderOptions('Seleccione el domicilio')} />
-                <RegisterWasteStack.Screen name={'Congratulations'} component={CongratulationsScreen} options={{ headerShown: false }} />
-            </RegisterWasteStack.Navigator>
-        );
-    };
-
-    const ManageWasteNavigator = () => {
-        return (
-            <ManageWasteStack.Navigator>
-                <ManageWasteStack.Screen name={'Index'} component={PickWasteToManageScreen} options={setProfileHeaderOptions('Gestionar Residuos')} />
-                <ManageWasteStack.Screen name={'ManageWaste'} component={ManageWasteScreen} options={setProfileHeaderOptions('Elija los Residuos')} />
-            </ManageWasteStack.Navigator>
-        );
-    };
-
-    const TransportWasteNavigator = () => {
-        return (
-            <TransportWasteStack.Navigator>
-                <TransportWasteStack.Screen name={'MainWasteActions'} component={MainWasteActionsScreen} options={setProfileHeaderOptions('¿Qué quieres hacer?')} />
-                <TransportWasteStack.Screen name={'PickWasteToTransport'} component={PickWasteToTransportScreen} options={setProfileHeaderOptions('Elija los Residuos')} />
-                <TransportWasteStack.Screen name={'PickTransportDestiny'} component={PickTransportDestinyScreen} options={setProfileHeaderOptions('Elija el destino')} />
-                <TransportWasteStack.Screen name={'VerifyTransportInfo'} component={VerifyTransportInfoScreen} options={setProfileHeaderOptions('Verificar información')} />
-                <TransportWasteStack.Screen name={'TransportInEvaluation'} component={TransportInEvaluationScreen} options={{ headerShown: false }} />
-            </TransportWasteStack.Navigator>
-        );
-    };
-
     const ProfileNavigator = () => {
         return (
             <ProfileStack.Navigator>
                 <ProfileStack.Screen name={'Index'} component={ProfileScreen} options={setProfileHeaderOptions('Perfil')} />
                 <ProfileStack.Screen name={'ChangePassword'} component={ChangePasswordScreen} options={{ headerShown: false }} />
-
                 <ProfileStack.Screen name={'EditProfile'} component={EditProfile} options={setProfileHeaderOptions('Editar perfil')} />
                 <ProfileStack.Screen name={'OthersProfile'} component={OthersProfile} options={setProfileHeaderOptions('Ver perfil')} />
             </ProfileStack.Navigator>
