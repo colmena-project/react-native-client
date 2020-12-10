@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { resetTransport } from '../../../redux/waste/transport/actions';
@@ -10,8 +10,7 @@ import styles from '../../../constants/profileStyles';
 const WasteActions = props => {
 
     const transactions = useSelector(state => state.user.transactions);
-    const recovers = transactions.filter(transaction => transaction.get('type') === 'RECOVER');
-    const hasWasteContainers = recovers.length > 0 ? true : false;
+    const [recovers, setRecovers] = useState(null);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -37,9 +36,13 @@ const WasteActions = props => {
         Alert.alert('En otro momento!');
     };
 
+    useEffect(() => {
+        setRecovers(transactions.filter(transaction => transaction.get('type') === 'RECOVER'));
+    }, [transactions]);
+
     return (
         <>
-            {hasWasteContainers ?
+            {recovers && recovers.length > 0 ?
                 <ScrollView style={styles.scrollViewWrapper} >
                     <Text style={{
                         paddingHorizontal: 40,
@@ -94,11 +97,6 @@ const WasteActions = props => {
                                 EMPEZAR A REGISTRAR
                             </Text>
                         </TouchableOpacity>
-                        {/* <TouchableOpacity style={{ marginVertical: 10 }} onPress={handleRegisterInOtherMomment} >
-                            <Text style={{ textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-SemiBold', fontSize: 16 }}>
-                                EN OTRO MOMENTO
-                            </Text>
-                        </TouchableOpacity> */}
                     </View>
                 </View >}
         </>

@@ -54,6 +54,12 @@ const PickAddressScreen = props => {
                         />
                     </View>
 
+                    <View style={{ position: 'absolute', bottom: 60, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
+                        <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', fontFamily: 'Nunito-Regular', fontSize: 12 }}>
+                            (Mantenga presionado el PIN para moverlo)
+                        </Text>
+                    </View>
+
                     <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
                         <TouchableOpacity onPress={handleNextButton} >
                             <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>

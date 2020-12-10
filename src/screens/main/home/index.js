@@ -134,7 +134,7 @@ const HomeScreen = props => {
                             color={colors.colmenaGreen}
                         />
                     ) : (posts.length > 0 ?
-                        <FeedList paddingTop={TOP_NAVBAR_HEIGHT} onPress={handleOthersProfile} data={posts} onScroll={value => scrollY.setValue(value)} onEndReached={handleOnEndReached} />
+                        <FeedList onRefresh={fetchAllData} contentContainerStyle={{ paddingTop: TOP_NAVBAR_HEIGHT }} onPress={handleOthersProfile} data={posts} onScroll={value => scrollY.setValue(value)} onEndReached={handleOnEndReached} />
                         :
                         <View style={{ justifyContent: 'flex-start', alignItems: 'center', padding: 20 }}>
                             <Image style={{ resizeMode: 'contain', width: '70%', height: '70%' }} source={require('../../../../assets/profile/empty_transactions.png')} />
@@ -148,12 +148,12 @@ const HomeScreen = props => {
                             </TouchableOpacity>
                         </View>
                         )}
-                    {isLoadingMore ?
+                    {isLoadingMore &&
                         <ActivityIndicator
                             size={"large"}
                             color={colors.colmenaGreen}
                         />
-                        : <View></View>}
+                    }
                 </View>
                 <TouchableOpacity
                     style={styles.floatingIcon}

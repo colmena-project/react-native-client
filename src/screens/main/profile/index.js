@@ -151,12 +151,11 @@ const UserProfile = props => {
                         </View>
 
                         <FeedListU onPress={handleOnUsernamePress} data={posts} />
-                        {isLoadingMore ?
+                        {isLoadingMore &&
                             <ActivityIndicator
                                 size={"large"}
                                 color={colors.colmenaGreen}
-                            />
-                            : <View></View>}
+                            />}
                     </View>
                     {/* *********** FIN ACTIVIDAD (POSTS) *********** */}
                 </ScrollView>

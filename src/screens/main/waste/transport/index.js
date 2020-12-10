@@ -15,6 +15,7 @@ const PickWasteForTransport = props => {
     const [wasteTypes, setWasteTypes] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [estimatedRetribution, setEstimatedRetribution] = useState(0);
+    const [calculatingRetribution, setCalculatingRetribution] = useState(false);
     const [qtyToTransport, setQtyToTransport] = useState(0);
     const transportData = useSelector(state => state.transportInfo.containersPerType);
     const dispatch = useDispatch();
@@ -33,6 +34,7 @@ const PickWasteForTransport = props => {
     };
 
     const calculateRetribution = async () => {
+        setCalculatingRetribution(true);
         try {
             const elements = transportData.map(data => {
                 return { wasteType: data.wasteType, qty: data.qty * data.weight, unit: data.unit }
@@ -47,6 +49,7 @@ const PickWasteForTransport = props => {
         } catch (error) {
             console.log('TransportIndex - Retribuction calc error', error);
         }
+        setCalculatingRetribution(false);
     };
 
     const handleToogleCheck = (isChecked, container) => {
@@ -83,7 +86,12 @@ const PickWasteForTransport = props => {
             </View>
             <View style={componentStyle.footerContainer}>
                 <Text style={componentStyle.footerText}>
-                    Estimado: <Text style={{ color: 'black', fontSize: 20 }}>{estimatedRetribution} JYC</Text>
+                    Estimado:
+                    {calculatingRetribution ?
+                        <Text style={{ color: 'black', fontSize: 20 }}> calculando...</Text>
+                        :
+                        <Text style={{ color: 'black', fontSize: 20 }}> {estimatedRetribution} JYC</Text>
+                    }
                 </Text>
                 <TouchableOpacity
                     disabled={!qtyToTransport}

@@ -43,8 +43,11 @@ const FeedList = props => {
 
     return (
         <View style={styles.feedList}>
-            <FlatList style={{ ...styles.mainFeed, paddingTop: props.paddingTop + 5 }}
-                ListHeaderComponent={props.ListHeaderComponent}
+            <FlatList style={{ ...styles.mainFeed }}
+                onRefresh={props.onRefresh}
+                refreshing={false}
+                contentContainerStyle={props.contentContainerStyle}
+                ListHeaderComponent={props.listHeaderComponent}
                 onScroll={handleOnScroll}
                 nestedScrollEnabled={false}
                 keyExtractor={(item, index) => item.id}
@@ -60,17 +63,6 @@ const FeedList = props => {
 const styles = StyleSheet.create({
     feedList: {
         flex: 1,
-        width: '100%',
-    },
-    mainFeed: {
-        width: '100%',
-        flex: 1,
-    },
-    feedContainer: {
-        width: '100%',
-        alignItems: 'center'
-    },
-    feedItem: {
         width: '100%',
     },
 });

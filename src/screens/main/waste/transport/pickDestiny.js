@@ -73,9 +73,10 @@ const PickDestinyScreen = props => {
                         <TouchableOpacity onPress={handleNextButton} >
                             <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
                                 SIGUIENTE
-                    </Text>
+                            </Text>
                         </TouchableOpacity>
                     </View>
+                    
                 </View >
             }
         </AuthorizedScreen>

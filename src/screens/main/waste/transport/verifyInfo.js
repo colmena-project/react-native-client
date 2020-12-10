@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { setTransportRetribution, resetTransport } from '../../../../redux/waste/transport/actions';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { setTransportRetribution } from '../../../../redux/waste/transport/actions';
 import Parse from 'parse/react-native';
 import UserService from '../../../../services/User';
 import styles from '../../../../constants/profileStyles';
@@ -16,17 +15,19 @@ const VerifyInfo = props => {
     const containersToTransport = useSelector(state => state.transportInfo.containers);
     const petContainers = containersToTransport.filter(container => container.get('type').id === PETId);
     const ppContainers = containersToTransport.filter(container => container.get('type').id === PPId);
-    const userAddress = useSelector(state => state.user.address);
+    const user = useSelector(state => state.user);
     const materialRetribution = useSelector(state => state.transportInfo.materialRetribution);
     const [isLoading, setIsLoading] = useState(false);
+    const [calculatingRetribution, setCalculatingRetribution] = useState(false);
     const [estimatedRetribution, setEstimatedRetribution] = useState(0);
     const dispatch = useDispatch();
 
     const calculateTransportRetribution = async () => {
+        setCalculatingRetribution(true);
         try {
-            if (recyclingCenter && userAddress) {
+            if (recyclingCenter && user.address) {
                 const elements = [
-                    { latitude: userAddress.get('latLng')._latitude, longitude: userAddress.get('latLng')._longitude },
+                    { latitude: user.address.get('latLng')._latitude, longitude: user.address.get('latLng')._longitude },
                     { latitude: recyclingCenter.get('latLng')._latitude, longitude: recyclingCenter.get('latLng')._longitude },
                 ];
                 const data = {
@@ -40,6 +41,7 @@ const VerifyInfo = props => {
         } catch (error) {
             console.log('TransportIndex - Retribuction calc error', error);
         }
+        setCalculatingRetribution(false);
     };
 
     useEffect(() => {
@@ -69,7 +71,7 @@ const VerifyInfo = props => {
                 <View style={styles.scrollViewWrapper} >
 
                     <Text style={componentStyle.headerText}>
-                        <Text style={{ fontWeight: 'bold' }}>@colmenapp</Text> verifica si la información del transporte es correcta.
+                        <Text style={{ fontWeight: 'bold' }}>@{user.account.get('user').get('username')}</Text> verifica si la información del transporte es correcta.
                     </Text>
 
                     <View style={componentStyle.wasteCategoriesContainer}>
@@ -112,29 +114,18 @@ const VerifyInfo = props => {
                                 {recyclingCenter && recyclingCenter.get('description') ? recyclingCenter.get('description') : ''}
                             </Text>
                         </View>
-                        {/* <MaterialCommunityIcons name="pencil" color={colors.colmenaGreen} size={30} /> */}
                     </View>
 
                     <View style={componentStyle.retributionContainer}>
-                        {/* <View style={{ width: '100%', alignItems: 'flex-end', paddingVertical: 5 }}>
-                            <Text style={componentStyle.smallGreyText}>Por acopiar aprox</Text>
-                            <Text style={componentStyle.normalGrayText}>300 JYC</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingVertical: 5 }}>
-                            <View>
-                                <Text style={componentStyle.smallGreyText}>Distancia <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>30km</Text></Text>
-                                <Text style={componentStyle.smallGreyText}>x Km <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 18, color: colors.colmenaGreen }}>1 JYC / bolsa</Text></Text>
-                            </View>
-                            <View style={{ alignItems: 'flex-end', paddingLeft: 30 }}>
-                                <Text style={componentStyle.smallGreyText}>Por transportar aprox</Text>
-                                <Text style={{ fontFamily: 'Nunito-Bold', fontSize: 26, color: colors.colmenaGreen }}>90 JYC</Text>
-                            </View>
-                        </View> */}
                         <View style={componentStyle.estimatedContainer}>
                             <Text style={componentStyle.estimatedText}>
                                 Estimado:
                             </Text>
-                            <Text style={componentStyle.estimatedAmmount}>{(materialRetribution + estimatedRetribution).toFixed(2)} JYC</Text>
+                            {calculatingRetribution ?
+                                <Text style={componentStyle.estimatedAmmount}>calculando...</Text>
+                                :
+                                <Text style={componentStyle.estimatedAmmount}>{(materialRetribution + estimatedRetribution).toFixed(2)} JYC</Text>
+                            }
                         </View>
                     </View>
 
