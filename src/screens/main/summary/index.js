@@ -36,7 +36,6 @@ const SummaryScreen = props => {
     }, [props.navigation]);
 
     const handleManageProductPress = type => {
-        console.log(type);
         props.navigation.navigate('ManageWaste', { type });
     };
 
@@ -47,11 +46,9 @@ const SummaryScreen = props => {
                     {containers && containers.length > 0 ?
                         <ScrollView style={{ paddingTop: 30 }}>
                             <View style={styles.wasteTabContainer}>
-                                {wasteTypes ? wasteTypes.map(wasteType => {
+                                {wasteTypes && wasteTypes.map(wasteType => {
                                     return <ManageWasteCategory key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
                                 })
-                                    :
-                                    <View></View>
                                 }
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>

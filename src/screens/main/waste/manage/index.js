@@ -11,40 +11,20 @@ import WasteService from '../../../../services/Waste';
 const ManageWasteActionsScreen = props => {
 
     const user = useSelector(state => state.user.account);
-    const [stockCategories, setStockCategories] = useState(null);
+    const [containers, setContainers] = useState(null);
+    const [wasteTypes, setWasteTypes] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
-
-    const formattedStock = (wasteTypes, fetchedStock) => {
-        const categories = wasteTypes.map(wasteType => {
-            let ammount = 0;
-            fetchedStock.forEach(stockType => {
-                if (stockType.wasteType.objectId == wasteType.id) {
-                    ammount = stockType.ammount;
-                }
-            });
-            const category = {
-                ...wasteType,
-                code: wasteType.get('code'),
-                name: wasteType.get('name'),
-                container: wasteType.get('container'),
-                containerPlural: wasteType.get('containerPlural'),
-                image: wasteType.get('iconFile'),
-                ammount
-            };
-            return category;
-        });
-        return categories;
-    };
 
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const wasteTypes = await WasteService.fetchWasteTypes(dispatch);
-            const fetchedStock = await UserService.fetchStock(dispatch);
-            setStockCategories(formattedStock(wasteTypes, fetchedStock));
+            const fetchedWasteTypes = await WasteService.fetchWasteTypes(dispatch);
+            const fetchedContainers = await UserService.fetchRecoveredContainers(dispatch);
+            setWasteTypes(fetchedWasteTypes);
+            setContainers(fetchedContainers);
         } catch (error) {
-            console.log('My Activity - error: ', error);
+            console.log('PickWasteForTransport - fetchData error: ', error);
         }
         setIsLoading(false);
     };
@@ -68,11 +48,9 @@ const ManageWasteActionsScreen = props => {
                         <Text style={{ fontWeight: 'bold' }}>@{user.get('user').get('username')}</Text> elegí el residuo a modificar
                     </Text>
                     <View style={styles.wasteTabContainer}>
-                        {stockCategories ? stockCategories.map(stockCategory => {
-                            return <ManageWasteCategory key={stockCategory.id} onPress={handleManageProductPress} data={stockCategory} />
+                        {wasteTypes && wasteTypes.map(wasteType => {
+                            return <ManageWasteCategory key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
                         })
-                            :
-                            <View></View>
                         }
                     </View>
                 </View >

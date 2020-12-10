@@ -11,10 +11,6 @@ const ManageWasteCategory = props => {
     const containers = props.containers;
     const [qty, setQty] = useState(null);
 
-    const handleToogleCheck = (isChecked, container) => {
-        props.handleToogleCheck(isChecked, container);
-    };
-
     useEffect(() => {
         if (containers && wasteType) {
             const result = containers.filter(container => container.get('type').id == wasteType.id);
