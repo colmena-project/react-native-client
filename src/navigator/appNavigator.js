@@ -128,6 +128,7 @@ const RootNavigator = () => {
                     name={'Home'}
                     component={HomeNavigator}
                     options={{
+                        unmountOnBlur: true,
                         tabBarLabel: 'Inicio',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
@@ -140,6 +141,7 @@ const RootNavigator = () => {
                     name={'Summary'}
                     component={SummaryNavigator}
                     options={{
+                        unmountOnBlur: true,
                         tabBarLabel: 'Mi actividad',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
@@ -152,6 +154,7 @@ const RootNavigator = () => {
                     name={'Waste'}
                     component={WasteNavigator}
                     options={{
+                        unmountOnBlur: true,
                         tabBarLabel: 'Acciones',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
@@ -165,6 +168,7 @@ const RootNavigator = () => {
                     component={PendantsNavigator}
                     options={setProfileHeaderOptions('Pendientes')}
                     options={{
+                        unmountOnBlur: true,
                         tabBarLabel: 'Pendientes',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
@@ -173,40 +177,11 @@ const RootNavigator = () => {
                         ),
                     }}
                 />
-                {/* <HomeTabs.Screen
-                    name={'RegisterWaste'}
-                    component={RegisterWasteNavigator}
-                    options={{
-                        tabBarLabel: 'Waste',
-                        tabBarIcon: ({ color, size }) => (
-                            <FontAwesome name="pencil" color={color} size={size} />
-                        ),
-                    }}
-                />
-                <HomeTabs.Screen
-                    name={'ManageWaste'}
-                    component={ManageWasteNavigator}
-                    options={{
-                        tabBarLabel: 'Acciones',
-                        tabBarIcon: ({ color, size }) => (
-                            <FontAwesome name="recycle" color={color} size={size + 6} />
-                        ),
-                    }}
-                />
-                <HomeTabs.Screen
-                    name={'TransportWaste'}
-                    component={TransportWasteNavigator}
-                    options={{
-                        tabBarLabel: 'Transportar',
-                        tabBarIcon: ({ color, size }) => (
-                            <FontAwesome name="truck" color={color} size={size} />
-                        ),
-                    }}
-                /> */}
                 <HomeTabs.Screen
                     name={'User'}
                     component={ProfileNavigator}
                     options={{
+                        unmountOnBlur: true,
                         tabBarLabel: 'Mi Perfil',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
