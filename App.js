@@ -8,12 +8,11 @@ import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
 import store from './src/redux/store/store';
 import colors from './src/constants/colors';
-import env from './env';
 import Parse from 'parse/react-native';
 
 Parse.setAsyncStorage(AsyncStorage);
-Parse.initialize(env.PARSE_API_KEY);
-Parse.serverURL = env.PARSE_URL;
+Parse.initialize("F930d5lx5zXy8LNH1CpLa6AaLfMMFfZY");
+Parse.serverURL = "https://colmena-project.herokuapp.com/parse";
 
 const fetchFonts = () => {
   return Font.loadAsync({

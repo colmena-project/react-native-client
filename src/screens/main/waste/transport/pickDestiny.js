@@ -13,7 +13,9 @@ const PickDestinyScreen = props => {
     const [cr, setCr] = useState(null);
     const [crs, setCrs] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const dispatch = useDispatch();
+    const [crlatitude, setCrLatitude] = useState(-27.3715333);
+    const [crlongitude, setCrLongitude] = useState(-55.9170078);
+    const dispatch = useDispatch(0);
 
     const fetchData = async () => {
         setIsLoading(true);
@@ -22,6 +24,8 @@ const PickDestinyScreen = props => {
             if (data) {
                 setCr(data[0])
                 setCrs(data);
+                setCrLatitude(data[0].get('latLng')?data[0].get('latLng').latitude:-27.3715333);
+                setCrLongitude(data[0].get('latLng')?data[0].get('latLng').longitude:-55.9170078);
             }
         } catch (error) {
             console.log('Waste Service - fetchWasteTypes: ', error.message);
@@ -29,9 +33,17 @@ const PickDestinyScreen = props => {
         setIsLoading(false);
     };
 
-    const handleCRSelected = value => {
-        setCr(value);
+    const handleCRSelected = async(value) => {
+        console.log(value);
+        await setCr(value);
+        showcrinfo()
     };
+    const showcrinfo=()=>{
+        console.log("crinfo:::", cr)
+        setCrLatitude(cr.get('latLng')?cr.get('latLng').latitude:-27.3715333);
+        setCrLongitude(cr.get('latLng')?cr.get('latLng').longitude:-55.9170078);
+        
+    }
 
     useEffect(() => {
         fetchData();
@@ -54,7 +66,7 @@ const PickDestinyScreen = props => {
                                 onValueChange={value => handleCRSelected(value)}
                             >
                                 {crs.map(cr => {
-                                    return <Picker.Item key={cr.id} label={cr.get('description')} value={cr.id} />
+                                    return <Picker.Item key={cr.id} label={cr.get('description')} value={cr} />
                                 })}
                             </Picker>
                         </View>
@@ -63,7 +75,7 @@ const PickDestinyScreen = props => {
                     <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
                         <MapPicker
                             styles={{ height: '100%', marginTop: 0 }}
-                            coords={{ latitude: cr ? cr.get('latLng').latitude : -27.3715333, longitude: cr ? cr.get('latLng').longitude : -55.9170078 }}
+                            coords={{ latitude:  crlatitude, longitude: crlongitude }}
                             marker={<FontAwesome style={{ backgroundColor: 'white', borderRadius: 50 }} name={"circle-o"} color={colors.colmenaGreen} size={34} />}
                             getCoords={console.log}
                         />
@@ -75,8 +87,7 @@ const PickDestinyScreen = props => {
                                 SIGUIENTE
                             </Text>
                         </TouchableOpacity>
-                    </View>
-                    
+                    </View>                    
                 </View >
             }
         </AuthorizedScreen>

@@ -1,0 +1,251 @@
+import React, { useState, useEffect } from 'react';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image, TextInput, SafeAreaView } from 'react-native';
+import { Avatar } from 'react-native-elements';
+import { Parse } from 'parse/react-native';
+import Input from '../../../components/form/Input';
+import ImagerPicker from '../../../components/form/ImagePicker';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MapPicker from '../../../components/address/MapPicker';
+import colors from '../../../constants/colors';
+import Slugify from 'slugify';
+import ecc from 'eosjs-ecc-rn';
+import { Buffer } from 'buffer';
+
+const TransferCoin = props => {
+    const fields = {
+        firstName: '',
+        lastName: '',
+        nickname: '',
+        email: '',
+        aboutMe: '',       
+        walletId: '',
+        avatar: '',
+        id: '',
+    };
+    const [inputs, setInputs] = useState(fields);
+    const [isLoading, setIsLoading] = useState(false);
+    const [valuestr, setValueStr] = useState("0");
+    const [description, setDescription] = useState("");
+    const [userAccount, setUserAccount] = useState(null);
+    const oneuser = props.route.params.oneuser;
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            setIsLoading(true);
+            const parseAddress = new Parse.Query('Address');
+            parseAddress.equalTo('default', true);
+            const userAddress = await parseAddress.first();
+            const parseAccount = await userAddress.get('account').fetch();
+            if (parseAccount.get('avatar')) {
+                setUserProfilePhoto(parseAccount.get('avatar')._url);
+            }
+            setUserAccount(parseAccount);
+            setInputs({
+                ...inputs,
+                firstName: parseAccount.get('firstName'),
+                lastName: parseAccount.get('lastName'),
+                nickname: parseAccount.get('nickname'),
+                email: parseAccount.get('user').get('email'),
+                aboutMe: parseAccount.get('aboutMe'),
+                walletId: parseAccount.get('walletId'),
+                avatar:parseAccount.get('avatar'),
+                id:parseAccount.id
+            });
+            setIsLoading(false);
+        } catch (err) {
+            setIsLoading(false);
+            console.log('Error!! ' + err);
+        }
+    };
+
+    const handleTransfer = async () => {
+        setIsLoading(true);       
+        
+        let private_Key = "";
+        let public_key = "";
+        let eosuserid = "";
+        await ecc.randomKey().then(privateKey => {
+            console.log('Private Key:\t', privateKey) // wif
+            console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // EOSkey...
+            private_Key = privateKey;
+            public_key = ecc.privateToPublic(privateKey);
+            })
+        console.log(private_Key);
+
+        let buff = Buffer.from([inputs.id, oneuser.id, valuestr +" JYC", description]);
+        let signature = ecc.sign(buff, private_Key);
+        console.log('toaccount::::::::',  oneuser.walletId);   
+        console.log('fromaccount::::::::',  inputs.walletId);
+        console.log('signature::::::::',  signature);
+        fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/transfer', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                from : inputs.walletId,
+                to : oneuser.walletId,
+                amount : valuestr + " JYC",
+                signature : signature,
+                account_type : 'INTERNAL',                
+            })
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            console.log(json);
+            setIsLoading(false);
+        })
+        .catch((error) =>{
+            setIsLoading(false);
+            console.error(error);
+        });
+        
+        setIsLoading(false);
+            
+    };
+
+    return (
+        <SafeAreaView>
+            <View style={{ height:"100%",width:"100%",  backgroundColor: colors.colmenaBackground }}>
+                {isLoading === true ? <ActivityIndicator size={'large'} color={colors.colmenaGreen} /> :              
+                    <View style={{margin:15}} flex={1} alignItems="center">
+                        <View flexDirection="row"> 
+                            <TextInput
+                                style={{color:"#29C17E",fontSize:70}}
+                                onChangeText={text => setValueStr(text) }
+                                value={valuestr}
+                                placeholder="0"
+                                keyboardType="numeric"
+                            />
+                            <Text style={{color:"#29C17E",fontSize:14,marginTop:15}}>JYC</Text>
+                        </View>
+                        <View flexDirection="row" style={{marginTop:10}}>
+                            {oneuser.avatar ?
+                                <Image
+                                    style={{width:50, height: 50}}
+                                    source={{uri: oneuser.avatar}}
+                                    resizeMode="cover"
+                                    borderRadius={100}
+                                />
+                                :
+                                <Image
+                                    style={{width:50, height: 50}}
+                                    source={require('../../../../assets/user.png')}
+                                    resizeMode="cover"
+                                    borderRadius={100}
+                                />
+                            }
+                            <View justifyContent="space-between">
+                                <View/>
+                                <Text style={{fontSize:16, marginLeft:5}}>{oneuser.nickname}</Text>
+                                <View/>
+                            </View>                        
+                        </View>
+                        <View style={{marginTop:20}}>
+                            <TextInput
+                                style={{color:"#999"}}
+                                onChangeText={text => setDescription(text) }
+                                value={description}
+                                placeholder="Motivo"
+                                textAlign="center"
+                            />
+                            <TouchableOpacity onPress={handleTransfer}>
+                                <View style={{backgroundColor:"#29C17E", paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
+                                    <Text style={{color:"#fff"}}>Continuar</Text>
+                                </View>
+                            </TouchableOpacity>
+                            
+                            
+                        </View>
+                    </View>
+                }
+                
+            </View>
+        </SafeAreaView>        
+    );
+};
+
+const styles = StyleSheet.create({
+    scrollViewWrapper: {
+        flex: 1,
+        padding: 0,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: colors.colmenaBackground,
+    },
+    scrollView: {
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingTop: 8,
+        flex: 1,
+    },
+    activityIndicator: {
+        flex: 1,
+    },
+    brand: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 40,
+    },
+    brandText: {
+        fontFamily: 'Montserrat-Medium',
+        fontWeight: '300',
+        fontSize: 26,
+        color: colors.colmenaGrey,
+        marginLeft: 30,
+    },
+    headerIcons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    inputsContainer: {
+        marginBottom: 30,
+    },
+    input: {
+        flex: 1,
+        textAlign: 'center',
+    },
+    avatarContainer: {
+        alignItems: 'center',
+        marginTop: 40,
+    },
+    saveIcon: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 40,
+        height: 40,
+        borderRadius: 50,
+        backgroundColor: '#e8e8e8',
+    },
+    changePassword: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 20,
+        padding: 5,
+        paddingLeft: 10,
+        borderRadius: 5,
+        backgroundColor: '#e8e8e8',
+    },
+    getCurrentPositionIcon: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 10,
+        bottom: 10,
+    },
+});
+
+export default TransferCoin;

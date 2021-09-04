@@ -13,6 +13,7 @@
     "@react-navigation/bottom-tabs": "^5.6.1",
     "@react-navigation/native": "^5.6.1",
     "@react-navigation/stack": "^5.6.2",
+    "eosjs-ecc-rn": "^4.0.6-rn",
     "expo": "~38.0.8",
     "expo-image-picker": "~8.3.0",
     "expo-status-bar": "^1.0.2",

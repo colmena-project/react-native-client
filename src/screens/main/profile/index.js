@@ -27,6 +27,7 @@ const UserProfile = props => {
         try {
             setIsLoading(true);
             const account = await Parse.Cloud.run("getMyAccount");
+            console.log(account);
             setUserAccount(account);
             props.navigation.setOptions({ title: `${account.firstName} ${account.lastName}` });
             const fetchPosts = new Parse.Query("Post");
@@ -78,6 +79,9 @@ const UserProfile = props => {
     const handleEditProfile = () => {
         props.navigation.navigate('EditProfile');
     };
+    const handleActivityWallet = () => {
+        props.navigation.navigate('ActivityWallet');
+    };
 
     const handleOnUsernamePress = (user) => {
         props.navigation.navigate("OthersProfile");
@@ -124,6 +128,12 @@ const UserProfile = props => {
                                     </Text>
                                 </View>
                             </View>
+                        </View>
+
+                        <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
+                            <TouchableOpacity onPress={handleActivityWallet} style={styles.editInfoBtn}>
+                                <Text style={styles.editInfoBtnText}>Actividad</Text>
+                            </TouchableOpacity>
                         </View>
 
                         <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>

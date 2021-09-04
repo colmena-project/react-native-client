@@ -7,6 +7,8 @@ import validate from '../../services/Validate';
 import colors from '../../constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Slugify from 'slugify';
+import ecc from 'eosjs-ecc-rn';
+import { Buffer } from 'buffer'
 
 const RegisterScreen = props => {
 
@@ -25,6 +27,7 @@ const RegisterScreen = props => {
         passwordConfirm: ''
     };
     const [inputs, setInputs] = useState(fields);
+    const [walletid, setWalletID] = useState("");
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
     const dispatch = useDispatch();
@@ -71,13 +74,58 @@ const RegisterScreen = props => {
 
     const handleRegister = async () => {
         setIsloading(true);
-        try {
-            await Parse.User.currentAsync().then(async user => {
-                if (user) {
-                    await Parse.User.logOut();
+        await Parse.User.currentAsync().then(async user => {
+            if (user) {
+                await Parse.User.logOut();
+            }
+        });
+        checkErrors();
+        
+        let private_Key = "";
+        let public_key = "";
+        let eosuserid = "";
+        await ecc.randomKey().then(privateKey => {
+            console.log('Private Key:\t', privateKey) // wif
+            console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // EOSkey...
+            private_Key = privateKey;
+            public_key = ecc.privateToPublic(privateKey);
+            })
+        console.log(private_Key);
+        fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                pubkey: public_key,
+                data: {
+                name : inputs.firstName,
+                lastname : inputs.lastName,
+                email : inputs.email
                 }
-            });
-            checkErrors();
+            })
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            eosuserid = json.userid;
+            console.log(eosuserid);
+            if(eosuserid === undefined){
+                setIsloading(false);
+            }else{
+                setWalletID(eosuserid);
+                handleRegisterAccount(eosuserid)
+            }
+        })
+        .catch((error) =>{
+            setIsloading(false);
+            console.error(error);
+        });
+    };
+
+    const handleRegisterAccount = async (wallet_id) => {
+        console.log("walletid", wallet_id);
+        try {            
             const latLng = new Parse.GeoPoint({ latitude: -27.3715333, longitude: -55.9170078 });
             console.log(latLng);
             const params = {
@@ -86,6 +134,7 @@ const RegisterScreen = props => {
                 firstName: inputs.firstName,
                 lastName: inputs.lastName,
                 username: Slugify(`${inputs.firstName.charAt(0)} ${inputs.lastName}`, '_').toLowerCase(),
+                walletId: wallet_id,
                 defaultLanguage: 'es-AR',
                 address: {
                     street: 'Test Street',
@@ -105,7 +154,8 @@ const RegisterScreen = props => {
             console.log("Error: " + error.code + " " + error.message);
             Alert.alert(error.message);
         }
-    };
+    }
+
 
     return (
         <View style={styles.screen}>

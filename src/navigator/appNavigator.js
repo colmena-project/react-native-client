@@ -29,6 +29,9 @@ import SummaryScreen from '../screens/main/summary';
 import PendantsScreen from '../screens/main/pendants';
 import ProfileScreen from '../screens/main/profile';
 import EditProfile from '../screens/main/profile/edit';
+import ActivityWallet from '../screens/main/profile/activitywallet';
+import TransferUserList from '../screens/main/profile/transferuserlist';
+import TransferCoin from '../screens/main/profile/transfercoin';
 import OthersProfile from '../screens/main/profile/othersProfile';
 import TransportCancel from '../screens/main/profile/cancelTransport';
 import ChangePasswordScreen from '../screens/main/profile/changePassword';
@@ -113,6 +116,9 @@ const RootNavigator = () => {
                 <ProfileStack.Screen name={'Index'} component={ProfileScreen} options={setProfileHeaderOptions('Perfil')} />
                 <ProfileStack.Screen name={'ChangePassword'} component={ChangePasswordScreen} options={{ headerShown: false }} />
                 <ProfileStack.Screen name={'EditProfile'} component={EditProfile} options={setProfileHeaderOptions('Editar perfil')} />
+                <ProfileStack.Screen name={'ActivityWallet'} component={ActivityWallet} options={setProfileHeaderOptions('Actividad')} />
+                <ProfileStack.Screen name={'TransferUserList'} component={TransferUserList} options={setProfileHeaderOptions('A quién enviar?')} />
+                <ProfileStack.Screen name={'TransferCoin'} component={TransferCoin} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
                 <ProfileStack.Screen name={'OthersProfile'} component={OthersProfile} options={setProfileHeaderOptions('Ver perfil')} />
             </ProfileStack.Navigator>
         );

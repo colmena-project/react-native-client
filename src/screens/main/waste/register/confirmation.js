@@ -19,8 +19,8 @@ const CongratulationsScreen = props => {
     const handleRegisterButton = async () => {
         try {
             setIsLoading(true);
-            const containers = wastesToRegister.map(waste => { return { typeId: waste.id, qty: waste.qty } });
-            const addressId = address.id;
+            const containers = wastesToRegister.map(waste => { return { typeId: waste.id, qty: waste.qty } });            
+            const addressId = address.id;            
             const params = {
                 containers,
                 addressId
@@ -33,7 +33,7 @@ const CongratulationsScreen = props => {
             props.navigation.navigate('Congratulations', { data: result });
         } catch (error) {
             setIsLoading(false);
-            console.log(error);
+            console.log("error:::::", error);
         }
     };
 

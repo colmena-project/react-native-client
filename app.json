@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/colmena_splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#29c17e"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -17,14 +17,17 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config":{
+        "googleMapsApiKey": "AIzaSyD1kOQgEmFVpVRaIKmQKdKFJ6IXyDHUUTU"        
+      }
     },
     "android": {
       "package": "com.colmena.colmenapp",
       "versionCode": 1,
       "config": {
         "googleMaps": {
-          "apiKey": ""
+          "apiKey": "AIzaSyD1kOQgEmFVpVRaIKmQKdKFJ6IXyDHUUTU"
         }
       }
     },

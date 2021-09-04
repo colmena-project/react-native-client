@@ -55,6 +55,7 @@ const VerifyInfo = props => {
                 containers: containersToTransport.map(container => container.id),
                 to: recyclingCenter.id
             };
+            console.log(params);
             const result = await Parse.Cloud.run('registerTransport', params);
             UserService.fetchData(dispatch);
             setIsLoading(false);

@@ -54,6 +54,7 @@ const EditProfile = props => {
                 setUserProfilePhoto(parseAccount.get('avatar')._url);
             }
             setUserAccount(parseAccount);
+            console.log(parseAccount);
             setUserAddress(userAddress);
             setInputs({
                 ...inputs,
