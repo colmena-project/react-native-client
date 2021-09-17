@@ -8,7 +8,8 @@ import colors from '../../constants/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Slugify from 'slugify';
 import ecc from 'eosjs-ecc-rn';
-import { Buffer } from 'buffer'
+import { Buffer } from 'buffer';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const RegisterScreen = props => {
 
@@ -114,7 +115,7 @@ const RegisterScreen = props => {
                 setIsloading(false);
             }else{
                 setWalletID(eosuserid);
-                handleRegisterAccount(eosuserid)
+                handleRegisterAccount(eosuserid,private_Key)
             }
         })
         .catch((error) =>{
@@ -123,7 +124,7 @@ const RegisterScreen = props => {
         });
     };
 
-    const handleRegisterAccount = async (wallet_id) => {
+    const handleRegisterAccount = async (wallet_id,private_Key) => {
         console.log("walletid", wallet_id);
         try {            
             const latLng = new Parse.GeoPoint({ latitude: -27.3715333, longitude: -55.9170078 });
@@ -146,7 +147,8 @@ const RegisterScreen = props => {
                 }
             };
             await Parse.Cloud.run('createAccount', params);
-            Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo.');
+            AsyncStorage.setItem('privatekey', private_Key);
+            Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo. Su ID de token es '+ private_Key);
             props.navigation.navigate('Login');
             setIsloading(false);
         } catch (error) {

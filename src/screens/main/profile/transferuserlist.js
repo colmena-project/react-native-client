@@ -53,8 +53,11 @@ const TransferUserList = props => {
     };
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            fetchData();
+        });
+        return unsubscribe;
+    }, [props.navigation]);
 
     const onSearchUser = (text) =>{
         setSearchTxt(text);

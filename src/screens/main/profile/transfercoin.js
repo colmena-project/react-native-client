@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image, TextInput, SafeAreaView } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image, TextInput, SafeAreaView,ToastAndroid } from 'react-native';
 import { Parse } from 'parse/react-native';
-import Input from '../../../components/form/Input';
-import ImagerPicker from '../../../components/form/ImagePicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MapPicker from '../../../components/address/MapPicker';
 import colors from '../../../constants/colors';
 import Slugify from 'slugify';
 import ecc from 'eosjs-ecc-rn';
 import { Buffer } from 'buffer';
+import AsyncStorage from '@react-native-community/async-storage';
+import DialogInput from 'react-native-dialog-input';
+
+const {encode, decode} = require("fastestsmallesttextencoderdecoder");
+const {Serialize, arrayToHex} = require('eosjs');
 
 const TransferCoin = props => {
     const fields = {
@@ -24,12 +25,25 @@ const TransferCoin = props => {
     };
     const [inputs, setInputs] = useState(fields);
     const [isLoading, setIsLoading] = useState(false);
+    const [codeinput,setCodeInput] = useState(false);
+    const [codeValue,setCodeValue] = useState("");
     const [valuestr, setValueStr] = useState("0");
     const [description, setDescription] = useState("");
+    const [tokenkey, setTokenKey] = useState("");
     const [userAccount, setUserAccount] = useState(null);
     const oneuser = props.route.params.oneuser;
+    
     useEffect(() => {
         fetchData();
+        AsyncStorage.getItem('privatekey').then(
+            (value) =>{
+                if(value){
+                    setTokenKey(value)
+                }else{
+                    setTokenKey("")
+                }
+            }            
+        );
     }, []);
 
     const fetchData = async () => {
@@ -61,12 +75,26 @@ const TransferCoin = props => {
         }
     };
 
-    const handleTransfer = async () => {
-        setIsLoading(true);       
-        
+    const refreshKey = async () =>{
+        // Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo.\nSu ID de token es :: ' + "123123123sdfsdfsdf" +"\nDeberías recordar esta clave.");
+        fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+inputs.walletId+'/changekey', {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .catch((error) =>{
+            console.error(error);
+        });
+        setCodeInput(true);
+    }
+
+    const onSetPrivatekey = async (inputText) =>{
+        setCodeValue(inputText);
+        console.log(inputText);
         let private_Key = "";
         let public_key = "";
-        let eosuserid = "";
         await ecc.randomKey().then(privateKey => {
             console.log('Private Key:\t', privateKey) // wif
             console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // EOSkey...
@@ -74,38 +102,99 @@ const TransferCoin = props => {
             public_key = ecc.privateToPublic(privateKey);
             })
         console.log(private_Key);
-
-        let buff = Buffer.from([inputs.id, oneuser.id, valuestr +" JYC", description]);
-        let signature = ecc.sign(buff, private_Key);
-        console.log('toaccount::::::::',  oneuser.walletId);   
-        console.log('fromaccount::::::::',  inputs.walletId);
-        console.log('signature::::::::',  signature);
-        fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/transfer', {
+        fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+inputs.walletId+'/changekey', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                from : inputs.walletId,
-                to : oneuser.walletId,
-                amount : valuestr + " JYC",
-                signature : signature,
-                account_type : 'INTERNAL',                
+                pubkey: public_key,
+                account: inputs.walletId,
+                code: inputText,                
             })
         })
         .then((response) => response.json())
         .then((json) => {
+            setCodeInput(false);
             console.log(json);
-            setIsLoading(false);
+            setTokenKey(private_Key);
+            AsyncStorage.setItem('privatekey', private_Key);
         })
         .catch((error) =>{
-            setIsLoading(false);
+            ToastAndroid.show('Hintkey is not correct!', ToastAndroid.LONG);
+            setCodeInput(false);
             console.error(error);
         });
+
+    }
+
+    const handleTransfer = async () => {
+        if(tokenkey.trim() != ""){
+            if(description.trim() != ""){
+                setIsLoading(true);
+                fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+ inputs.walletId)
+                .then((response) => response.json())
+                .then((json) => {
+                    const result = json.result;                    
         
-        setIsLoading(false);
+                    let sb = new Serialize.SerialBuffer({textEncoder:encode, textDecoder:decode});
+                    let value_str = Number.parseFloat(valuestr).toFixed(2)
+        
+                    console.log('toaccount::::::::',  tokenkey);
+                    console.log('toaccount::::::::',  inputs.walletId);
+                    console.log('toaccount::::::::',  oneuser.walletId);
+                    console.log('toaccount::::::::',  value_str +" JYC");
+                    console.log('toaccount::::::::',  description);
+                    console.log('toaccount::::::::',  result.last_seq_num);
+        
+                    sb.pushName(inputs.walletId);
+                    sb.pushName(oneuser.walletId);
+                    sb.pushAsset(value_str +" JYC");
+                    sb.pushString(description);
+                    sb.pushNumberAsUint64(result.last_seq_num);
+                    sb.pushNumberAsUint64(1);
+                    let buff = Buffer.from(sb.asUint8Array());
+                    let signature = ecc.sign(buff, tokenkey);
+        
+                    fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/transfer', {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            from : inputs.walletId,
+                            to : oneuser.walletId,
+                            amount : value_str +" JYC",
+                            signature : signature,
+                            account_type : 'INTERNAL',
+                            memo: description
+                        })
+                    })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        ToastAndroid.show('Coin Transfer is succesful!', ToastAndroid.LONG);
+                        console.log(json);
+                        setIsLoading(false);
+                    })
+                    .catch((error) =>{
+                        ToastAndroid.show('Check the input values!', ToastAndroid.LONG);
+                        setIsLoading(false);
+                        console.error(error);
+                    });
+                })
+                .catch((error) =>{
+                    setIsLoading(false);
+                    console.error(error);
+                });
+            }else{
+                ToastAndroid.show('Please Input the description!', ToastAndroid.LONG);
+            }
             
+        }else{
+            ToastAndroid.show('Input the Private key, If you forgot that, please refresh the new key.', ToastAndroid.SHORT);
+        }            
     };
 
     return (
@@ -151,16 +240,34 @@ const TransferCoin = props => {
                                 onChangeText={text => setDescription(text) }
                                 value={description}
                                 placeholder="Motivo"
-                                textAlign="center"
-                            />
+                                textAlign="center"/>
+                            <View flexDirection="row" justifyContent="space-between">
+                                <View/>
+                                <TextInput
+                                    style={{color:"#999", maxWidth:200}}
+                                    onChangeText={text => setTokenKey(text) }
+                                    value={tokenkey}
+                                    placeholder="Input Token"
+                                    textAlign="center"/>
+                                <Ionicons name="md-refresh" size={24} style={{marginLeft:10}} onPress={refreshKey}/>
+                                <View/>
+                            </View>
                             <TouchableOpacity onPress={handleTransfer}>
-                                <View style={{backgroundColor:"#29C17E", paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
+                                <View style={{backgroundColor:"#29C17E", width:185,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
                                     <Text style={{color:"#fff"}}>Continuar</Text>
                                 </View>
                             </TouchableOpacity>
-                            
-                            
                         </View>
+                        {/* {codeinput && */}
+                            <DialogInput isDialogVisible={codeinput}
+                                title={"Verification code"}
+                                message={"You can get verification code from mail"}
+                                hintInput ={"HINT INPUT"}
+                                submitInput={ (inputText) => onSetPrivatekey(inputText)}
+                                closeDialog={ () => {setCodeInput(false)}}
+                                >
+                            </DialogInput>
+                            {/* } */}
                     </View>
                 }
                 

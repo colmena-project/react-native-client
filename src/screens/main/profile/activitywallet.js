@@ -115,7 +115,7 @@ const ActivityWallet = props => {
                             signature: oneresult.signature,
                             status: oneresult.status,
                             tx_id: oneresult.tx_id,
-                        }                        
+                        }
                         allactivity.push(one_fields);
                         if(one_fields.to.account_name == parseAccount.get('walletId')){                      
                             ractivity.push(one_fields);
@@ -136,15 +136,18 @@ const ActivityWallet = props => {
                 });
             }
             setIsLoading(false);
-        } catch (err) {            
+        } catch (err) {
             setIsLoading(false);
             console.log('Error!! ' + err);
         }
     };
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            fetchData();
+        });
+        return unsubscribe;
+    }, [props.navigation]);
 
     const onSetselitem = (item) =>{
         setSelItem(item);
