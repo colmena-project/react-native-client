@@ -94,10 +94,12 @@ const ActivityWallet = props => {
                     let ractivity = []
                     let allactivity = []
                     result.map((oneresult) =>{
+                        let create_date = new Date(oneresult.created_at);
+                        console.log(create_date.toLocaleString());
                         const one_fields = {
                             amount: oneresult.amount,                            
                             contract: oneresult.contract,
-                            created_at: oneresult.created_at,
+                            created_at: create_date.toLocaleString(),
                             dest_account_type: oneresult.dest_account_type,
                             from:oneresult.from?oneresult.from:{
                                 account_name: "", 
@@ -124,11 +126,9 @@ const ActivityWallet = props => {
                         }
 
                     });
-                    console.log("onefield:::::", allactivity);
                     setActivitySData(sactivity);
                     setActivityRData(ractivity);
                     setActivityData(allactivity);
-                    console.log("result:::::",result);
                 })
                 .catch((error) =>{
                     setIsloading(false);
@@ -180,17 +180,17 @@ const ActivityWallet = props => {
                         )}
                     <View flex={1} justifyContent="space-between">
                         <View/>
-                        <Text width="100%">
+                        <Text width="100%" style={{fontFamily: 'Nunito-Regular'}}>
                             {oneActivity.to.name}
                         </Text>
-                        <Text width="100%">
+                        <Text width="100%" style={{fontFamily: 'Nunito-Regular'}}>
                             {oneActivity.created_at}
                         </Text>
                         <View/>
                     </View>
                     <View alignItems={'center'} justifyContent="space-between">
                         <View/>
-                            <Text  style={{ color: '#ff0000', fontSize:15 }}>                        
+                            <Text  style={{ color: '#ff0000', fontSize:15, fontFamily: 'Nunito-Regular' }}>                        
                                 -{oneActivity.amount}
                             </Text>                  
                         <View/>
@@ -217,17 +217,17 @@ const ActivityWallet = props => {
                         )}
                     <View flex={1} justifyContent="space-between">
                         <View/>
-                        <Text width="100%">
+                        <Text width="100%" style={{fontFamily: 'Nunito-Regular'}}>
                             {oneActivity.from.name}
                         </Text>
-                        <Text width="100%">
+                        <Text width="100%" style={{fontFamily: 'Nunito-Regular'}}>
                             {oneActivity.created_at}
                         </Text>
                         <View/>
                     </View>
                     <View alignItems={'center'} justifyContent="space-between">
                         <View/>
-                            <Text  style={{ color: '#29c17e', fontSize:15 }}>                        
+                            <Text  style={{ color: '#29c17e', fontSize:15, fontFamily: 'Nunito-Regular'}}>                        
                                 +{oneActivity.amount}
                             </Text>                                              
                         <View/>
@@ -244,14 +244,14 @@ const ActivityWallet = props => {
                 <View flex={1} alignItems ="center">
                     <View flexDirection="row" style={{ padding: 20}}>
                         <View flex={1}>
-                            <Text>Hola, {inputs.firstName} !</Text>
-                            <Text style={{ color: '#29c17e', fontSize:30 }}>{balance} JYC</Text>
-                            <Text size={20}>Tu Balance</Text>
+                            <Text style={{fontFamily: 'Lato-Regular'}}>Hola, {inputs.firstName} !</Text>                            
+                            <Text style={{ color: '#29c17e', fontSize:30, fontFamily: 'Mulish-Regular'}}>{balance} JYC</Text>
+                            <Text size={20} style={{fontFamily: 'Lato-Regular'}}>Tu Balance</Text>
                         </View>
                         <View width ={70} alignItems = {'center'}>
-                            <Text>Co2</Text>
+                            <Text style={{fontFamily: 'Nunito-Regular'}}>Co2</Text>
                             <MaterialIcons name="arrow-downward" color = {'#29c17e'} size = {30}/>
-                            <Text style={{ color: '#29c17e', fontSize:18}}>0.0 kg</Text>
+                            <Text style={{ color: '#29c17e', fontSize:18, fontFamily: 'Nunito-Regular'}}>0.0 kg</Text>
                         </View>
                     </View>
                     <View flexDirection="row" style={{ padding: 5}} width="100%">
@@ -264,7 +264,7 @@ const ActivityWallet = props => {
                                     borderRadius={100}
                                 />
                             </TouchableOpacity>
-                            <Text style={{ color: '#29c17e', fontSize:14}}>Enviar</Text>
+                            <Text style={{ color: '#29c17e', fontSize:14, fontFamily: 'Nunito-Regular'}}>Enviar</Text>
                         </View>
                         <View style={{ padding: 5}} alignItems ="center">
                             <Image
@@ -273,7 +273,7 @@ const ActivityWallet = props => {
                                 resizeMode="cover"
                                 borderRadius={100}
                             />
-                            <Text style={{ color: '#29c17e', fontSize:14}}>Pedir</Text>
+                            <Text style={{ color: '#29c17e', fontSize:14, fontFamily: 'Nunito-Regular'}}>Pedir</Text>
                         </View>
                     </View>
                     <View flexDirection="row" width = "100%" style={{ padding: 20}} justifyContent="space-between">
@@ -289,7 +289,7 @@ const ActivityWallet = props => {
                             <View flex ={1} alignItems = {'center'} style={{ padding: 10}}>
                                 <TouchableOpacity onPress={onSetselitem.bind(this,0)}>
                                     <View>
-                                        <Text style={{ color: '#bbbbbb', fontSize:15 }}>Todos</Text>
+                                        <Text style={{ color: '#bbbbbb', fontSize:15,fontFamily: 'Nunito-Regular'}}>Todos</Text>
                                     </View>
                                 </TouchableOpacity>                               
                             </View>
@@ -298,7 +298,7 @@ const ActivityWallet = props => {
                             <View flex ={1} alignItems = {'center'} backgroundColor ={'#29c17e'} style={{ padding: 10}}>
                             <TouchableOpacity onPress={onSetselitem.bind(this,1)}>
                                 <View>
-                                    <Text style={{ color: '#fff', fontSize:15 }}>Recibidos</Text>
+                                    <Text style={{ color: '#fff', fontSize:15, fontFamily: 'Nunito-Regular'}}>Recibidos</Text>
                                 </View>
                             </TouchableOpacity>
                             
@@ -307,7 +307,7 @@ const ActivityWallet = props => {
                             <View flex ={1} alignItems = {'center'} style={{ padding: 10}}>
                                 <TouchableOpacity onPress={onSetselitem.bind(this,1)}>
                                     <View>
-                                        <Text style={{ color: '#bbbbbb', fontSize:15 }}>Recibidos</Text>
+                                        <Text style={{ color: '#bbbbbb', fontSize:15, fontFamily: 'Nunito-Regular'}}>Recibidos</Text>
                                     </View>
                                 </TouchableOpacity>
                                 

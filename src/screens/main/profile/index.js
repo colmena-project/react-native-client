@@ -130,11 +130,11 @@ const UserProfile = props => {
                             </View>
                         </View>
 
-                        <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
+                        {/* <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
                             <TouchableOpacity onPress={handleActivityWallet} style={styles.editInfoBtn}>
                                 <Text style={styles.editInfoBtnText}>Actividad</Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
 
                         <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
                             <TouchableOpacity onPress={handleEditProfile} style={styles.editInfoBtn}>

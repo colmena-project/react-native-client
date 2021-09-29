@@ -204,13 +204,13 @@ const TransferCoin = props => {
                     <View style={{margin:15}} flex={1} alignItems="center">
                         <View flexDirection="row"> 
                             <TextInput
-                                style={{color:"#29C17E",fontSize:70}}
+                                style={{color:"#29C17E",fontSize:70, fontFamily: 'Nunito-Regular'}}
                                 onChangeText={text => setValueStr(text) }
                                 value={valuestr}
                                 placeholder="0"
                                 keyboardType="numeric"
                             />
-                            <Text style={{color:"#29C17E",fontSize:14,marginTop:15}}>JYC</Text>
+                            <Text style={{color:"#29C17E",fontSize:14,marginTop:15, fontFamily: 'Nunito-Regular'}}>JYC</Text>
                         </View>
                         <View flexDirection="row" style={{marginTop:10}}>
                             {oneuser.avatar ?
@@ -230,7 +230,7 @@ const TransferCoin = props => {
                             }
                             <View justifyContent="space-between">
                                 <View/>
-                                <Text style={{fontSize:16, marginLeft:5}}>{oneuser.nickname}</Text>
+                                <Text style={{fontSize:16, marginLeft:5, fontFamily: 'Nunito-Regular'}}>{oneuser.nickname}</Text>
                                 <View/>
                             </View>                        
                         </View>
@@ -240,7 +240,8 @@ const TransferCoin = props => {
                                 onChangeText={text => setDescription(text) }
                                 value={description}
                                 placeholder="Motivo"
-                                textAlign="center"/>
+                                textAlign="center"
+                                style={{fontFamily: 'Nunito-Regular'}}/>
                             <View flexDirection="row" justifyContent="space-between">
                                 <View/>
                                 <TextInput
@@ -248,13 +249,14 @@ const TransferCoin = props => {
                                     onChangeText={text => setTokenKey(text) }
                                     value={tokenkey}
                                     placeholder="Input Token"
-                                    textAlign="center"/>
+                                    textAlign="center"
+                                    style={{fontFamily: 'Nunito-Regular'}}/>
                                 <Ionicons name="md-refresh" size={24} style={{marginLeft:10}} onPress={refreshKey}/>
                                 <View/>
                             </View>
                             <TouchableOpacity onPress={handleTransfer}>
                                 <View style={{backgroundColor:"#29C17E", width:185,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
-                                    <Text style={{color:"#fff"}}>Continuar</Text>
+                                    <Text style={{color:"#fff" , fontFamily: 'Nunito-Regular'}}>Continuar</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>

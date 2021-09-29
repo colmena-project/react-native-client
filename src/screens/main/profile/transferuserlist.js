@@ -107,7 +107,7 @@ const TransferUserList = props => {
                     )}
                 <View flex={1} justifyContent="space-between" style={{marginStart:10}}>
                     <View/>
-                    <Text width="100%">
+                    <Text width="100%" style={{fontSize:16, fontFamily: 'Nunito-Regular'}}>
                         {oneuser.nickname}
                     </Text>                    
                     <View/>
@@ -139,7 +139,7 @@ const TransferUserList = props => {
                         )}
                     <View justifyContent="space-between" style={{marginTop:5}} flexDirection="row">
                         <View/>
-                        <Text>
+                        <Text style={{fontSize:16, fontFamily: 'Nunito-Regular'}}>
                             {oneuser.nickname}
                         </Text>                    
                         <View/>
@@ -155,14 +155,15 @@ const TransferUserList = props => {
             <View style={{ height:"100%",width:"100%",  backgroundColor: colors.colmenaBackground }}>
                 {isLoading ? <ActivityIndicator style={styles.activityIndicator} size={'large'} color={colors.colmenaGreen} /> :
                 <View style={{margin:15}} flex={1} justifyContent="space-between">
-                    <Text  style={{ color: '#000', fontSize:22}}>A quién quieres enviar jellys?</Text>
-                    <Text  style={{ color: '#000', fontSize:14}}>Elije un contacto de tu lista o inicia un nuevo envío</Text>
+                    <Text  style={{ color: '#000', fontSize:22, fontFamily: 'Mulish-Regular'}}>A quién quieres enviar jellys?</Text>
+                    <Text  style={{ color: '#000', fontSize:14, fontFamily: 'Lato-Regular'}}>Elije un contacto de tu lista o inicia un nuevo envío</Text>
                     <View style={{margin:10, padding:10, borderColor:"#999", borderWidth:1, borderRadius:10}} flexDirection="row"> 
                         <TextInput
                             flex={1}
                             onChangeText={text => onSearchUser(text) }
                             value={searchtxt}
                             placeholder="NOMBRE, CODIGO"
+                            style={{fontFamily: 'Mulish-Regular'}}
                         />
                         {searchStatus &&
                             <Ionicons name="md-close-circle-outline" size={24} onPress={onCloseSearch}/>
@@ -186,14 +187,14 @@ const TransferUserList = props => {
                     </View>
                     :
                     <View flex = {1}>
-                        <Text  style={{ color: '#000', fontSize:16,marginTop: 5}}>Recientes</Text>
+                        <Text  style={{ color: '#000', fontSize:16,marginTop: 5, fontFamily: 'Nunito-Regular'}}>Recientes</Text>
                         <FlatList
-                            height={50}
+                            height={100}
                             horizontal
                             data={userlist}
                             renderItem={renderRecentItem}
                             keyExtractor={item => item.id}/>
-                        <Text style={{marginTop:10, color: '#000', fontSize:16}}>Todos los contactos</Text> 
+                        <Text style={{marginTop:10, color: '#000', fontSize:16, fontFamily: 'Nunito-Regular'}}>Todos los contactos</Text> 
                         <FlatList
                             data={userlist}
                             renderItem={renderItem}

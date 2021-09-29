@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -38,7 +39,6 @@ import ChangePasswordScreen from '../screens/main/profile/changePassword';
 
 import { Feather, FontAwesome, AntDesign } from '@expo/vector-icons';
 import colors from '../constants/colors';
-import { View } from 'react-native';
 
 
 const RootNavigator = () => {
@@ -104,8 +104,11 @@ const RootNavigator = () => {
     const PendantsNavigator = () => {
         return (
             <PendantsStack.Navigator>
-                <PendantsStack.Screen name={'Pendants'} component={PendantsScreen} options={setProfileHeaderOptions('Pendientes')} />
-                <PendantsStack.Screen name={'Cancel Transport'} component={TransportCancel} options={setProfileHeaderOptions('Cancelar transporte')} />
+                {/* <PendantsStack.Screen name={'Pendants'} component={PendantsScreen} options={setProfileHeaderOptions('Pendientes')} />
+                <PendantsStack.Screen name={'Cancel Transport'} component={TransportCancel} options={setProfileHeaderOptions('Cancelar transporte')} /> */}
+                <ProfileStack.Screen name={'ActivityWallet'} component={ActivityWallet} options={setProfileHeaderOptions('Movimientos')} />
+                <ProfileStack.Screen name={'TransferUserList'} component={TransferUserList} options={setProfileHeaderOptions('A quién enviar?')} />
+                <ProfileStack.Screen name={'TransferCoin'} component={TransferCoin} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
             </PendantsStack.Navigator>
         );
     };
@@ -116,9 +119,7 @@ const RootNavigator = () => {
                 <ProfileStack.Screen name={'Index'} component={ProfileScreen} options={setProfileHeaderOptions('Perfil')} />
                 <ProfileStack.Screen name={'ChangePassword'} component={ChangePasswordScreen} options={{ headerShown: false }} />
                 <ProfileStack.Screen name={'EditProfile'} component={EditProfile} options={setProfileHeaderOptions('Editar perfil')} />
-                <ProfileStack.Screen name={'ActivityWallet'} component={ActivityWallet} options={setProfileHeaderOptions('Actividad')} />
-                <ProfileStack.Screen name={'TransferUserList'} component={TransferUserList} options={setProfileHeaderOptions('A quién enviar?')} />
-                <ProfileStack.Screen name={'TransferCoin'} component={TransferCoin} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
+                
                 <ProfileStack.Screen name={'OthersProfile'} component={OthersProfile} options={setProfileHeaderOptions('Ver perfil')} />
             </ProfileStack.Navigator>
         );
@@ -148,10 +149,10 @@ const RootNavigator = () => {
                     component={SummaryNavigator}
                     options={{
                         unmountOnBlur: true,
-                        tabBarLabel: 'Mi actividad',
+                        tabBarLabel: 'Buscar',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
-                                <AntDesign name="appstore-o" color={color} size={size-2} />
+                                <AntDesign name="search1" color={color} size={size-2} />
                             </View>
                         ),
                     }}
@@ -164,7 +165,11 @@ const RootNavigator = () => {
                         tabBarLabel: 'Acciones',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
-                                <FontAwesome name="recycle" color={color} size={size} />
+                                {/* <FontAwesome name="recycle" color={color} size={size} /> */}
+                                <Image
+                                    style={{width:40, height:40}}
+                                    source={require('../../assets/add.png')}
+                                />
                             </View>
                         ),
                     }}
@@ -175,10 +180,13 @@ const RootNavigator = () => {
                     options={setProfileHeaderOptions('Pendientes')}
                     options={{
                         unmountOnBlur: true,
-                        tabBarLabel: 'Pendientes',
+                        tabBarLabel: 'Wallet',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
-                                <AntDesign name="clockcircleo" color={color} size={size-2} />
+                                <Image
+                                    style={{width:30, height:30}}
+                                    source={require('../../assets/coleman.png')}
+                                />
                             </View>
                         ),
                     }}

@@ -23,6 +23,17 @@ const fetchFonts = () => {
     'Nunito-Light': require('./assets/fonts/Nunito-Light.ttf'),
     'Nunito-Regular': require('./assets/fonts/Nunito-Regular.ttf'),
     'Nunito-SemiBold': require('./assets/fonts/Nunito-SemiBold.ttf'),
+    'Lato-Black': require('./assets/fonts/Lato-Black.ttf'),
+    'Lato-BlackItalic': require('./assets/fonts/Lato-BlackItalic.ttf'),
+    'Lato-Bold': require('./assets/fonts/Lato-Bold.ttf'),
+    'Lato-BoldItalic': require('./assets/fonts/Lato-BoldItalic.ttf'),
+    'Lato-Hairline': require('./assets/fonts/Lato-Hairline.ttf'),
+    'Lato-HairlineItalic': require('./assets/fonts/Lato-HairlineItalic.ttf'),
+    'Lato-Italic': require('./assets/fonts/Lato-Italic.ttf'),
+    'Lato-Light': require('./assets/fonts/Lato-Light.ttf'),
+    'Lato-LightItalic': require('./assets/fonts/Lato-LightItalic.ttf'),
+    'Lato-Regular': require('./assets/fonts/Lato-Regular.ttf'),
+    'Mulish-Regular': require('./assets/fonts/Mulish-Regular.ttf'),
   })
 };
 
@@ -53,6 +64,18 @@ export default App = () => {
       },
       light: {
         fontFamily: 'Nunito-Light',
+        fontWeight: 'normal',
+      },
+      latobold: {
+        fontFamily: 'Lato-Bold',
+        fontWeight: 'bold',
+      },
+      latoregular: {
+        fontFamily: 'Lato-Regular',
+        fontWeight: 'normal',
+      },
+      latolight: {
+        fontFamily: 'Lato-Light',
         fontWeight: 'normal',
       },
     },
