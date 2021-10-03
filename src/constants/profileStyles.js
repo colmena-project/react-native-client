@@ -34,16 +34,26 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         overflow: 'hidden',
     },
+    profileHeadertitle: {
+        fontFamily: 'Nunito-Regular',
+        fontSize: 12,
+        textAlign: 'justify',
+        color: '#4C4C4C'
+    },
     name: {
         fontFamily: 'Nunito-Regular',
-        fontSize: 12
+        fontSize: 15,
+        textAlign: 'justify',
+        color: '#4C4C4C',
+        marginLeft: 5,
     },
     locationInfo: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         marginTop: 5,
     },
-    titleTexts: {
+    addressTexts: {
+        fontSize: 16,
         color: '#4C4C4C',
         fontFamily: 'Nunito-Regular'
     },

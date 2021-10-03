@@ -12,7 +12,7 @@ import { Feather } from '@expo/vector-icons';
 import { FlatList } from 'react-native-gesture-handler';
 
 
-const TransferUserList = props => {    
+const Buscar = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [userlist, setUserList] = useState([]);
     const [searchResultList, setSearchResultList] = useState();
@@ -27,9 +27,13 @@ const TransferUserList = props => {
             
             const list = [];
             userAccounts.forEach(obj => {
-                // if(obj.get('walletId') && obj.get('user').get('email')){
-                if(obj.get('walletId')){
+                console.log("userinfo:", obj.get('user'));
+                console.log("-----------");
+                if(obj.get('user').get('emailVerified')){
+                    console.log("userinfo:", obj.get('user'));
+                    console.log("-----------");
                     const one_fields = {
+                        user: obj.get('user'),
                         firstName: obj.get('firstName'),
                         lastName: obj.get('lastName'),
                         nickname: obj.get('nickname'),
@@ -43,7 +47,6 @@ const TransferUserList = props => {
                 }
                 
             });
-            console.log("list::", list);
             setUserList(list);
             setIsLoading(false);
         } catch (err) {
@@ -76,13 +79,13 @@ const TransferUserList = props => {
         console.log(text);
     }
     const onCloseSearch = () =>{
-        console.log("exit")
         setSearchTxt("");
         setSearchStatus(false);
     }
 
     const handleTransferCoin = (oneuser) => {
-        props.navigation.navigate('TransferCoin',{oneuser});
+        const user = oneuser.user
+        props.navigation.navigate("OthersProfile",{ user });
     };
 
     const renderItem = ({item: oneuser}) => (
@@ -153,14 +156,12 @@ const TransferUserList = props => {
             <View style={{ height:"100%",width:"100%",  backgroundColor: colors.colmenaBackground }}>
                 {isLoading ? <ActivityIndicator style={styles.activityIndicator} size={'large'} color={colors.colmenaGreen} /> :
                 <View style={{margin:15}} flex={1} justifyContent="space-between">
-                    <Text  style={{ color: '#000', fontSize:22, fontFamily: 'Mulish-Regular'}}>A quién quieres enviar jellys?</Text>
-                    <Text  style={{ color: '#000', fontSize:14, fontFamily: 'Lato-Regular'}}>Elije un contacto de tu lista o inicia un nuevo envío</Text>
                     <View style={{margin:10, padding:10, borderColor:"#999", borderWidth:1, borderRadius:10}} flexDirection="row"> 
                         <TextInput
                             flex={1}
                             onChangeText={text => onSearchUser(text) }
                             value={searchtxt}
-                            placeholder="NOMBRE, CODIGO"
+                            placeholder="NOMBRE"
                             style={{fontFamily: 'Mulish-Regular'}}
                         />
                         {searchStatus &&
@@ -184,15 +185,8 @@ const TransferUserList = props => {
                         
                     </View>
                     :
-                    <View flex = {1}>
-                        <Text  style={{ color: '#000', fontSize:16,marginTop: 5, fontFamily: 'Nunito-Regular'}}>Recientes</Text>
-                        <FlatList
-                            height={100}
-                            horizontal
-                            data={userlist}
-                            renderItem={renderRecentItem}
-                            keyExtractor={item => item.id}/>
-                        <Text style={{marginTop:10, color: '#000', fontSize:16, fontFamily: 'Nunito-Regular'}}>Todos los contactos</Text> 
+                    <View flex = {1}>                        
+                        <Text style={{marginTop:10, color: '#000', fontSize:16, fontFamily: 'Nunito-Regular'}}>Recientes</Text> 
                         <FlatList
                             data={userlist}
                             renderItem={renderItem}
@@ -285,4 +279,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TransferUserList;
+export default Buscar;

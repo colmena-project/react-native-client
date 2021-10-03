@@ -27,6 +27,7 @@ import PickWasteToManageScreen from '../screens/main/waste/manage';
 import ManageWasteScreen from '../screens/main/waste/manage/manageWaste';
 
 import SummaryScreen from '../screens/main/summary';
+import Buscar from '../screens/main/buscar/buscar';
 import PendantsScreen from '../screens/main/pendants';
 import ProfileScreen from '../screens/main/profile';
 import EditProfile from '../screens/main/profile/edit';
@@ -47,6 +48,7 @@ const RootNavigator = () => {
     const HomeTabs = createBottomTabNavigator();
 
     const HomeStack = createStackNavigator();
+    const BuscarStack = createStackNavigator();
     const SummaryStack = createStackNavigator();
     const WasteStack = createStackNavigator();
     const PendantsStack = createStackNavigator();
@@ -71,6 +73,14 @@ const RootNavigator = () => {
                 <HomeStack.Screen name={'Index'} component={HomeScreen} options={{ headerShown: false }} />
                 <HomeStack.Screen name={'OthersProfile'} component={OthersProfile} options={setProfileHeaderOptions('Ver perfil')} />
             </HomeStack.Navigator>
+        );
+    };
+    const BuscarNavigator = () => {
+        return (
+            <BuscarStack.Navigator>
+                <BuscarStack.Screen name={'Buscar'} component={Buscar} options={setProfileHeaderOptions('Buscar')} />
+                <HomeStack.Screen name={'OthersProfile'} component={OthersProfile} options={setProfileHeaderOptions('Ver perfil')} />
+            </BuscarStack.Navigator>
         );
     };
 
@@ -119,8 +129,11 @@ const RootNavigator = () => {
                 <ProfileStack.Screen name={'Index'} component={ProfileScreen} options={setProfileHeaderOptions('Perfil')} />
                 <ProfileStack.Screen name={'ChangePassword'} component={ChangePasswordScreen} options={{ headerShown: false }} />
                 <ProfileStack.Screen name={'EditProfile'} component={EditProfile} options={setProfileHeaderOptions('Editar perfil')} />
-                
+                <SummaryStack.Screen name={'ManageWaste'} component={ManageWasteScreen} options={setProfileHeaderOptions('Elija los Residuos')} />                
                 <ProfileStack.Screen name={'OthersProfile'} component={OthersProfile} options={setProfileHeaderOptions('Ver perfil')} />
+                <ProfileStack.Screen name={'ActivityWallet'} component={ActivityWallet} options={setProfileHeaderOptions('Movimientos')} />
+                <ProfileStack.Screen name={'TransferUserList'} component={TransferUserList} options={setProfileHeaderOptions('A quién enviar?')} />
+                <ProfileStack.Screen name={'TransferCoin'} component={TransferCoin} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
             </ProfileStack.Navigator>
         );
     };
@@ -145,8 +158,8 @@ const RootNavigator = () => {
                     }}
                 />
                 <HomeTabs.Screen
-                    name={'Summary'}
-                    component={SummaryNavigator}
+                    name={'Buscar'}
+                    component={BuscarNavigator}
                     options={{
                         unmountOnBlur: true,
                         tabBarLabel: 'Buscar',
@@ -180,7 +193,7 @@ const RootNavigator = () => {
                     options={setProfileHeaderOptions('Pendientes')}
                     options={{
                         unmountOnBlur: true,
-                        tabBarLabel: 'Wallet',
+                        tabBarLabel: 'JellyCoins',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
                                 <Image
@@ -196,7 +209,7 @@ const RootNavigator = () => {
                     component={ProfileNavigator}
                     options={{
                         unmountOnBlur: true,
-                        tabBarLabel: 'Mi Perfil',
+                        tabBarLabel: 'Perfil',
                         tabBarIcon: ({ color, size }) => (
                             <View style={{ paddingTop: 8 }}>
                                 <FontAwesome name="user-o" color={color} size={size-2} />

@@ -95,7 +95,6 @@ const ActivityWallet = props => {
                     let allactivity = []
                     result.map((oneresult) =>{
                         let create_date = new Date(oneresult.created_at);
-                        console.log(create_date.toLocaleString());
                         const one_fields = {
                             amount: oneresult.amount,                            
                             contract: oneresult.contract,
@@ -183,7 +182,7 @@ const ActivityWallet = props => {
                         <Text width="100%" style={{fontFamily: 'Nunito-Regular'}}>
                             {oneActivity.to.name}
                         </Text>
-                        <Text width="100%" style={{fontFamily: 'Nunito-Regular'}}>
+                        <Text width="100%" style={{ fontSize:12,fontFamily: 'Nunito-Regular'}}>
                             {oneActivity.created_at}
                         </Text>
                         <View/>
@@ -220,7 +219,7 @@ const ActivityWallet = props => {
                         <Text width="100%" style={{fontFamily: 'Nunito-Regular'}}>
                             {oneActivity.from.name}
                         </Text>
-                        <Text width="100%" style={{fontFamily: 'Nunito-Regular'}}>
+                        <Text width="100%" style={{fontSize:12,fontFamily: 'Nunito-Regular'}}>
                             {oneActivity.created_at}
                         </Text>
                         <View/>
