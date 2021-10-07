@@ -23,11 +23,12 @@ const UserProfile = props => {
     const POST_PER_LOAD_LIMIT = 20;
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingMore, setIsLoadingMore] = useState(false);
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState([]);    
     const [postsQty, setPostsQty] = useState(0);
     const [selpage, setSelPage] = useState(0);
     const [containers, setContainers] = useState(null);
     const [wasteTypes, setWasteTypes] = useState(null);
+    const [transactions, setTransactions] = useState(null);
     const [balance, setBalance] = useState("0.00");
 
     const dispatch = useDispatch();
@@ -39,8 +40,7 @@ const UserProfile = props => {
             const addresses = account.addresses;
             console.log("address:::", account.walletId);
             console.log("______________________");
-            setUserAccount(account);
-            props.navigation.setOptions({ title: `${account.firstName} ${account.lastName}` });
+            setUserAccount(account);            
             const fetchPosts = new Parse.Query("Post");
             fetchPosts.equalTo('createdBy', account.user).descending('createdAt').limit(POST_PER_LOAD_LIMIT);
             const result = await fetchPosts.find();
@@ -51,6 +51,10 @@ const UserProfile = props => {
             const fetchedContainers = await UserService.fetchRecoveredContainers(dispatch);
             setWasteTypes(fetchedWasteTypes);
             setContainers(fetchedContainers);
+
+            const fetchedTransactions = await UserService.fetchTransactions();
+            const transportTransactions = fetchedTransactions.filter(transaction => transaction.get('type') === 'TRANSPORT');
+            setTransactions(transportTransactions);
 
             if(account.walletId){
                 fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+ account.walletId)
@@ -92,6 +96,19 @@ const UserProfile = props => {
         });
         return unsubscribe;
     }, [props.navigation]);
+
+    useEffect(() => {
+        if(userAccount != null){
+            if (selpage == 0){
+                props.navigation.setOptions({ title: userAccount.firstName+ " " + userAccount.lastName });
+            }else if(selpage == 1){
+                props.navigation.setOptions({ title: 'Impacto' });
+            }else if(selpage == 2){
+                props.navigation.setOptions({ title: 'Mis Pendientes' });
+            }
+        }        
+
+    }, [selpage, userAccount]);
 
     const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
         return layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
@@ -139,7 +156,7 @@ const UserProfile = props => {
                         <View style={{flexDirection:'row', marginBottom:20}}>
                             <View style={{alignItems: 'center', flex:1}}>
                                 <TouchableOpacity onPress={onSetPage.bind(this,0)}>
-                                    <Ionicons name={'md-person'} size={30} color={'#4C4C4C'} />
+                                    <Ionicons name={'md-person'} size={30} color={selpage == 0 ? colors.colmenaGreen : '#4C4C4C'} />
                                     <Text style={styles.profileHeadertitle}>
                                         Perfil
                                     </Text>
@@ -150,7 +167,7 @@ const UserProfile = props => {
                             </View>
                             <View style={{alignItems: 'center', flex:1}}>
                                 <TouchableOpacity onPress={onSetPage.bind(this,1)} style={{alignItems: 'center'}}>
-                                    <Ionicons name={'md-cube'} size={30} color={'#4C4C4C'} />
+                                    <Ionicons name={'md-cube'} size={30} color={selpage == 1 ? colors.colmenaGreen : '#4C4C4C'} />
                                     <Text style={styles.profileHeadertitle}>
                                         Residuos
                                     </Text>
@@ -161,7 +178,7 @@ const UserProfile = props => {
                             </View>
                             <View style={{alignItems: 'center', flex:1}} >
                                 <TouchableOpacity onPress={onSetPage.bind(this,2)} style={{alignItems: 'center'}}>
-                                    <Ionicons name={'md-clipboard'} size={30} color={'#4C4C4C'} />
+                                    <Ionicons name={'md-clipboard'} size={30} color={selpage == 2 ? colors.colmenaGreen : '#4C4C4C'} />
                                     <Text style={styles.profileHeadertitle}>
                                         Pendientes
                                     </Text>

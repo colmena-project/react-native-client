@@ -18,7 +18,7 @@ const PendantsScreen = props => {
         setIsLoading(true);
         try {
             const fetchedAccount = await UserService.fetchAccount();
-            const fetchedTransactions = await UserService.fetchTransactions();            
+            const fetchedTransactions = await UserService.fetchTransactions();
             const transportTransactions = fetchedTransactions.filter(transaction => transaction.get('type') === 'TRANSPORT');
             setUserAccount(fetchedAccount);
             setTransactions(transportTransactions);

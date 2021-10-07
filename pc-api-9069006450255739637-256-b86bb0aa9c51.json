@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "pc-api-9069006450255739637-256",
+  "private_key_id": "b86bb0aa9c519b9e0cbeb11fbd26ddee7e0c8124",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDGbf9SPFdJ2Q/f\nbM6d12FzDROZsbv+0ChDKw/VdUWbnNYRJCHjSs+yYBQVoGhAxVrRZCb03hMRuXIz\nTGVNRCwWqvvVVOoegzrK3jy87JAkvZmLFWQD6G+N+Dlcxxe7LQzgwt4QDr9g4xef\nSnqZlZUWr8mWgngZj7f/kTh8Vs/He6I22IZU2Mi1p6sfvEioXLxt8Tstwp5+r1es\n13roQ2gK4v9iLpB9xqzzuU+fBsrIQkFBj4T52GL+gfQS3XMXIHn4/rcK48lf602o\nijjUj7bJgpJc0LW9rhV9wc3Vqcu9q6OqgyqvyDe49bts29XezJxON1P20N1e6qUC\nbpPDp1IdAgMBAAECggEAHRGUp3as/+XDUEMHkrJwdXMLNccGiBn06AAZMfdb0uPb\nLUgqibpWKmauUou88g4nU4j1NwaIax6MZwzwQy0zOz/hpBssL/ugA4OiiLesFyHK\nakhgLj1hCD5+osOMy7AaFJwffWE3sokaFw0JYFH8NQZcBQdIclAuT4t156stBacp\n+1STTpRb9zEU4v5NfRgTPQzyOsO0K5pmJMhx+XDvphNuVJ7yO6kRjNK9wL1eSZZu\nnrjeLzEwDj62iwb8c7oaq9jCf6h1orriFS6lkwxe9ZhSSHDBiJKkN9c+J1MUrSuc\nxcoqLU1W5lQrRlFajg4s7/i6HKpm/ClLviETNjn9aQKBgQDzyznmN2IY18v3UJr8\nN3jRIgSR4bpvYk4S0UF82/b9SpvC0+ktIHZh/wFkuVljVD1XjBGOaKwU+c4OfiX7\nVPqbAsFPvg2Sa0CxFzIC0RScXqU/DXI/tI11UWEiHYu05mp4OX9pdjD7w/L8SXIZ\nbemsq4jg4Mia7VoQviOWKCFm+QKBgQDQXVNte0kCZGSi4brwvoXFXOQ8CIMprt+S\nkRv+uyP8A0OlX3KD4sMIE87oNhMTUHTD687hG26t/GqMVbbSXZnYN5Axyw4Aoon+\nElyY3gng5Wu7G7f5ixRMg4FUEHN4HPs+S8JeESIr2pWUPfX7W8TFnxqgI4R6qghp\nkMB3OSpZRQKBgDQu7/nDKRBAQLxzWHlcNlQtf+Tp+EoXNLb6a5YaT0fwTF7rlSG/\nrRdUyiuRMPz97xNqO+fLp+nlfqHDhsXBbtL3SAGVoLoSkwpU+LN5pXvDFoPkkOvp\n7c2K2cu/n0PdfjS1ufwM/Hcnfj9aST4ANOBs5yObedUPsROcX2motV2hAoGAF1vP\nBYADsEv26DesEF8begOu5ngB1ENxdunjnIv4PcFT7Q8lNFnQiXBHCss9GjYz0N73\no07C+qhIfZECXNT3cUDRXnOoDzQpih0e2lhR/S9bA2/ZERWhYe6AKh9qAnYlSFeP\n46HCFe58RFEp6VLhXVI31uoEaQf0x3jdyr/S2o0CgYBX43/w4+C2VTg4wDwud9dy\nrAW7LWMVuF9D7MJMjR5NoMM975bQe7juSd1l87yDH3tZQ+7XbIeGT8884734Uon2\nwDc+OQd3UwOL+f6NbKiEgOlqS4IxSXTP2OgrwmwfxfSssItDwtEj6g1u5o65csmC\ndHZ/tJOIJHAzlHBu4KTEeg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "expo-colmena-app-113@pc-api-9069006450255739637-256.iam.gserviceaccount.com",
+  "client_id": "117008301015194214218",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/expo-colmena-app-113%40pc-api-9069006450255739637-256.iam.gserviceaccount.com"
+}

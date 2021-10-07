@@ -27,7 +27,7 @@ const TransferCoin = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [codeinput,setCodeInput] = useState(false);
     const [codeValue,setCodeValue] = useState("");
-    const [valuestr, setValueStr] = useState("0");
+    const [valuestr, setValueStr] = useState("1");
     const [description, setDescription] = useState("");
     const [tokenkey, setTokenKey] = useState("");
     const [userAccount, setUserAccount] = useState(null);
@@ -174,12 +174,12 @@ const TransferCoin = props => {
                     })
                     .then((response) => response.json())
                     .then((json) => {
-                        ToastAndroid.show('Coin Transfer is succesful!', ToastAndroid.LONG);
+                        ToastAndroid.show('La transferencia de monedas se ha realizado correctamente!', ToastAndroid.LONG);
                         console.log(json);
                         setIsLoading(false);
                     })
                     .catch((error) =>{
-                        ToastAndroid.show('Check the input values!', ToastAndroid.LONG);
+                        ToastAndroid.show('Compruebe los valores de entrada!', ToastAndroid.LONG);
                         setIsLoading(false);
                         console.error(error);
                     });
@@ -189,11 +189,11 @@ const TransferCoin = props => {
                     console.error(error);
                 });
             }else{
-                ToastAndroid.show('Please Input the description!', ToastAndroid.LONG);
+                ToastAndroid.show('Introduzca la descripción.', ToastAndroid.LONG);
             }
             
         }else{
-            ToastAndroid.show('Input the Private key, If you forgot that, please refresh the new key.', ToastAndroid.SHORT);
+            ToastAndroid.show('Ingrese la clave privada, si la olvidó, actualice la nueva clave.', ToastAndroid.SHORT);
         }            
     };
 
@@ -234,7 +234,7 @@ const TransferCoin = props => {
                                 <View/>
                             </View>                        
                         </View>
-                        <View style={{marginTop:20}}>
+                        <View style={{maxWidth:"70%", marginTop:20}}>
                             <TextInput
                                 style={{color:"#999"}}
                                 onChangeText={text => setDescription(text) }
@@ -253,13 +253,13 @@ const TransferCoin = props => {
                                     style={{fontFamily: 'Nunito-Regular'}}/>
                                 <Ionicons name="md-refresh" size={24} style={{marginLeft:10}} onPress={refreshKey}/>
                                 <View/>
-                            </View>
-                            <TouchableOpacity onPress={handleTransfer}>
-                                <View style={{backgroundColor:"#29C17E", width:185,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
-                                    <Text style={{color:"#fff" , fontFamily: 'Nunito-Regular'}}>Continuar</Text>
-                                </View>
-                            </TouchableOpacity>
+                            </View>                            
                         </View>
+                        <TouchableOpacity onPress={handleTransfer}>
+                            <View style={{backgroundColor:"#29C17E", width:185,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
+                                <Text style={{color:"#fff" , fontFamily: 'Nunito-Regular'}}>Continuar</Text>
+                            </View>
+                        </TouchableOpacity>
                         {/* {codeinput && */}
                             <DialogInput isDialogVisible={codeinput}
                                 title={"Verification code"}

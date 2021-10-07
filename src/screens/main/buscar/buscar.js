@@ -110,11 +110,11 @@ const Buscar = props => {
                     <View/>
                     <Text width="100%" style={{fontSize:16, fontFamily: 'Nunito-Regular'}}>
                         {oneuser.nickname}
-                    </Text>                    
+                    </Text>
                     <View/>
-                </View>                         
+                </View>
             </View>            
-        </TouchableOpacity>        
+        </TouchableOpacity>
     );
     
     const renderRecentItem = ({item: oneuser}) => (

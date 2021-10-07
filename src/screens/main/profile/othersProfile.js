@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { Text, View, Image, StyleSheet, ScrollView, ActivityIndicator,TouchableOpacity } from 'react-native';
 import { Parse } from 'parse/react-native';
 
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import colors from '../../../constants/colors';
 import FeedListU from '../../../components/posts/FeedListU';
+import { Feather } from '@expo/vector-icons';
 
 const OthersProfile = props => {
 
@@ -28,6 +30,7 @@ const OthersProfile = props => {
             // FIXME: Get account of the user owner of the post.
             const parseAccount = await Parse.Cloud.run("getAccountOf", { userId: user.id });
             const account = await parseAccount.toJSON();
+            console.log("accountinf:", account);
             setUserAccount(account);
             props.navigation.setOptions({ title: `${account.firstName} ${account.lastName}` })
             const fetchPosts = new Parse.Query("Post");
@@ -96,13 +99,14 @@ const OthersProfile = props => {
                                         style={styles.avatar}
                                         source={require('../../../../assets/default_user_1.png')}
                                     />
-                                }
-                                <Text style={styles.name}>
-                                    @{user.get('username')}
-                                </Text>
+                                }                                
                             </View>
 
                             <View style={{}}>
+                                    <Text style={styles.name}>
+                                        @{user.get('username')}
+                                    </Text>
+                                
                                 <View style={styles.locationInfo}>
                                     <EvilIcons name={'location'} size={25} color={'#4C4C4C'} />
                                     <Text style={styles.titleTexts}>Posadas, Misiones</Text>
@@ -117,6 +121,22 @@ const OthersProfile = props => {
                             </View>
                         </View>
                         {/* *********** FIN PROFILE HEADER *********** */}
+                        <View flexDirection="row" style={{ padding: 20}}>                                        
+                            <View flex={1} alignItems = {'center'}>
+                                <Text style={{fontFamily: 'Nunito-Regular'}}>Co2</Text>
+                                <MaterialIcons name="arrow-downward" color = {'#29c17e'} size = {30}/>
+                                <Text style={{ color: '#29c17e', fontSize:18, fontFamily: 'Nunito-Regular'}}>12.7 kg</Text>
+                            </View>
+                            <View flex={1} alignItems = {'center'}>
+                                <Feather name={'truck'} size={35} color={'#29c17e'} />
+                                <Text style={{fontSize:18, fontFamily: 'Nunito-Regular'}}>Es recolector</Text>
+                            </View>
+                            <View flex={1} style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
+                                <TouchableOpacity style={styles.editInfoBtn}>
+                                    <Text style={styles.editInfoBtnText}>Solicitar</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
 
                         {/* *********** ACTIVIDAD (POSTS) *********** */}
                         <View style={styles.activityContainer}>
@@ -145,6 +165,31 @@ const OthersProfile = props => {
 };
 
 const styles = StyleSheet.create({
+    btnContainer: {
+        width: '100%',
+        marginTop: 10,
+    },
+    editInfoBtn: {
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: colors.colmenaGreen,
+        borderRadius: 5,
+        paddingVertical: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+    editInfoBtnText: {
+        textAlign: 'center',
+        color: colors.colmenaGreen,
+        fontFamily: 'Nunito-Regular',
+        fontSize: 16
+    },
     scrollViewWrapper: {
         flex: 1,
         padding: 0,
@@ -208,7 +253,8 @@ const styles = StyleSheet.create({
     },
     name: {
         fontFamily: 'Nunito-Regular',
-        fontSize: 12
+        fontSize: 12,
+        marginStart:5
     },
     locationInfo: {
         flexDirection: 'row',
