@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image, TextInput, SafeAreaView } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image, TextInput } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Parse } from 'parse/react-native';
 import Input from '../../../components/form/Input';
@@ -152,7 +152,6 @@ const Buscar = props => {
     );
 
     return (
-        <SafeAreaView>
             <View style={{ height:"100%",width:"100%",  backgroundColor: colors.colmenaBackground }}>
                 {isLoading ? <ActivityIndicator style={styles.activityIndicator} size={'large'} color={colors.colmenaGreen} /> :
                 <View style={{margin:15}} flex={1} justifyContent="space-between">
@@ -195,8 +194,7 @@ const Buscar = props => {
                     }
                 </View>
                 }
-            </View>
-        </SafeAreaView>        
+            </View>    
     );
 };
 

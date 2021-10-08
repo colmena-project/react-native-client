@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image, TextInput, SafeAreaView,ToastAndroid } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image, TextInput, ToastAndroid, AsyncStorage} from 'react-native';
 import { Parse } from 'parse/react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../../../constants/colors';
 import Slugify from 'slugify';
 import ecc from 'eosjs-ecc-rn';
 import { Buffer } from 'buffer';
-import AsyncStorage from '@react-native-community/async-storage';
 import DialogInput from 'react-native-dialog-input';
 
 const {encode, decode} = require("fastestsmallesttextencoderdecoder");
@@ -198,7 +197,6 @@ const TransferCoin = props => {
     };
 
     return (
-        <SafeAreaView>
             <View style={{ height:"100%",width:"100%",  backgroundColor: colors.colmenaBackground }}>
                 {isLoading === true ? <ActivityIndicator size={'large'} color={colors.colmenaGreen} /> :              
                     <View style={{margin:15}} flex={1} alignItems="center">
@@ -273,8 +271,7 @@ const TransferCoin = props => {
                     </View>
                 }
                 
-            </View>
-        </SafeAreaView>        
+            </View>      
     );
 };
 

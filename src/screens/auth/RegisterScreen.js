@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, Image, Button, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Text, Image, Button, ScrollView, Alert, ActivityIndicator, AsyncStorage} from 'react-native'
 import Parse from 'parse/react-native';
 import { useDispatch } from 'react-redux';
 import Input from '../../components/form/Input';
@@ -9,7 +9,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Slugify from 'slugify';
 import ecc from 'eosjs-ecc-rn';
 import { Buffer } from 'buffer';
-import AsyncStorage from '@react-native-community/async-storage';
 
 const RegisterScreen = props => {
 

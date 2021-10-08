@@ -18,16 +18,15 @@ const Feed = props => {
                         @{user.get('username')}
                     </Text>
                 </View>
-                <View style={styles.moreActions}>
+                {/* <View style={styles.moreActions}>
                     <Ionicons name={'ios-more'} size={18} color={'#3d8cea'} />
-                </View>
+                </View> */}
             </View>
             {props.image ?
                 <View style={{ width: '100%', height: 410, marginTop: 10, marginBottom: 5, backgroundColor: '#272822' }}>
                     <Image
                         style={{ resizeMode: 'contain', width: '100%', height: '100%' }}
-                        source={{ uri: props.image._url }}
-                    />
+                        source={{ uri: props.image._url }}/>
                 </View>
                 :
                 <View></View>}

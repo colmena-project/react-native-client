@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StatusBar, AsyncStorage, SafeAreaView } from 'react-native';
-import { AppLoading } from 'expo';
+import { StatusBar, AsyncStorage, Text } from 'react-native';
+import AppLoading from 'expo-app-loading';
 import { enableScreens } from 'react-native-screens';
 import { configureFonts, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import RootNavigator from './src/navigator/appNavigator';
@@ -47,7 +47,9 @@ export default App = () => {
     return (
       <AppLoading
         startAsync={fetchFonts}
-        onFinish={() => setFontLoaded(true)}>
+        onFinish={() => setFontLoaded(true)}
+        onError={console.warn}
+      >
       </AppLoading>
     )
   }
@@ -97,10 +99,10 @@ export default App = () => {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <StatusBar barStyle="light-content" backgroundColor={colors.colmenaGreen} />
-        <SafeAreaView style={{ flex: 1 }}>
-          <RootNavigator />
-        </SafeAreaView>
+         <StatusBar barStyle="light-content" backgroundColor={colors.colmenaGreen} />
+         {/* <SafeAreaView style={{ flex: 1 }}> */}
+           <RootNavigator />
+         {/* </SafeAreaView> */}
       </PaperProvider>
     </Provider>
   );
