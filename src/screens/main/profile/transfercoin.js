@@ -26,7 +26,7 @@ const TransferCoin = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [codeinput,setCodeInput] = useState(false);
     const [codeValue,setCodeValue] = useState("");
-    const [valuestr, setValueStr] = useState("1");
+    const [valuestr, setValueStr] = useState("");
     const [description, setDescription] = useState("");
     const [tokenkey, setTokenKey] = useState("");
     const [userAccount, setUserAccount] = useState(null);
@@ -206,6 +206,7 @@ const TransferCoin = props => {
                                 onChangeText={text => setValueStr(text) }
                                 value={valuestr}
                                 placeholder="0"
+                                placeholderTextColor = "#29C17E"
                                 keyboardType="numeric"
                             />
                             <Text style={{color:"#29C17E",fontSize:14,marginTop:15, fontFamily: 'Nunito-Regular'}}>JYC</Text>

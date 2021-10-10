@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Switch } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Parse } from 'parse/react-native';
 import Input from '../../../components/form/Input';
@@ -34,11 +34,15 @@ const EditProfile = props => {
     const [isLoading, setIsLoading] = useState(true);
     const [showImagePicker, setShowImagePicker] = useState(false);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
+    const [isEnabled, setIsEnabled] = useState(false);
 
     props.navigation.setOptions({
         headerRight: () => (
             <TouchableOpacity style={{ marginRight: 15 }} onPress={handleSaveButton}>
-                <Feather name={'save'} color={'white'} size={26} />
+                <View style={{flexDirection:'row', alignItems:'center', padding:10, backgroundColor:"#19a15e", borderRadius:6}}>
+                    <Text style={{ color: 'white', fontSize: 16}}> Guardar </Text>
+                    <Feather name={'save'} color={'white'} size={20} />
+                </View>
             </TouchableOpacity>
         )
     });
@@ -203,6 +207,8 @@ const EditProfile = props => {
         setShowImagePicker(show)
     };
 
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
     const handleTakenImage = async (image, filename) => {
         try {
             setUserProfilePhoto(`data:image/jpeg;base64,${image}`);
@@ -310,6 +316,17 @@ const EditProfile = props => {
                             error={errorMessages.aboutMe}
                             onChangeText={value => handleInput('aboutMe', value)}
                         />
+                        <View style={{flexDirection:'row', alignItems:'center', margin:5}}>
+                            <Switch
+                                trackColor={{ false: "#767577", true: "#59f1ae" }}
+                                thumbColor={isEnabled ? "#29c17e" : "#f4f3f4"}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                            />
+                            <Text>Soy recolector</Text>
+                        </View>
+                        
                         <Input
                             label={'Dirección'}
                             style={styles.input}

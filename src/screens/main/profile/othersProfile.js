@@ -121,7 +121,7 @@ const OthersProfile = props => {
                             </View>
                         </View>
                         {/* *********** FIN PROFILE HEADER *********** */}
-                        <View flexDirection="row" style={{ padding: 20}}>                                        
+                        <View flexDirection="row" style={{ padding: 5}}>                                        
                             <View flex={1} alignItems = {'center'}>
                                 <Text style={{fontFamily: 'Nunito-Regular'}}>Co2</Text>
                                 <MaterialIcons name="arrow-downward" color = {'#29c17e'} size = {30}/>
@@ -129,7 +129,7 @@ const OthersProfile = props => {
                             </View>
                             <View flex={1} alignItems = {'center'}>
                                 <Feather name={'truck'} size={35} color={'#29c17e'} />
-                                <Text style={{fontSize:18, fontFamily: 'Nunito-Regular'}}>Es recolector</Text>
+                                <Text style={styles.titleTexts}>Es recolector</Text>
                             </View>
                             <View flex={1} style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
                                 <TouchableOpacity style={styles.editInfoBtn}>
