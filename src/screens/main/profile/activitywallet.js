@@ -10,6 +10,7 @@ import colors from '../../../constants/colors';
 import validate from '../../../services/Validate';
 import { Feather } from '@expo/vector-icons';
 import { FlatList } from 'react-native-gesture-handler';
+import Moment from 'moment';
 
 
 const ActivityWallet = props => {
@@ -98,7 +99,8 @@ const ActivityWallet = props => {
                         const one_fields = {
                             amount: oneresult.amount,                            
                             contract: oneresult.contract,
-                            created_at: create_date.toLocaleString(),
+                            // created_at: create_date.toLocaleString(),
+                            created_at: Moment(create_date).format('dd d/MM/yyyy HH:mm'),
                             dest_account_type: oneresult.dest_account_type,
                             from:oneresult.from?oneresult.from:{
                                 account_name: "", 

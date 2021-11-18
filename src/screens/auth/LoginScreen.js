@@ -156,14 +156,14 @@ const LoginScreen = props => {
                         <View style={styles.additionalContainer}>
                             <View style={styles.text}>
                                 <Text style={styles.textCenter}>Si aún no tienes cuenta <Text style={styles.underlinedColoredText} onPress={handleRegisterLink}>Registrate ahora</Text></Text>
-                                <Text style={styles.textCenter}>O ingresa utilizando tu cuenta de:</Text>
+                                {/* <Text style={styles.textCenter}>O ingresa utilizando tu cuenta de:</Text> */}
                             </View>
-                            <View style={styles.socialIconsContainer}>
+                            {/* <View style={styles.socialIconsContainer}>
                                 <TouchableOpacity style={styles.facebookLoginBtn} onPress={handleLoginWithFacebookExpo}>
                                     <MaterialCommunityIcons style={styles.facebookLoginTextIcon} name={'facebook'} color={'white'} size={24} />
                                     <Text style={styles.facebookLoginText}>Facebook</Text>
                                 </TouchableOpacity>
-                            </View>
+                            </View> */}
                         </View>
 
                     </View>

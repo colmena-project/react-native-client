@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, Image, Button, ScrollView, Alert, ActivityIndicator, AsyncStorage} from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Text, Image, Button, ScrollView, Alert, ActivityIndicator, AsyncStorage, CheckBox} from 'react-native'
 import Parse from 'parse/react-native';
 import { useDispatch } from 'react-redux';
 import Input from '../../components/form/Input';
@@ -30,6 +30,7 @@ const RegisterScreen = props => {
     const [walletid, setWalletID] = useState("");
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
+    const [isSelected, setIsSelected] = useState(false);
     const dispatch = useDispatch();
 
     const checkErrors = errors => {
@@ -257,16 +258,24 @@ const RegisterScreen = props => {
 
                         </View>
 
+                        <View style={styles.checkboxContainer}>
+                            <CheckBox
+                                value = {isSelected}
+                                onValueChange={setIsSelected}
+                            />
+                            <Text style={styles.textCenter}>Acepto Ios <Text style={styles.underlinedColoredText}>Termions y Condiciones</Text></Text>
+                        </View>
+
                         <View style={styles.additionalContainer}>
                             <View style={styles.button}>
                                 {/* <Button color={colors.colmenaGreen} title={'Registrarme'} onPress={handleRegister} /> */}
-                                <TouchableOpacity style={{ backgroundColor: colors.colmenaGreen, padding: 10, borderRadius: 5 }} onPress={handleRegister}>
+                                <TouchableOpacity disabled={isSelected?false:true} style={{ backgroundColor: colors.colmenaGreen, padding: 10, borderRadius: 5 }} onPress={handleRegister}>
                                     <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Nunito-SemiBold' }}>REGISTRARME</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
 
-                        <View style={styles.additionalContainer}>
+                        {/* <View style={styles.additionalContainer}>
                             <View style={styles.text}>
                                 <Text style={styles.textCenter}>O ingresa utilizando tu cuenta de:</Text>
                             </View>
@@ -276,7 +285,7 @@ const RegisterScreen = props => {
                                     <Text style={styles.facebookLoginText}>Facebook</Text>
                                 </TouchableOpacity>
                             </View>
-                        </View>
+                        </View> */}
 
                     </View>
                 </ScrollView>
@@ -312,6 +321,12 @@ const styles = StyleSheet.create({
     additionalContainer: {
         alignItems: 'center',
         paddingTop: 40,
+    },
+    checkboxContainer: {
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "center",
+        marginBottom: 20,
     },
     input: {
         width: '100%',
