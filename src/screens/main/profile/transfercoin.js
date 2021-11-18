@@ -247,7 +247,7 @@ const TransferCoin = props => {
                                     style={{color:"#999", maxWidth:200}}
                                     onChangeText={text => setTokenKey(text) }
                                     value={tokenkey}
-                                    placeholder="Input Token"
+                                    placeholder="Token de entrada"
                                     textAlign="center"
                                     style={{fontFamily: 'Nunito-Regular'}}/>
                                 <Ionicons name="md-refresh" size={24} style={{marginLeft:10}} onPress={refreshKey}/>
@@ -261,9 +261,9 @@ const TransferCoin = props => {
                         </TouchableOpacity>
                         {/* {codeinput && */}
                             <DialogInput isDialogVisible={codeinput}
-                                title={"Verification code"}
-                                message={"You can get verification code from mail"}
-                                hintInput ={"HINT INPUT"}
+                                title={"Código de verificación"}
+                                message={"Puede obtener el código de verificación por correo"}
+                                hintInput ={"ENTRADA DE SUGERENCIA"}
                                 submitInput={ (inputText) => onSetPrivatekey(inputText)}
                                 closeDialog={ () => {setCodeInput(false)}}
                                 >
