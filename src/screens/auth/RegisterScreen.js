@@ -268,7 +268,7 @@ const RegisterScreen = props => {
                                 value = {isSelected}
                                 onValueChange={setIsSelected}
                             />
-                            <Text style={styles.textCenter}>Acepto Ios <Text style={styles.underlinedColoredText} onPress={handleTerms}>Termions y Condiciones</Text></Text>
+                            <Text style={styles.textCenter}>Acepto Ios <Text style={styles.underlinedColoredText} onPress={handleTerms}>Términos y Condiciones</Text></Text>
                         </View>
 
                         <View style={styles.additionalContainer}>

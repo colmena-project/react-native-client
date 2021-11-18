@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Switch } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Switch, Linking} from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Parse } from 'parse/react-native';
 import Input from '../../../components/form/Input';
@@ -100,6 +100,10 @@ const EditProfile = props => {
         errors[field] = validate(field, value);
         setErrorMessages(errors);
     };
+
+    const handleTerms = () =>{
+        Linking.openURL("https://google.com");
+    }
 
     const handleField = (field, value) => {
         const updateData = { ...inputs };
@@ -358,6 +362,10 @@ const EditProfile = props => {
                         </View>
                         <TouchableOpacity onPress={handleChangePassword} style={styles.changePassword}>
                             <Text>Cambiar contraseña</Text>
+                            <MaterialIcons name={'chevron-right'} size={36} color={colors.colmenaGreen} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleTerms} style={styles.changePassword}>
+                            <Text>Acerca de Colmena APP</Text>
                             <MaterialIcons name={'chevron-right'} size={36} color={colors.colmenaGreen} />
                         </TouchableOpacity>
                     </View>
