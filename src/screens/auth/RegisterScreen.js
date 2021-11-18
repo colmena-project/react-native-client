@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, Image, Button, ScrollView, Alert, ActivityIndicator, AsyncStorage, CheckBox} from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Text, Image, Button, ScrollView, Alert, ActivityIndicator, AsyncStorage, CheckBox,Linking} from 'react-native'
 import Parse from 'parse/react-native';
 import { useDispatch } from 'react-redux';
 import Input from '../../components/form/Input';
@@ -124,6 +124,10 @@ const RegisterScreen = props => {
         });
     };
 
+    const handleTerms = () =>{
+        Linking.openURL("https://google.com");
+    }
+
     const handleRegisterAccount = async (wallet_id,private_Key) => {
         console.log("walletid", wallet_id);
         try {            
@@ -157,6 +161,7 @@ const RegisterScreen = props => {
             Alert.alert(error.message);
         }
     }
+    
 
 
     return (
@@ -263,7 +268,7 @@ const RegisterScreen = props => {
                                 value = {isSelected}
                                 onValueChange={setIsSelected}
                             />
-                            <Text style={styles.textCenter}>Acepto Ios <Text style={styles.underlinedColoredText}>Termions y Condiciones</Text></Text>
+                            <Text style={styles.textCenter}>Acepto Ios <Text style={styles.underlinedColoredText} onPress={handleTerms}>Termions y Condiciones</Text></Text>
                         </View>
 
                         <View style={styles.additionalContainer}>
