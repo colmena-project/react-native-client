@@ -102,7 +102,7 @@ const EditProfile = props => {
     };
 
     const handleTerms = () =>{
-        Linking.openURL("https://google.com");
+        props.navigation.navigate('About');
     }
 
     const handleField = (field, value) => {

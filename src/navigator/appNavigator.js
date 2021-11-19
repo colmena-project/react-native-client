@@ -31,6 +31,8 @@ import Buscar from '../screens/main/buscar/buscar';
 import PendantsScreen from '../screens/main/pendants';
 import ProfileScreen from '../screens/main/profile';
 import EditProfile from '../screens/main/profile/edit';
+import About from '../screens/main/profile/about'
+import AboutJellyCoin from '../screens/main/profile/aboutcoin'
 import ActivityWallet from '../screens/main/profile/activitywallet';
 import TransferUserList from '../screens/main/profile/transferuserlist';
 import TransferCoin from '../screens/main/profile/transfercoin';
@@ -134,6 +136,8 @@ const RootNavigator = () => {
                 <ProfileStack.Screen name={'ActivityWallet'} component={ActivityWallet} options={setProfileHeaderOptions('Movimientos')} />
                 <ProfileStack.Screen name={'TransferUserList'} component={TransferUserList} options={setProfileHeaderOptions('A quién enviar?')} />
                 <ProfileStack.Screen name={'TransferCoin'} component={TransferCoin} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
+                <ProfileStack.Screen name={'About'} component={About} options={setProfileHeaderOptions('Acerca de')} />
+                <ProfileStack.Screen name={'AboutJellyCoin'} component={AboutJellyCoin} options={setProfileHeaderOptions('jellyCoin')} />
             </ProfileStack.Navigator>
         );
     };
