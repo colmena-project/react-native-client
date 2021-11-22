@@ -38,6 +38,8 @@ const ActivityWallet = props => {
     const [showImagePicker, setShowImagePicker] = useState(false);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const [balance, setBalance] = useState("0.00");
+    const [tbalance, setTBalance] = useState("0.00");
+    const [lbalance, setLBalance] = useState("0.00");
     const [activitydata, setActivityData] = useState([]);
     const [activitysdata, setActivitySData] = useState([]);
     const [activityrdata, setActivityRData] = useState([]);
@@ -79,6 +81,8 @@ const ActivityWallet = props => {
                 .then((response) => response.json())
                 .then((json) => {
                     const result = json.result;
+                    setTBalance(result.balance- result.balance%1)
+                    setLBalance(result.balance*100%100)
                     setBalance(result.balance);
                 })
                 .catch((error) =>{
@@ -244,9 +248,9 @@ const ActivityWallet = props => {
             {isLoading ? <ActivityIndicator style={styles.activityIndicator} size={'large'} color={colors.colmenaGreen} /> :
                 <View flex={1} alignItems ="center">
                     <View flexDirection="row" style={{ padding: 20}}>
-                        <View flex={1}>
+                        <View flex={1}>                            
                             <Text style={{fontFamily: 'Lato-Regular'}}>Hola, {inputs.firstName} !</Text>
-                            <Text style={{ color: '#29c17e', fontSize:30, fontFamily: 'Mulish-Regular'}}>{balance} JYC</Text>
+                            <View flexDirection="row"><AnimatedNumbers fontStyle={{fontSize:30,color: '#29c17e'}} animateToNumber={balance}/><Text style={{ color: '#29c17e', fontSize:30, fontFamily: 'Mulish-Regular'}}> JYC</Text></View>
                             <Text size={20} style={{fontFamily: 'Lato-Regular'}}>Tu Balance</Text>
                         </View>
                         <View width ={70} alignItems = {'center'}>

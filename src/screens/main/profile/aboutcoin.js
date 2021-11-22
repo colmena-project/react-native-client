@@ -22,7 +22,6 @@ const AboutJellyCoin = props => {
                     <Text style={styles.aboutText}>El documento oficial (Whitepaper de jelly...</Text>
                 </View>
             </ScrollView>
-            
         </View>
     );
 };
