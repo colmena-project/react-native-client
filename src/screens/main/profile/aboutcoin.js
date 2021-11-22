@@ -5,11 +5,6 @@ import colors from '../../../constants/colors';
 
 
 const AboutJellyCoin = props => {
-    const handleTerms = () =>{
-        Linking.openURL("https://google.com");
-    }
-
-
     return (
         <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>            
             <ScrollView style={{
@@ -25,7 +20,7 @@ const AboutJellyCoin = props => {
                 </View>
                 <View style={styles.inputsContainer}>
                     <Text style={styles.aboutText}>El documento oficial (Whitepaper de jelly...</Text>
-                </View>                
+                </View>
             </ScrollView>
             
         </View>

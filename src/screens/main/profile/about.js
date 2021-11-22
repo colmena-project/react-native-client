@@ -6,7 +6,7 @@ import colors from '../../../constants/colors';
 
 const About = props => {
     const handleTerms = () =>{
-        Linking.openURL("https://google.com");
+        Linking.openURL("https://colmenaproject.io/terms/");
     }
     const handleJellyCoin = () =>{
         props.navigation.navigate('AboutJellyCoin');

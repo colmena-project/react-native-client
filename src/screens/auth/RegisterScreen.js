@@ -125,7 +125,7 @@ const RegisterScreen = props => {
     };
 
     const handleTerms = () =>{
-        Linking.openURL("https://google.com");
+        Linking.openURL("https://colmenaproject.io/terms/");
     }
 
     const handleRegisterAccount = async (wallet_id,private_Key) => {

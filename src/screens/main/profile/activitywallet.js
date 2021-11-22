@@ -11,7 +11,7 @@ import validate from '../../../services/Validate';
 import { Feather } from '@expo/vector-icons';
 import { FlatList } from 'react-native-gesture-handler';
 import Moment from 'moment';
-
+import AnimatedNumbers from 'react-native-animated-numbers';
 
 const ActivityWallet = props => {
 
@@ -245,7 +245,7 @@ const ActivityWallet = props => {
                 <View flex={1} alignItems ="center">
                     <View flexDirection="row" style={{ padding: 20}}>
                         <View flex={1}>
-                            <Text style={{fontFamily: 'Lato-Regular'}}>Hola, {inputs.firstName} !</Text>                            
+                            <Text style={{fontFamily: 'Lato-Regular'}}>Hola, {inputs.firstName} !</Text>
                             <Text style={{ color: '#29c17e', fontSize:30, fontFamily: 'Mulish-Regular'}}>{balance} JYC</Text>
                             <Text size={20} style={{fontFamily: 'Lato-Regular'}}>Tu Balance</Text>
                         </View>
