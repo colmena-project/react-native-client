@@ -178,7 +178,10 @@ const TransferUserList = props => {
                                     keyExtractor={item => item.id}/>
                             </View>
                             :
-                            <Text  style={{ color: '#f00', fontSize:16}}>Use el nombre correcto o el Numero de WALLET para lograr el envio y agregar el nombre a tu lista</Text>
+                            <View>
+                                <Text  style={{ color: '#f00', fontSize:16}}>Use el nombre correcto o el Numero de WALLET para lograr el envio y agregar el nombre a tu lista</Text>
+                            </View>
+                            
                         }
                         
                     </View>

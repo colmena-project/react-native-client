@@ -10,6 +10,9 @@ import RegisterScreen from '../screens/auth/RegisterScreen';
 import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 
 import SplashHome from '../screens/main/splash/splashhome';
+import SplashFirst from '../screens/main/splash/splashfirst';
+import SplashSecond from '../screens/main/splash/splashsecond';
+import SplashEnd from '../screens/main/splash/splashend';
 
 import HomeScreen from '../screens/main/home';
 
@@ -241,6 +244,9 @@ const RootNavigator = () => {
                             :
                             <>
                                 <AppStack.Screen name={'SplashHome'} component={SplashHome} options={{ headerShown: false }} />
+                                <AppStack.Screen name={'SplashFirst'} component={SplashFirst} options={{ headerShown: false }} />
+                                <AppStack.Screen name={'SplashSecond'} component={SplashSecond} options={{ headerShown: false }} />
+                                <AppStack.Screen name={'SplashEnd'} component={SplashEnd} options={{ headerShown: false }} />
                             </>
                         }
                     </>

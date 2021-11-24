@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Text, View, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, Alert, Image } from 'react-native';
-import { Avatar } from 'react-native-elements';
-import { Parse } from 'parse/react-native';
-import Input from '../../../components/form/Input';
-import ImagerPicker from '../../../components/form/ImagePicker';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MapPicker from '../../../components/address/MapPicker';
 import colors from '../../../constants/colors';
-import validate from '../../../services/Validate';
-import { Feather } from '@expo/vector-icons';
-import { FlatList } from 'react-native-gesture-handler';
-import Moment from 'moment';
-import AnimatedNumbers from 'react-native-animated-numbers';
+import { setSeeSplash } from '../../../redux/splash/actions';
 
 const SplashHome = props => {
+    const dispatch = useDispatch();
+    const handleHome = () => {
+        dispatch(setSeeSplash(true));
+    };
+    const handleFirst = () => {
+        props.navigation.navigate('SplashFirst');
+    };
     return (
         <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
             <View style={{marginTop:50,height:80, backgroundColor: colors.colmenaBackground}} alignItems={'center'}>
@@ -35,14 +33,14 @@ const SplashHome = props => {
                 </View>                
                 <View flexDirection="row" width = "100%" style={{ padding: 20}} justifyContent="space-between">
                     <View flex ={1} alignItems = {'center'} style={{ padding: 10}}>
-                        <TouchableOpacity >
+                        <TouchableOpacity onPress={handleHome}>
                             <View>
                                 <Text style={{ color: '#21BDA3', fontSize:15, fontFamily: 'Nunito-Regular'}}>Más tarde</Text>
                             </View>
                         </TouchableOpacity>                    
                     </View>
                     <View flex ={1} alignItems = {'center'} backgroundColor ={'#21BDA3'} style={{ padding: 10}}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={handleFirst}>
                             <View>
                                 <Text style={{ color: '#fff', fontSize:15 }}>Empezar</Text>
                             </View>
