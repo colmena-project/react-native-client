@@ -80,6 +80,20 @@ const TransferUserList = props => {
         setSearchStatus(false);
     }
 
+    const handlenewuser = () =>{
+        const oneuser = {
+            firstName: "unknown",
+            lastName: "unknown",
+            nickname: searchtxt,
+            email: "unknown",
+            aboutMe: "unknown",                
+            walletId: searchtxt,
+            avatar: null,
+            id: null
+        }
+        props.navigation.navigate('TransferCoin',{oneuser});
+    }
+
     const handleTransferCoin = (oneuser) => {
         props.navigation.navigate('TransferCoin',{oneuser});
     };
@@ -178,8 +192,15 @@ const TransferUserList = props => {
                                     keyExtractor={item => item.id}/>
                             </View>
                             :
-                            <View>
+                            <View alignItems={"center"} style={{height:100}}>
                                 <Text  style={{ color: '#f00', fontSize:16}}>Use el nombre correcto o el Numero de WALLET para lograr el envio y agregar el nombre a tu lista</Text>
+                                <View alignItems = {'center'} backgroundColor ={'#21BDA3'} style={{marginTop:10, width:100, height:40,padding: 10}}>
+                                    <TouchableOpacity onPress={handlenewuser}>
+                                        <View>
+                                            <Text style={{ color: '#fff', fontSize:15 }}>Empezar</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                             
                         }
