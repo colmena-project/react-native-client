@@ -9,7 +9,7 @@ import TnCScreen from '../screens/auth/TnCScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
 
-import SplashHome from '../screens/main/home/splashhome';
+import SplashHome from '../screens/main/splash/splashhome';
 
 import HomeScreen from '../screens/main/home';
 

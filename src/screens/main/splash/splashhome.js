@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, Alert, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Parse } from 'parse/react-native';
 import Input from '../../../components/form/Input';
@@ -16,17 +16,17 @@ import AnimatedNumbers from 'react-native-animated-numbers';
 const SplashHome = props => {
     return (
         <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
-            <View style={{ height:200, backgroundColor: colors.colmenaBackground }}>
-                <Image
+            <View style={{marginTop:50,height:80, backgroundColor: colors.colmenaBackground}} alignItems={'center'}>
+                <Image style={{ width:"50%", height:80, resizeMode:'contain'}}
                     source={require('../../../../assets/colmena_logo.png')}
                 />
             </View>
-            <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
-                <Image
-                    source={require('../../../../assets/colmena_logo.png')}
+            <View alignItems={'center'} style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
+                <Image style={{ width:"80%",height:Dimensions.get('window').height-250, resizeMode:'contain'}}
+                    source={require('../../../../assets/splash/splash1.png')}
                 />
             </View>
-            <View>
+            <View style={{height:150, backgroundColor: colors.colmenaBackground}}>
                 <View alignItems = {'center'}>
                     <Text style={{fontSize:22, fontFamily: 'Nunito-Regular'}}>Felicitaciones!</Text>
                 </View>
