@@ -104,7 +104,7 @@ const ActivityWallet = props => {
                             amount: oneresult.amount,                            
                             contract: oneresult.contract,
                             // created_at: create_date.toLocaleString(),
-                            created_at: Moment(create_date).format('dd d/MM/yyyy HH:mm'),
+                            created_at: Moment(create_date).format('dd D/MM/yyyy HH:mm'),
                             dest_account_type: oneresult.dest_account_type,
                             from:oneresult.from?oneresult.from:{
                                 account_name: "", 
