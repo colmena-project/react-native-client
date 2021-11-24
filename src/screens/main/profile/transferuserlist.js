@@ -67,13 +67,12 @@ const TransferUserList = props => {
             setSearchStatus(true);
             const filterusers = [];
             for (let i = 0 ; i < userlist.length ; i ++ ) {
-                if(userlist[i].firstName.toLowerCase().includes(text.toLowerCase()) || userlist[i].lastName.toLowerCase().includes(text.toLowerCase()) || userlist[i].nickname.toLowerCase().includes(text.toLowerCase())){
+                if(userlist[i].firstName.toLowerCase().includes(text.toLowerCase()) || userlist[i].lastName.toLowerCase().includes(text.toLowerCase()) || userlist[i].nickname.toLowerCase().includes(text.toLowerCase())|| userlist[i].walletId.toLowerCase().includes(text.toLowerCase())){
                     filterusers.push(userlist[i])
                 }
             }
             setSearchResultList(filterusers);
         }
-        console.log(text);
     }
     const onCloseSearch = () =>{
         console.log("exit")
@@ -150,7 +149,8 @@ const TransferUserList = props => {
 
     return (
             <View style={{ height:"100%",width:"100%",  backgroundColor: colors.colmenaBackground }}>
-                {isLoading ? <ActivityIndicator style={styles.activityIndicator} size={'large'} color={colors.colmenaGreen} /> :
+                {isLoading ? <ActivityIndicator style={{ marginTop: 50 }} size={"large"} color={colors.colmenaGreen}
+                        /> :
                 <View style={{margin:15}} flex={1} justifyContent="space-between">
                     <Text  style={{ color: '#000', fontSize:22, fontFamily: 'Mulish-Regular'}}>A quién quieres enviar jellys?</Text>
                     <Text  style={{ color: '#000', fontSize:14, fontFamily: 'Lato-Regular'}}>Elije un contacto de tu lista o inicia un nuevo envío</Text>

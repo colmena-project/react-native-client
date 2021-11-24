@@ -48,12 +48,13 @@ const TransferCoin = props => {
     const fetchData = async () => {
         try {
             setIsLoading(true);
+            console.log("input data::")
             const parseAddress = new Parse.Query('Address');
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();
             const parseAccount = await userAddress.get('account').fetch();
             if (parseAccount.get('avatar')) {
-                setUserProfilePhoto(parseAccount.get('avatar')._url);
+                // setUserProfilePhoto(parseAccount.get('avatar')._url);
             }
             setUserAccount(parseAccount);
             setInputs({
@@ -67,6 +68,7 @@ const TransferCoin = props => {
                 avatar:parseAccount.get('avatar'),
                 id:parseAccount.id
             });
+            console.log("input data::", inputs)
             setIsLoading(false);
         } catch (err) {
             setIsLoading(false);
@@ -82,6 +84,9 @@ const TransferCoin = props => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }
+        })
+        .then((json) => {
+            console.log(json);
         })
         .catch((error) =>{
             console.error(error);
@@ -135,8 +140,7 @@ const TransferCoin = props => {
                 fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+ inputs.walletId)
                 .then((response) => response.json())
                 .then((json) => {
-                    const result = json.result;                    
-        
+                    const result = json.result;
                     let sb = new Serialize.SerialBuffer({textEncoder:encode, textDecoder:decode});
                     let value_str = Number.parseFloat(valuestr).toFixed(2)
         
@@ -198,18 +202,18 @@ const TransferCoin = props => {
 
     return (
             <View style={{ height:"100%",width:"100%",  backgroundColor: colors.colmenaBackground }}>
-                {isLoading === true ? <ActivityIndicator size={'large'} color={colors.colmenaGreen} /> :              
+                {isLoading === true ? <ActivityIndicator style={{ marginTop: 50 }} size={'large'} color={colors.colmenaGreen} /> :              
                     <View style={{margin:15}} flex={1} alignItems="center">
                         <View flexDirection="row"> 
                             <TextInput
-                                style={{color:"#29C17E",fontSize:70, fontFamily: 'Nunito-Regular'}}
+                                style={{color:"#21BDA3",fontSize:70, fontFamily: 'Nunito-Regular'}}
                                 onChangeText={text => setValueStr(text) }
                                 value={valuestr}
                                 placeholder="0"
-                                placeholderTextColor = "#29C17E"
+                                placeholderTextColor = "#21BDA3"
                                 keyboardType="numeric"
                             />
-                            <Text style={{color:"#29C17E",fontSize:14,marginTop:15, fontFamily: 'Nunito-Regular'}}>JYC</Text>
+                            <Text style={{color:"#21BDA3",fontSize:14,marginTop:15, fontFamily: 'Nunito-Regular'}}>JYC</Text>
                         </View>
                         <View flexDirection="row" style={{marginTop:10}}>
                             {oneuser.avatar ?
@@ -255,7 +259,7 @@ const TransferCoin = props => {
                             </View>                            
                         </View>
                         <TouchableOpacity onPress={handleTransfer}>
-                            <View style={{backgroundColor:"#29C17E", width:185,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
+                            <View style={{backgroundColor:"#21BDA3", width:185,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
                                 <Text style={{color:"#fff" , fontFamily: 'Nunito-Regular'}}>Continuar</Text>
                             </View>
                         </TouchableOpacity>

@@ -232,7 +232,7 @@ const ActivityWallet = props => {
                     </View>
                     <View alignItems={'center'} justifyContent="space-between">
                         <View/>
-                            <Text  style={{ color: '#29c17e', fontSize:15, fontFamily: 'Nunito-Regular'}}>                        
+                            <Text  style={{ color: '#21BDA3', fontSize:15, fontFamily: 'Nunito-Regular'}}>                        
                                 +{oneActivity.amount}
                             </Text>                                              
                         <View/>
@@ -245,18 +245,18 @@ const ActivityWallet = props => {
 
     return (
         <View style={{ flex: 1, backgroundColor: colors.colmenaBackground }}>
-            {isLoading ? <ActivityIndicator style={styles.activityIndicator} size={'large'} color={colors.colmenaGreen} /> :
+            {isLoading ? <ActivityIndicator style={{ marginTop: 50 }} size={"large"} color={colors.colmenaGreen} /> :
                 <View flex={1} alignItems ="center">
                     <View flexDirection="row" style={{ padding: 20}}>
                         <View flex={1}>                            
                             <Text style={{fontFamily: 'Lato-Regular'}}>Hola, {inputs.firstName} !</Text>
-                            <View flexDirection="row"><AnimatedNumbers fontStyle={{fontSize:30,color: '#29c17e'}} animateToNumber={balance}/><Text style={{ color: '#29c17e', fontSize:30, fontFamily: 'Mulish-Regular'}}> JYC</Text></View>
+                            <View flexDirection="row"><AnimatedNumbers fontStyle={{fontSize:30,color: '#21BDA3'}} animateToNumber={balance}/><Text style={{ color: '#21BDA3', fontSize:30, fontFamily: 'Mulish-Regular'}}> JYC</Text></View>
                             <Text size={20} style={{fontFamily: 'Lato-Regular'}}>Tu Balance</Text>
                         </View>
                         <View width ={70} alignItems = {'center'}>
                             <Text style={{fontFamily: 'Nunito-Regular'}}>Co2</Text>
-                            <MaterialIcons name="arrow-downward" color = {'#29c17e'} size = {30}/>
-                            <Text style={{ color: '#29c17e', fontSize:18, fontFamily: 'Nunito-Regular'}}>0.0 kg</Text>
+                            <MaterialIcons name="arrow-downward" color = {'#21BDA3'} size = {30}/>
+                            <Text style={{ color: '#21BDA3', fontSize:18, fontFamily: 'Nunito-Regular'}}>0.0 kg</Text>
                         </View>
                     </View>
                     <View flexDirection="row" style={{ padding: 5}} width="100%">
@@ -269,7 +269,7 @@ const ActivityWallet = props => {
                                     borderRadius={100}
                                 />
                             </TouchableOpacity>
-                            <Text style={{ color: '#29c17e', fontSize:14, fontFamily: 'Nunito-Regular'}}>Enviar</Text>
+                            <Text style={{ color: '#21BDA3', fontSize:14, fontFamily: 'Nunito-Regular'}}>Enviar</Text>
                         </View>
                         <View style={{ padding: 5}} alignItems ="center">
                             <Image
@@ -278,12 +278,12 @@ const ActivityWallet = props => {
                                 resizeMode="cover"
                                 borderRadius={100}
                             />
-                            <Text style={{ color: '#29c17e', fontSize:14, fontFamily: 'Nunito-Regular'}}>Pedir</Text>
+                            <Text style={{ color: '#21BDA3', fontSize:14, fontFamily: 'Nunito-Regular'}}>Pedir</Text>
                         </View>
                     </View>
                     <View flexDirection="row" width = "100%" style={{ padding: 20}} justifyContent="space-between">
                         {selitem == 0 ? 
-                            <View flex ={1} alignItems = {'center'} backgroundColor ={'#29c17e'} style={{ padding: 10}}>
+                            <View flex ={1} alignItems = {'center'} backgroundColor ={'#21BDA3'} style={{ padding: 10}}>
                                 <TouchableOpacity onPress={onSetselitem.bind(this,0)}>
                                     <View>
                                         <Text style={{ color: '#fff', fontSize:15 }}>Todos</Text>
@@ -300,7 +300,7 @@ const ActivityWallet = props => {
                             </View>
                         }
                         {selitem == 1 ?
-                            <View flex ={1} alignItems = {'center'} backgroundColor ={'#29c17e'} style={{ padding: 10}}>
+                            <View flex ={1} alignItems = {'center'} backgroundColor ={'#21BDA3'} style={{ padding: 10}}>
                             <TouchableOpacity onPress={onSetselitem.bind(this,1)}>
                                 <View>
                                     <Text style={{ color: '#fff', fontSize:15, fontFamily: 'Nunito-Regular'}}>Recibidos</Text>
@@ -320,7 +320,7 @@ const ActivityWallet = props => {
                         }
 
                         {selitem == 2 ?
-                            <View flex ={1} alignItems = {'center'} backgroundColor ={'#29c17e'} style={{ padding: 10}}>
+                            <View flex ={1} alignItems = {'center'} backgroundColor ={'#21BDA3'} style={{ padding: 10}}>
                                 <TouchableOpacity onPress={onSetselitem.bind(this,2)}>
                                     <View>
                                         <Text style={{ color: '#fff', fontSize:15 }} >Enviados</Text>

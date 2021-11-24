@@ -1,5 +1,5 @@
 const colors = {
-    colmenaGreen: '#29C17E',
+    colmenaGreen: '#21BDA3',
     colmenaOtherGreen: '#9cbfb6',
     colmenaGreenDisabled: '#cfe7e0',
     colmenaGreenActive: '#8de28d',

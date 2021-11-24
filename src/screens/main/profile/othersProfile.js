@@ -124,11 +124,11 @@ const OthersProfile = props => {
                         <View flexDirection="row" style={{ padding: 5}}>                                        
                             <View flex={1} alignItems = {'center'}>
                                 <Text style={{fontFamily: 'Nunito-Regular'}}>Co2</Text>
-                                <MaterialIcons name="arrow-downward" color = {'#29c17e'} size = {30}/>
-                                <Text style={{ color: '#29c17e', fontSize:18, fontFamily: 'Nunito-Regular'}}>12.7 kg</Text>
+                                <MaterialIcons name="arrow-downward" color = {'#21BDA3'} size = {30}/>
+                                <Text style={{ color: '#21BDA3', fontSize:18, fontFamily: 'Nunito-Regular'}}>12.7 kg</Text>
                             </View>
                             <View flex={1} alignItems = {'center'}>
-                                <Feather name={'truck'} size={35} color={'#29c17e'} />
+                                <Feather name={'truck'} size={35} color={'#21BDA3'} />
                                 <Text style={styles.titleTexts}>Es recolector</Text>
                             </View>
                             <View flex={1} style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>

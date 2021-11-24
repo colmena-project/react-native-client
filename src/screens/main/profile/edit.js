@@ -323,7 +323,7 @@ const EditProfile = props => {
                         <View style={{flexDirection:'row', alignItems:'center', margin:5}}>
                             <Switch
                                 trackColor={{ false: "#767577", true: "#59f1ae" }}
-                                thumbColor={isEnabled ? "#29c17e" : "#f4f3f4"}
+                                thumbColor={isEnabled ? "#21BDA3" : "#f4f3f4"}
                                 ios_backgroundColor="#3e3e3e"
                                 onValueChange={toggleSwitch}
                                 value={isEnabled}

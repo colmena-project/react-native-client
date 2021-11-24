@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Image } from 'react-native';
+import React, {useState, useEffect } from 'react';
+import { View, Image, AsyncStorage } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,6 +8,8 @@ import LoginScreen from '../screens/auth/LoginScreen';
 import TnCScreen from '../screens/auth/TnCScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
+
+import SplashHome from '../screens/main/home/splashhome';
 
 import HomeScreen from '../screens/main/home';
 
@@ -57,6 +59,8 @@ const RootNavigator = () => {
     const ProfileStack = createStackNavigator();
     
     const isLoggedIn = useSelector(state => state.isLoggedIn);
+    const isSeeSplash = useSelector(state => state.isSeeSplash);
+
 
     const setProfileHeaderOptions = (title) => {
         return {
@@ -230,7 +234,15 @@ const RootNavigator = () => {
             <AppStack.Navigator>
                 {isLoggedIn ?
                     <>
-                        <AppStack.Screen name={'App'} component={homeTabsNavigator} options={{ headerShown: false }} />
+                        {isSeeSplash ?
+                            <>
+                                <AppStack.Screen name={'App'} component={homeTabsNavigator} options={{ headerShown: false }} />
+                            </>
+                            :
+                            <>
+                                <AppStack.Screen name={'SplashHome'} component={SplashHome} options={{ headerShown: false }} />
+                            </>
+                        }
                     </>
                     :
                     <>

@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/colmena_splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#29c17e"
+      "backgroundColor": "#21BDA3"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

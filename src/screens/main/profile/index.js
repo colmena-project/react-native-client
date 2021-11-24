@@ -266,13 +266,13 @@ const UserProfile = props => {
                                     </View>
                                     <View flexDirection="row" style={{ padding: 20}}>
                                         <View flex={1}>                           
-                                            <Text style={{ color: '#29c17e', fontSize:30, fontFamily: 'Mulish-Regular'}}>{balance} JYC</Text>
+                                            <Text style={{ color: '#21BDA3', fontSize:30, fontFamily: 'Mulish-Regular'}}>{balance} JYC</Text>
                                             <Text size={20} style={{fontFamily: 'Lato-Regular'}}>Tu Balance</Text>
                                         </View>
                                         <View width ={70} alignItems = {'center'}>
                                             <Text style={{fontFamily: 'Nunito-Regular'}}>Co2</Text>
-                                            <MaterialIcons name="arrow-downward" color = {'#29c17e'} size = {30}/>
-                                            <Text style={{ color: '#29c17e', fontSize:18, fontFamily: 'Nunito-Regular'}}>0.0 kg</Text>
+                                            <MaterialIcons name="arrow-downward" color = {'#21BDA3'} size = {30}/>
+                                            <Text style={{ color: '#21BDA3', fontSize:18, fontFamily: 'Nunito-Regular'}}>0.0 kg</Text>
                                         </View>
                                     </View>
                                     <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
@@ -308,13 +308,13 @@ const UserProfile = props => {
                                     </View>
                                     <View flexDirection="row" style={{ padding: 20}}>
                                         <View flex={1}>                           
-                                            <Text style={{ color: '#29c17e', fontSize:30, fontFamily: 'Mulish-Regular'}}>{balance} JYC</Text>
+                                            <Text style={{ color: '#21BDA3', fontSize:30, fontFamily: 'Mulish-Regular'}}>{balance} JYC</Text>
                                             <Text size={20} style={{fontFamily: 'Lato-Regular'}}>Tu Balance</Text>
                                         </View>
                                         <View width ={70} alignItems = {'center'}>
                                             <Text style={{fontFamily: 'Nunito-Regular'}}>Co2</Text>
-                                            <MaterialIcons name="arrow-downward" color = {'#29c17e'} size = {30}/>
-                                            <Text style={{ color: '#29c17e', fontSize:18, fontFamily: 'Nunito-Regular'}}>0.0 kg</Text>
+                                            <MaterialIcons name="arrow-downward" color = {'#21BDA3'} size = {30}/>
+                                            <Text style={{ color: '#21BDA3', fontSize:18, fontFamily: 'Nunito-Regular'}}>0.0 kg</Text>
                                         </View>
                                     </View>
                                     <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
