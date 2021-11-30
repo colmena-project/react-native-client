@@ -78,6 +78,7 @@ const TransferCoin = props => {
 
     const refreshKey = async () =>{
         // Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo.\nSu ID de token es :: ' + "123123123sdfsdfsdf" +"\nDeberías recordar esta clave.");
+        console.log(inputs.walletId);
         fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+inputs.walletId+'/changekey', {
             method: 'GET',
             headers: {

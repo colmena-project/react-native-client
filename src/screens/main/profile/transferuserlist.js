@@ -193,7 +193,7 @@ const TransferUserList = props => {
                             </View>
                             :
                             <View alignItems={"center"} style={{height:100}}>
-                                <Text  style={{ color: '#f00', fontSize:16}}>Use el nombre correcto o el Numero de WALLET para lograr el envio y agregar el nombre a tu lista</Text>
+                                <Text  style={{ color: '#f00', fontSize:16}}>Use el nombre correcto o la Dirección de Wallet para lograr el envio y agregar el nombre a tu lista</Text>
                                 <View alignItems = {'center'} backgroundColor ={'#21BDA3'} style={{marginTop:10, width:100, height:40,padding: 10}}>
                                     <TouchableOpacity onPress={handlenewuser}>
                                         <View>
