@@ -4,6 +4,7 @@ import { View, Text, Image, ScrollView, TouchableOpacity, ActivityIndicator } fr
 import colors from '../../../constants/colors';
 import styles from '../../../constants/profileStyles';
 import FeedListU from '../../../components/posts/FeedListU';
+import Activity from '../../../components/pendants/Activity';
 
 import { useDispatch } from 'react-redux';
 import Auth from '../../../services/Auth';
@@ -55,6 +56,9 @@ const UserProfile = props => {
             const fetchedTransactions = await UserService.fetchTransactions();
             const transportTransactions = fetchedTransactions.filter(transaction => transaction.get('type') === 'TRANSPORT');
             setTransactions(transportTransactions);
+
+            console.log("______________________");
+            console.log(transportTransactions)
 
             if(account.walletId){
                 fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+ account.walletId)
@@ -294,44 +298,20 @@ const UserProfile = props => {
                         }
                         {selpage == 2 &&
                             <View>
-                                {/* {containers && containers.length > 0 ?
-                                <View>
-                                    <View style={styles.wasteTabContainer}>
-                                        {wasteTypes && wasteTypes.map(wasteType => {
-                                            return <ManageWasteCategory key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
-                                        })
-                                        }
+                                {transactions && transactions.length > 0 ?
+                                    <ScrollView style={{ flex: 1 }}>
+                                        {transactions.map((transaction, index) => {
+                                            return <Activity user={userAccount} transaction={transaction} key={index} />
+                                        })}
+                                    </ScrollView>
+                                    :
+                                    <View style={{ justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20}}>
+                                        <Image style={{ resizeMode: 'contain', width: 150, height: 150}} source={require('../../../../assets/profile/empty_transactions.png')} />
+                                        <Text style={{ paddingHorizontal: 20, textAlign: 'center', fontFamily: 'Nunito-Light', fontSize: 18, color: '#4B4B4B' }}>
+                                            No tenés actividades pendientes. Intenta con el menú de acciones.
+                                        </Text>
                                     </View>
-                                    <View style={styles.locationInfo}>
-                                        <EvilIcons name={'location'} size={35} color={'#4C4C4C'} />
-                                        <Text style={styles.addressTexts}>{userAccount.addresses[0].city}, {userAccount.addresses[0].state}</Text>
-                                    </View>
-                                    <View flexDirection="row" style={{ padding: 20}}>
-                                        <View flex={1}>                           
-                                            <Text style={{ color: '#21BDA3', fontSize:30, fontFamily: 'Mulish-Regular'}}>{balance} JYC</Text>
-                                            <Text size={20} style={{fontFamily: 'Lato-Regular'}}>Tu Balance</Text>
-                                        </View>
-                                        <View width ={70} alignItems = {'center'}>
-                                            <Text style={{fontFamily: 'Nunito-Regular'}}>Co2</Text>
-                                            <MaterialIcons name="arrow-downward" color = {'#21BDA3'} size = {30}/>
-                                            <Text style={{ color: '#21BDA3', fontSize:18, fontFamily: 'Nunito-Regular'}}>0.0 kg</Text>
-                                        </View>
-                                    </View>
-                                    <View style={{ ...styles.btnContainer, paddingHorizontal: 30 }}>
-                                        <TouchableOpacity onPress={handleTransferUserList} style={styles.editInfoBtn}>
-                                            <Text style={styles.editInfoBtnText}>Ver más movimientos</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                                : */}
-                                <View style={{ justifyContent: 'flex-start', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20}}>
-                                    <Image style={{ resizeMode: 'contain', width: 150, height: 150}} source={require('../../../../assets/profile/empty_transactions.png')} />
-                                    <Text style={{ paddingHorizontal: 20, textAlign: 'center', fontFamily: 'Nunito-Light', fontSize: 18, color: '#4B4B4B' }}>
-                                        No tenés actividades pendientes. Intenta con el menú de acciones.
-                                    </Text>
-                                </View>
-                                {/* } */}
-                            
+                                }
                             </View>
                             
                         }
