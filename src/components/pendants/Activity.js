@@ -14,8 +14,12 @@ const Activity = props => {
     const type = 'En tránsito';
     const defaultUserImg = require('../../../assets/default_user_1.png');
 
+
+    console.log("______________________");
+    console.log(user)
+
     const handleAskReason = () => {
-        navigation.navigate('Cancel Transport', { transaction });
+        navigation.navigate('CancelTransport', { transaction });
     };
 
     return (
@@ -23,7 +27,8 @@ const Activity = props => {
             <View style={{ flexDirection: 'row' }}>
                 <Image
                     style={styles.actionButtonIcon}
-                    source={user && user.get('avatar') ? { uri: user.get('avatar')._url } : require('../../../assets/default_user_1.png')}
+                    // source={user && user.get('avatar') ? { uri: user.get('avatar')._url } : require('../../../assets/default_user_1.png')}
+                    source={require('../../../assets/default_user_1.png')}
                 />
                 <View style={{ marginLeft: 15 }}>
                     <Text style={styles.actionButtonText}>{transaction.get('from') ? '@' + transaction.get('from').get('username') : ''}</Text>

@@ -43,7 +43,8 @@ const TransportCancel = props => {
             transaction.set('reason', 'Motivo');
             transaction.save();
             Alert.alert('Transacción cancelada', 'La transacción fue correctamente cancelada.');
-            props.navigation.navigate('Pendants');
+            // props.navigation.navigate('Pendants');
+            props.navigation.goBack();
         } catch (error) {
             Alert.alert(error.message);
         }
