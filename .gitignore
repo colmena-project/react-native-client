@@ -7,8 +7,10 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
+
 web-build/
 
 # macOS
 .DS_Store
 env.js
+pc-api-9069006450255739637-256-b86bb0aa9c51.json
