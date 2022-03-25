@@ -131,7 +131,7 @@ const RequestCoin = props => {
 
     }
 
-    const handleTransfer = async () => {
+    const handleRequest = async () => {
         if(tokenkey.trim() != ""){
             if(description.trim() != ""){
                 setIsLoading(true);
@@ -200,8 +200,11 @@ const RequestCoin = props => {
 
     return (
             <View style={{ height:"100%",width:"100%",  backgroundColor: colors.colmenaBackground }}>
-                {isLoading === true ? <ActivityIndicator style={{ marginTop: 50 }} size={'large'} color={colors.colmenaGreen} /> :              
+                {isLoading === true ? <ActivityIndicator style={{ marginTop: 50 }} size={'large'} color={colors.colmenaGreen} /> :
                     <View style={{margin:15}} flex={1} alignItems="center">
+                        <View justifyContent="space-between">
+                            <Text  style={{ color: '#000', fontSize:16, fontFamily: 'Mulish-Regular'}}>El usuario que reciba el código QR verá esta información</Text>
+                        </View>
                         <View flexDirection="row"> 
                             <TextInput
                                 style={{color:"#21BDA3",fontSize:70, fontFamily: 'Nunito-Regular'}}
@@ -213,6 +216,18 @@ const RequestCoin = props => {
                             />
                             <Text style={{color:"#21BDA3",fontSize:14,marginTop:15, fontFamily: 'Nunito-Regular'}}>JYC</Text>
                         </View>
+                        
+                        <View style={{width:"70%", marginTop:20}}>
+                            <TextInput
+                                style={{color:"#999", width:"100%"}}
+                                onChangeText={text => setDescription(text) }
+                                value={description}
+                                placeholder="Motivo"
+                                textAlign="center"
+                                style={{fontFamily: 'Nunito-Regular'}}/>
+                            <View style={{height:2, backgroundColor:colors.colmenaGreen}}/>                     
+                        </View>
+
                         <View flexDirection="row" style={{marginTop:10}}>
                             {oneuser.avatar ?
                                 <Image
@@ -235,45 +250,14 @@ const RequestCoin = props => {
                                 <View/>
                             </View>                        
                         </View>
-                        <View style={{maxWidth:"70%", marginTop:20}}>
-                            <TextInput
-                                style={{color:"#999"}}
-                                onChangeText={text => setDescription(text) }
-                                value={description}
-                                placeholder="Motivo"
-                                textAlign="center"
-                                style={{fontFamily: 'Nunito-Regular'}}/>
-                            <View flexDirection="row" justifyContent="space-between">
-                                <View/>
-                                <TextInput
-                                    style={{color:"#999", maxWidth:200}}
-                                    onChangeText={text => setTokenKey(text) }
-                                    value={tokenkey}
-                                    placeholder="Token de entrada"
-                                    textAlign="center"
-                                    style={{fontFamily: 'Nunito-Regular'}}/>
-                                <Ionicons name="md-refresh" size={24} style={{marginLeft:10}} onPress={refreshKey}/>
-                                <View/>
-                            </View>                            
-                        </View>
-                        <TouchableOpacity onPress={handleTransfer}>
-                            <View style={{backgroundColor:"#21BDA3", width:185,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
-                                <Text style={{color:"#fff" , fontFamily: 'Nunito-Regular'}}>Continuar</Text>
+                        
+                        <TouchableOpacity style={{marginTop:50}} onPress={handleRequest}>
+                            <View style={{backgroundColor:"#21BDA3", width:200,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10}}>
+                                <Text style={{color:"#fff" , fontFamily: 'Nunito-Regular'}}>Generar QR</Text>
                             </View>
                         </TouchableOpacity>
-                        {/* {codeinput && */}
-                            <DialogInput isDialogVisible={codeinput}
-                                title={"Código de verificación"}
-                                message={"Puede obtener el código de verificación por correo"}
-                                hintInput ={"ENTRADA DE SUGERENCIA"}
-                                submitInput={ (inputText) => onSetPrivatekey(inputText)}
-                                closeDialog={ () => {setCodeInput(false)}}
-                                >
-                            </DialogInput>
-                            {/* } */}
                     </View>
-                }
-                
+                }                
             </View>      
     );
 };
