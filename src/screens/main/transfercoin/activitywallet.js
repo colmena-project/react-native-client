@@ -39,11 +39,6 @@ const ActivityWallet = props => {
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();
             const parseAccount = await userAddress.get('account').fetch();
-            if (parseAccount.get('avatar')) {
-                setUserProfilePhoto(parseAccount.get('avatar')._url);
-            }
-            setUserAccount(parseAccount);
-            setUserAddress(userAddress);
             setInputs({
                 ...inputs,
                 firstName: parseAccount.get('firstName'),
@@ -68,12 +63,10 @@ const ActivityWallet = props => {
                 .then((response) => response.json())
                 .then((json) => {
                     const result = json.result;
-                    setTBalance(result.balance- result.balance%1)
-                    setLBalance(result.balance*100%100)
                     setBalance(result.balance);
                 })
                 .catch((error) =>{
-                    setIsloading(false);
+                    setIsLoading(false);
                     console.error(error);
                 });
 
@@ -123,7 +116,7 @@ const ActivityWallet = props => {
                     setActivityData(allactivity);
                 })
                 .catch((error) =>{
-                    setIsloading(false);
+                    setIsLoading(false);
                     console.error(error);
                 });
             }
@@ -147,6 +140,10 @@ const ActivityWallet = props => {
 
     const handleTransferUserList = () => {
         props.navigation.navigate('TransferUserList');
+    };
+
+    const handleRequestUserList = () => {
+        props.navigation.navigate('RequestUserList');
     };
 
     const renderItem = ({item: oneActivity}) => (
@@ -259,12 +256,14 @@ const ActivityWallet = props => {
                             <Text style={{ color: '#21BDA3', fontSize:14, fontFamily: 'Nunito-Regular'}}>Enviar</Text>
                         </View>
                         <View style={{ padding: 5}} alignItems ="center">
-                            <Image
-                                style={{width:60, height: 60}}
-                                source={require('../../../../assets/pedir.png')}
-                                resizeMode="cover"
-                                borderRadius={100}
-                            />
+                            <TouchableOpacity onPress={handleRequestUserList}>
+                                <Image
+                                    style={{width:60, height: 60}}
+                                    source={require('../../../../assets/pedir.png')}
+                                    resizeMode="cover"
+                                    borderRadius={100}
+                                />
+                            </TouchableOpacity>
                             <Text style={{ color: '#21BDA3', fontSize:14, fontFamily: 'Nunito-Regular'}}>Pedir</Text>
                         </View>
                     </View>
