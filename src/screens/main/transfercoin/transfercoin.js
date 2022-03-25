@@ -237,21 +237,19 @@ const TransferCoin = props => {
                         </View>
                         <View style={{maxWidth:"70%", marginTop:20}}>
                             <TextInput
-                                style={{color:"#999"}}
+                                style={{color:"#999", fontFamily: 'Nunito-Regular'}}
                                 onChangeText={text => setDescription(text) }
                                 value={description}
                                 placeholder="Motivo"
-                                textAlign="center"
-                                style={{fontFamily: 'Nunito-Regular'}}/>
+                                textAlign="center"/>
                             <View flexDirection="row" justifyContent="space-between">
                                 <View/>
                                 <TextInput
-                                    style={{color:"#999", maxWidth:200}}
+                                    style={{color:"#999", maxWidth:200, fontFamily: 'Nunito-Regular'}}
                                     onChangeText={text => setTokenKey(text) }
                                     value={tokenkey}
                                     placeholder="Token de entrada"
-                                    textAlign="center"
-                                    style={{fontFamily: 'Nunito-Regular'}}/>
+                                    textAlign="center"/>
                                 <Ionicons name="md-refresh" size={24} style={{marginLeft:10}} onPress={refreshKey}/>
                                 <View/>
                             </View>                            

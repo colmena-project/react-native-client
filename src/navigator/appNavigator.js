@@ -43,6 +43,7 @@ import TransferUserList from '../screens/main/transfercoin/transferuserlist';
 import TransferCoin from '../screens/main/transfercoin/transfercoin';
 import RequestUserList from '../screens/main/transfercoin/requestuserlist';
 import RequestCoin from '../screens/main/transfercoin/requestcoin';
+import GeneralQR from '../screens/main/transfercoin/generateqr';
 import OthersProfile from '../screens/main/profile/othersProfile';
 import TransportCancel from '../screens/main/profile/cancelTransport';
 import ChangePasswordScreen from '../screens/main/profile/changePassword';
@@ -133,6 +134,7 @@ const RootNavigator = () => {
                 <PendantsStack.Screen name={'TransferCoin'} component={TransferCoin} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
                 <PendantsStack.Screen name={'RequestUserList'} component={RequestUserList} options={setProfileHeaderOptions('A quién solicitar?')} />
                 <PendantsStack.Screen name={'RequestCoin'} component={RequestCoin} options={setProfileHeaderOptions('Cuánto quieres recibir?')} />
+                <PendantsStack.Screen name={'GeneralQR'} component={GeneralQR} options={setProfileHeaderOptions('Compartir')} />
                 
             </PendantsStack.Navigator>
         );

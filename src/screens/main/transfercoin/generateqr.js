@@ -4,7 +4,7 @@ import { Parse } from 'parse/react-native';
 import colors from '../../../constants/colors';
 
 
-const RequestCoin = props => {
+const GeneralQR = props => {
     const fields = {
         firstName: '',
         lastName: '',
@@ -19,7 +19,7 @@ const RequestCoin = props => {
     const [isLoading, setIsLoading] = useState(false);
     const [valuestr, setValueStr] = useState("");
     const [description, setDescription] = useState("");
-    const oneuser = props.route.params.oneuser;
+    // const oneuser = props.route.params.oneuser;
     
     useEffect(() => {
         fetchData();
@@ -48,6 +48,7 @@ const RequestCoin = props => {
                 avatar:parseAccount.get('avatar'),
                 id:parseAccount.id
             });
+            console.log("input data::", inputs)
             setIsLoading(false);
         } catch (err) {
             setIsLoading(false);
@@ -55,8 +56,7 @@ const RequestCoin = props => {
         }
     };
 
-    const handleRequest = () => {
-        props.navigation.navigate('GeneralQR');  
+    const handleRequest = () => {            
     };
 
     return (
@@ -64,54 +64,17 @@ const RequestCoin = props => {
                 {isLoading === true ? <ActivityIndicator style={{ marginTop: 50 }} size={'large'} color={colors.colmenaGreen} /> :
                     <View style={{margin:15}} flex={1} alignItems="center">
                         <View justifyContent="space-between">
-                            <Text  style={{ color: '#000', fontSize:16, fontFamily: 'Mulish-Regular'}}>El usuario que reciba el código QR verá esta información</Text>
+                            <Text  style={{ color: '#000', fontSize:20, fontFamily: 'Mulish-Regular'}}>Muestre el código QR o comparta el link</Text>
+                            <Text  style={{ color: '#000', fontSize:14, fontFamily: 'Mulish-Regular'}}>La persona que lo reciba te podrá enviar la cantidad de jellycoins de tu pedido</Text>
                         </View>
-                        <View flexDirection="row"> 
-                            <TextInput
-                                style={{color:"#21BDA3",fontSize:70, fontFamily: 'Nunito-Regular'}}
-                                onChangeText={text => setValueStr(text) }
-                                value={valuestr}
-                                placeholder="0"
-                                placeholderTextColor = "#21BDA3"
-                                keyboardType="numeric"
-                            />
-                            <Text style={{color:"#21BDA3",fontSize:14,marginTop:15, fontFamily: 'Nunito-Regular'}}>JYC</Text>
-                        </View>
-                        
-                        <View style={{width:"70%", marginTop:20}}>
-                            <TextInput
-                                style={{color:"#999", width:"100%", fontFamily: 'Nunito-Regular'}}
-                                onChangeText={text => setDescription(text) }
-                                value={description}
-                                placeholder="Motivo"
-                                textAlign="center"/>
-                            <View style={{height:2, backgroundColor:colors.colmenaGreen}}/>                     
+                        <View flex={1}>
                         </View>
 
-                        <View flexDirection="row" style={{marginTop:10}}>
-                            {oneuser.avatar ?
-                                <Image
-                                    style={{width:50, height: 50}}
-                                    source={{uri: oneuser.avatar}}
-                                    resizeMode="cover"
-                                    borderRadius={100}
-                                />
-                                :
-                                <Image
-                                    style={{width:50, height: 50}}
-                                    source={require('../../../../assets/user.png')}
-                                    resizeMode="cover"
-                                    borderRadius={100}
-                                />
-                            }
-                            <View justifyContent="space-between">
-                                <View/>
-                                <Text style={{fontSize:16, marginLeft:5, fontFamily: 'Nunito-Regular'}}>{oneuser.nickname}</Text>
-                                <View/>
-                            </View>                        
+                        <View flexDirection="row">
+                            <Text style={{color:"#21BDA3",fontSize:70,fontFamily: 'Nunito-Regular'}}>500</Text>
+                            <Text style={{color:"#21BDA3",fontSize:14,marginTop:15, fontFamily: 'Nunito-Regular'}}>JYC</Text>
                         </View>
-                        
-                        <TouchableOpacity style={{marginTop:50}} onPress={handleRequest}>
+                        <TouchableOpacity onPress={handleRequest}>
                             <View style={{backgroundColor:"#21BDA3", width:200,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10}}>
                                 <Text style={{color:"#fff" , fontFamily: 'Nunito-Regular'}}>Generar QR</Text>
                             </View>
@@ -201,4 +164,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RequestCoin;
+export default GeneralQR;
