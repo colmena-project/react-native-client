@@ -57,9 +57,6 @@ const UserProfile = props => {
             const transportTransactions = fetchedTransactions.filter(transaction => transaction.get('type') === 'TRANSPORT');
             setTransactions(transportTransactions);
 
-            console.log("______________________");
-            console.log(transportTransactions)
-
             if(account.walletId){
                 fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+ account.walletId)
                 .then((response) => response.json())

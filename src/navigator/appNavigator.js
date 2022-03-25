@@ -107,6 +107,7 @@ const RootNavigator = () => {
                 <WasteStack.Screen name={'PickTransportDestiny'} component={PickTransportDestinyScreen} options={setProfileHeaderOptions('Elija el destino')} />
                 <WasteStack.Screen name={'VerifyTransportInfo'} component={VerifyTransportInfoScreen} options={setProfileHeaderOptions('Verificar información')} />
                 <WasteStack.Screen name={'TransportInEvaluation'} component={TransportInEvaluationScreen} options={{ headerShown: false }} />
+                <WasteStack.Screen name={'Pendants'} component={PendantsScreen} options={setProfileHeaderOptions('Pendientes')} />
             </WasteStack.Navigator>
         );
     };
@@ -122,12 +123,12 @@ const RootNavigator = () => {
 
     const PendantsNavigator = () => {
         return (
-            <PendantsStack.Navigator>
-                {/* <PendantsStack.Screen name={'Pendants'} component={PendantsScreen} options={setProfileHeaderOptions('Pendientes')} /> */}
+            <PendantsStack.Navigator>                
                 {/* <PendantsStack.Screen name={'Cancel Transport'} component={TransportCancel} options={setProfileHeaderOptions('Cancelar transporte')} /> */}
                 <PendantsStack.Screen name={'ActivityWallet'} component={ActivityWallet} options={setProfileHeaderOptions('Movimientos')} />
                 <PendantsStack.Screen name={'TransferUserList'} component={TransferUserList} options={setProfileHeaderOptions('A quién enviar?')} />
                 <PendantsStack.Screen name={'TransferCoin'} component={TransferCoin} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
+                {/* <PendantsStack.Screen name={'Pendants'} component={PendantsScreen} options={setProfileHeaderOptions('Pendientes')} /> */}
             </PendantsStack.Navigator>
         );
     };
@@ -202,7 +203,7 @@ const RootNavigator = () => {
                 <HomeTabs.Screen
                     name={'Pendants'}
                     component={PendantsNavigator}
-                    options={setProfileHeaderOptions('Pendientes')}
+                    // options={setProfileHeaderOptions('Pendientes')}
                     options={{
                         unmountOnBlur: true,
                         tabBarLabel: 'JellyCoins',
