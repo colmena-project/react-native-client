@@ -38,9 +38,9 @@ import ProfileScreen from '../screens/main/profile';
 import EditProfile from '../screens/main/profile/edit';
 import About from '../screens/main/profile/about'
 import AboutJellyCoin from '../screens/main/profile/aboutcoin'
-import ActivityWallet from '../screens/main/profile/activitywallet';
-import TransferUserList from '../screens/main/profile/transferuserlist';
-import TransferCoin from '../screens/main/profile/transfercoin';
+import ActivityWallet from '../screens/main/transfercoin/activitywallet';
+import TransferUserList from '../screens/main/transfercoin/transferuserlist';
+import TransferCoin from '../screens/main/transfercoin/transfercoin';
 import OthersProfile from '../screens/main/profile/othersProfile';
 import TransportCancel from '../screens/main/profile/cancelTransport';
 import ChangePasswordScreen from '../screens/main/profile/changePassword';
@@ -123,12 +123,13 @@ const RootNavigator = () => {
 
     const PendantsNavigator = () => {
         return (
-            <PendantsStack.Navigator>                
+            <PendantsStack.Navigator>
+                {/* <PendantsStack.Screen name={'Pendants'} component={PendantsScreen} options={setProfileHeaderOptions('Pendientes')} /> */}
                 {/* <PendantsStack.Screen name={'Cancel Transport'} component={TransportCancel} options={setProfileHeaderOptions('Cancelar transporte')} /> */}
                 <PendantsStack.Screen name={'ActivityWallet'} component={ActivityWallet} options={setProfileHeaderOptions('Movimientos')} />
                 <PendantsStack.Screen name={'TransferUserList'} component={TransferUserList} options={setProfileHeaderOptions('A quién enviar?')} />
                 <PendantsStack.Screen name={'TransferCoin'} component={TransferCoin} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
-                {/* <PendantsStack.Screen name={'Pendants'} component={PendantsScreen} options={setProfileHeaderOptions('Pendientes')} /> */}
+                
             </PendantsStack.Navigator>
         );
     };
