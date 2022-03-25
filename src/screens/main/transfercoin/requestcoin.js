@@ -17,7 +17,7 @@ const RequestCoin = props => {
     };
     const [inputs, setInputs] = useState(fields);
     const [isLoading, setIsLoading] = useState(false);
-    const [valuestr, setValueStr] = useState("");
+    const [valuestr, setValueStr] = useState("0");
     const [description, setDescription] = useState("");
     const oneuser = props.route.params.oneuser;
     
@@ -36,7 +36,6 @@ const RequestCoin = props => {
             if (parseAccount.get('avatar')) {
                 // setUserProfilePhoto(parseAccount.get('avatar')._url);
             }
-            setUserAccount(parseAccount);
             setInputs({
                 ...inputs,
                 firstName: parseAccount.get('firstName'),
@@ -56,7 +55,18 @@ const RequestCoin = props => {
     };
 
     const handleRequest = () => {
-        props.navigation.navigate('GeneralQR');  
+        let parse_data = {
+            "firstname" : inputs.firstName,
+            "lastname" : inputs.lastName,
+            "nickname" : inputs.nickname,
+            "email" : inputs.email,
+            "walletid" : inputs.walletId,
+            "userid" : inputs.id,
+            "requestamount" : valuestr,
+            "description" : description,
+            "requestusername" : oneuser.nickname
+            }
+        props.navigation.navigate('GeneralQR', {parse_data});
     };
 
     return (

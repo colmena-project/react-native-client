@@ -46,7 +46,10 @@
     "react-native-webview": "11.6.2",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "slugify": "^1.4.5"
+    "slugify": "^1.4.5",
+    "react-native-svg": "12.1.1",
+    "react-native-qrcode-svg": "6.0.3",
+    "react-native-custom-qr-codes-expo": "2.2.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
