@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Image, Alert, ScrollView, ActivityIndicator, Dimensions } from 'react-native'
+import { View, TouchableOpacity, Text, Image, ScrollView, ActivityIndicator, Dimensions } from 'react-native'
 import { useDispatch } from 'react-redux';
-import { setLoggedIn } from "../../redux/auth/actions";
 import Parse from 'parse/react-native';
-import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../constants/styles';
-import validate from '../../services/Validate';
-import Installation from '../../services/Installation';
 import colors from '../../constants/colors';
 import HTML from 'react-native-render-html';
 

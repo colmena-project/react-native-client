@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, Image, Alert, ScrollView } from 'react-native'
 import Parse from 'parse/react-native';
-import { TextInput, HelperText } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { styles, theme } from '../../constants/styles';
 import colors from '../../constants/colors';
 

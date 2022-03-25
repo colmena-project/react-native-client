@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Image, Alert, ScrollView, ActivityIndicator, Button, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, Text, Image, Alert, ScrollView, ActivityIndicator, StyleSheet } from 'react-native'
 import { useDispatch } from 'react-redux';
 import { setLoggedIn } from "../../redux/auth/actions";
 import Parse from 'parse/react-native';
@@ -7,7 +7,6 @@ import validate from '../../services/Validate';
 import Installation from '../../services/Installation';
 import colors from '../../constants/colors';
 import Input from '../../components/form/Input';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const LoginScreen = props => {
 
@@ -31,16 +30,6 @@ const LoginScreen = props => {
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
     const dispatch = useDispatch();
-
-    const checkErrors = () => {
-        const errors = { ...errorMessages };
-        for (item in errors) {
-            if ((errors[item]) !== null) {
-                console.log(item + ' => ' + errors[item]);
-                throw { message: 'Revise los datos!' };
-            }
-        }
-    };
 
     const handleError = (field, value) => {
         const errors = { ...errorMessages };

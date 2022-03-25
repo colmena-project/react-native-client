@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, Image, Button, ScrollView, Alert, ActivityIndicator, AsyncStorage, CheckBox,Linking} from 'react-native'
+import { View, TouchableOpacity, StyleSheet, Text, Image, ScrollView, Alert, ActivityIndicator, AsyncStorage, CheckBox,Linking} from 'react-native'
 import Parse from 'parse/react-native';
 import { useDispatch } from 'react-redux';
 import Input from '../../components/form/Input';
 import validate from '../../services/Validate';
 import colors from '../../constants/colors';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Slugify from 'slugify';
 import ecc from 'eosjs-ecc-rn';
-import { Buffer } from 'buffer';
 
 const RegisterScreen = props => {
 
@@ -27,7 +25,6 @@ const RegisterScreen = props => {
         passwordConfirm: ''
     };
     const [inputs, setInputs] = useState(fields);
-    const [walletid, setWalletID] = useState("");
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
