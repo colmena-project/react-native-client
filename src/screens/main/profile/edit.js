@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Switch, Linking} from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Switch} from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { Parse } from 'parse/react-native';
 import Input from '../../../components/form/Input';

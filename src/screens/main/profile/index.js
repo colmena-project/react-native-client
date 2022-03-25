@@ -38,9 +38,6 @@ const UserProfile = props => {
         try {
             setIsLoading(true);
             const account = await Parse.Cloud.run("getMyAccount");
-            const addresses = account.addresses;
-            console.log("address:::", account.walletId);
-            console.log("______________________");
             setUserAccount(account);            
             const fetchPosts = new Parse.Query("Post");
             fetchPosts.equalTo('createdBy', account.user).descending('createdAt').limit(POST_PER_LOAD_LIMIT);

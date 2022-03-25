@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { Parse } from 'parse/react-native';
-import Input from '../../../components/form/Input';
-import ImagerPicker from '../../../components/form/ImagePicker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import MapPicker from '../../../components/address/MapPicker';
 import colors from '../../../constants/colors';
-import validate from '../../../services/Validate';
-import { Feather } from '@expo/vector-icons';
 import { FlatList } from 'react-native-gesture-handler';
 import Moment from 'moment';
 import AnimatedNumbers from 'react-native-animated-numbers';
@@ -31,15 +25,8 @@ const ActivityWallet = props => {
         walletId: '',
     };
     const [inputs, setInputs] = useState(fields);
-    const [errorMessages, setErrorMessages] = useState(fields);
-    const [userAccount, setUserAccount] = useState(null);
-    const [userAddress, setUserAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [showImagePicker, setShowImagePicker] = useState(false);
-    const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const [balance, setBalance] = useState("0.00");
-    const [tbalance, setTBalance] = useState("0.00");
-    const [lbalance, setLBalance] = useState("0.00");
     const [activitydata, setActivityData] = useState([]);
     const [activitysdata, setActivitySData] = useState([]);
     const [activityrdata, setActivityRData] = useState([]);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, Image, Alert, ScrollView, ActivityIndicator, AsyncStorage } from 'react-native'
+import { View, TouchableOpacity, Text, Alert, ScrollView, ActivityIndicator, AsyncStorage } from 'react-native'
 import Parse from 'parse/react-native';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../../constants/styles';

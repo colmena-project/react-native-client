@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Switch, Linking} from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import React from 'react';
+import { Text, View, StyleSheet, ScrollView} from 'react-native';
 import colors from '../../../constants/colors';
 
 

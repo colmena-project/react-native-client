@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image, TextInput, ToastAndroid, AsyncStorage} from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator, Image, TextInput, ToastAndroid, AsyncStorage} from 'react-native';
 import { Parse } from 'parse/react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import colors from '../../../constants/colors';
-import Slugify from 'slugify';
 import ecc from 'eosjs-ecc-rn';
 import { Buffer } from 'buffer';
 import DialogInput from 'react-native-dialog-input';
 
 const {encode, decode} = require("fastestsmallesttextencoderdecoder");
-const {Serialize, arrayToHex} = require('eosjs');
+const {Serialize} = require('eosjs');
 
 const TransferCoin = props => {
     const fields = {
@@ -25,11 +24,9 @@ const TransferCoin = props => {
     const [inputs, setInputs] = useState(fields);
     const [isLoading, setIsLoading] = useState(false);
     const [codeinput,setCodeInput] = useState(false);
-    const [codeValue,setCodeValue] = useState("");
     const [valuestr, setValueStr] = useState("");
     const [description, setDescription] = useState("");
     const [tokenkey, setTokenKey] = useState("");
-    const [userAccount, setUserAccount] = useState(null);
     const oneuser = props.route.params.oneuser;
     
     useEffect(() => {

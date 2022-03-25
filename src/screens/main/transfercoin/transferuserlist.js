@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, ActivityIndicator, Alert, Image, TextInput} from 'react-native';
-import { Avatar } from 'react-native-elements';
+import { Text, View, TouchableOpacity, StyleSheet, ActivityIndicator, Image, TextInput} from 'react-native';
 import { Parse } from 'parse/react-native';
-import Input from '../../../components/form/Input';
-import ImagerPicker from '../../../components/form/ImagePicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MapPicker from '../../../components/address/MapPicker';
 import colors from '../../../constants/colors';
-import validate from '../../../services/Validate';
-import { Feather } from '@expo/vector-icons';
 import { FlatList } from 'react-native-gesture-handler';
 
 
@@ -27,7 +21,6 @@ const TransferUserList = props => {
             
             const list = [];
             userAccounts.forEach(obj => {
-                // if(obj.get('walletId') && obj.get('user').get('email')){
                 if(obj.get('walletId')){
                     const one_fields = {
                         firstName: obj.get('firstName'),
@@ -157,8 +150,7 @@ const TransferUserList = props => {
                     </View>                         
                 </View>            
             </View>
-        </TouchableOpacity>
-                
+        </TouchableOpacity>                
     );
 
     return (
