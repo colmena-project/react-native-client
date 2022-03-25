@@ -41,7 +41,8 @@ import AboutJellyCoin from '../screens/main/profile/aboutcoin'
 import ActivityWallet from '../screens/main/transfercoin/activitywallet';
 import TransferUserList from '../screens/main/transfercoin/transferuserlist';
 import TransferCoin from '../screens/main/transfercoin/transfercoin';
-import RequsetUserList from '../screens/main/transfercoin/requestuserlist';
+import RequestUserList from '../screens/main/transfercoin/requestuserlist';
+import RequestCoin from '../screens/main/transfercoin/requestcoin';
 import OthersProfile from '../screens/main/profile/othersProfile';
 import TransportCancel from '../screens/main/profile/cancelTransport';
 import ChangePasswordScreen from '../screens/main/profile/changePassword';
@@ -130,7 +131,8 @@ const RootNavigator = () => {
                 <PendantsStack.Screen name={'ActivityWallet'} component={ActivityWallet} options={setProfileHeaderOptions('Movimientos')} />
                 <PendantsStack.Screen name={'TransferUserList'} component={TransferUserList} options={setProfileHeaderOptions('A quién enviar?')} />
                 <PendantsStack.Screen name={'TransferCoin'} component={TransferCoin} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
-                <PendantsStack.Screen name={'RequsetUserList'} component={RequsetUserList} options={setProfileHeaderOptions('Cuánto quieres recibir?')} />
+                <PendantsStack.Screen name={'RequestUserList'} component={RequestUserList} options={setProfileHeaderOptions('A quién solicitar?')} />
+                <PendantsStack.Screen name={'RequestCoin'} component={RequestCoin} options={setProfileHeaderOptions('Cuánto quieres recibir?')} />
                 
             </PendantsStack.Navigator>
         );

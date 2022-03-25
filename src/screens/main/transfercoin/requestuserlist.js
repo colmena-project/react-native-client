@@ -84,15 +84,15 @@ const RequestUserList = props => {
             avatar: null,
             id: null
         }
-        props.navigation.navigate('TransferCoin',{oneuser});
+        props.navigation.navigate('RequestCoin',{oneuser});
     }
 
-    const handleTransferCoin = (oneuser) => {
-        props.navigation.navigate('TransferCoin',{oneuser});
+    const handleRequestCoin = (oneuser) => {
+        props.navigation.navigate('RequestCoin',{oneuser});
     };
 
     const renderItem = ({item: oneuser}) => (
-        <TouchableOpacity onPress={handleTransferCoin.bind(this,oneuser)}>
+        <TouchableOpacity onPress={handleRequestCoin.bind(this,oneuser)}>
             <View width="100%" style={{padding: 10}} flexDirection="row" justifyContent="space-between">
                 {oneuser.avatar ? (
                         <Image
@@ -121,7 +121,7 @@ const RequestUserList = props => {
     );
     
     const renderRecentItem = ({item: oneuser}) => (
-        <TouchableOpacity onPress={handleTransferCoin.bind(this, oneuser)}>
+        <TouchableOpacity onPress={handleRequestCoin.bind(this, oneuser)}>
             <View width={70} height={100} alignItems="center">
                 <View style={{padding: 5}}>
                     {oneuser.avatar ? (
@@ -158,7 +158,7 @@ const RequestUserList = props => {
                 {isLoading ? <ActivityIndicator style={{ marginTop: 50 }} size={"large"} color={colors.colmenaGreen}
                         /> :
                 <View style={{margin:15}} flex={1} justifyContent="space-between">
-                    <Text  style={{ color: '#000', fontSize:22, fontFamily: 'Mulish-Regular'}}>A quién quieres enviar jellys?</Text>
+                    <Text  style={{ color: '#000', fontSize:22, fontFamily: 'Mulish-Regular'}}>A quién le quieres pedir gelatinas?</Text>
                     <Text  style={{ color: '#000', fontSize:14, fontFamily: 'Lato-Regular'}}>Elije un contacto de tu lista o inicia un nuevo envío</Text>
                     <View style={{margin:10, padding:10, borderColor:"#999", borderWidth:1, borderRadius:10}} flexDirection="row"> 
                         <TextInput
