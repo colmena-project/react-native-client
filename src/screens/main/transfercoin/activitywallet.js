@@ -266,6 +266,18 @@ const ActivityWallet = props => {
                             </TouchableOpacity>
                             <Text style={{ color: '#21BDA3', fontSize:14, fontFamily: 'Nunito-Regular'}}>Pedir</Text>
                         </View>
+
+                        <View style={{ padding: 5}} alignItems ="center">
+                            <TouchableOpacity onPress={handleRequestUserList}>
+                                <Image
+                                    style={{width:60, height: 60}}
+                                    source={require('../../../../assets/qrcode.png')}
+                                    resizeMode="cover"
+                                    borderRadius={100}
+                                />
+                            </TouchableOpacity>
+                            <Text style={{ color: '#21BDA3', fontSize:14, fontFamily: 'Nunito-Regular'}}>Leer QR</Text>
+                        </View>
                     </View>
                     <View flexDirection="row" width = "100%" style={{ padding: 20}} justifyContent="space-between">
                         {selitem == 0 ? 

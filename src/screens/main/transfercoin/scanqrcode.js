@@ -6,7 +6,7 @@ import SvgQRCode from 'react-native-qrcode-svg';
 import { QRCode} from 'react-native-custom-qr-codes-expo';
 
 
-const GeneralQR = props => {
+const SacnQrCode = props => {
     const fields = {
         firstName: '',
         lastName: '',
@@ -51,4 +51,4 @@ const GeneralQR = props => {
     );
 };
 
-export default GeneralQR;
+export default SacnQrCode;
