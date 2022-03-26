@@ -145,6 +145,9 @@ const ActivityWallet = props => {
     const handleRequestUserList = () => {
         props.navigation.navigate('RequestUserList');
     };
+    const handleScanQRCode = () => {
+        props.navigation.navigate('ScanQRCode');
+    };
 
     const renderItem = ({item: oneActivity}) => (
         <View>
@@ -268,7 +271,7 @@ const ActivityWallet = props => {
                         </View>
 
                         <View style={{ padding: 5}} alignItems ="center">
-                            <TouchableOpacity onPress={handleRequestUserList}>
+                            <TouchableOpacity onPress={handleScanQRCode}>
                                 <Image
                                     style={{width:60, height: 60}}
                                     source={require('../../../../assets/qrcode.png')}
