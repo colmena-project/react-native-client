@@ -7,16 +7,6 @@ import { QRCode} from 'react-native-custom-qr-codes-expo';
 
 
 const GeneralQR = props => {
-    const fields = {
-        firstName: '',
-        lastName: '',
-        nickname: '',
-        email: '',
-        aboutMe: '',       
-        walletId: '',
-        avatar: '',
-        id: '',
-    };
     const [isLoading, setIsLoading] = useState(false);
     const parsedata = props.route.params.parse_data;
 

@@ -64,7 +64,8 @@ const RequestCoin = props => {
             "userid" : inputs.id,
             "requestamount" : valuestr,
             "description" : description,
-            "requestusername" : oneuser.nickname
+            "requestusername" : oneuser.nickname,
+            "avatar" : inputs.avatar
             }
         props.navigation.navigate('GeneralQR', {parse_data});
     };

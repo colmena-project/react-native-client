@@ -41,6 +41,7 @@ import AboutJellyCoin from '../screens/main/profile/aboutcoin'
 import ActivityWallet from '../screens/main/transfercoin/activitywallet';
 import TransferUserList from '../screens/main/transfercoin/transferuserlist';
 import TransferCoin from '../screens/main/transfercoin/transfercoin';
+import TransferCoinQR from '../screens/main/transfercoin/transfercoinqr';
 import RequestUserList from '../screens/main/transfercoin/requestuserlist';
 import RequestCoin from '../screens/main/transfercoin/requestcoin';
 import GeneralQR from '../screens/main/transfercoin/generateqr';
@@ -137,6 +138,7 @@ const RootNavigator = () => {
                 <PendantsStack.Screen name={'RequestCoin'} component={RequestCoin} options={setProfileHeaderOptions('Cuánto quieres recibir?')} />
                 <PendantsStack.Screen name={'GeneralQR'} component={GeneralQR} options={setProfileHeaderOptions('Compartir')} />
                 <PendantsStack.Screen name={'ScanQRCode'} component={ScanQRCode} options={setProfileHeaderOptions('ScanQRCode')} />
+                <PendantsStack.Screen name={'TransferCoinQR'} component={TransferCoinQR} options={setProfileHeaderOptions('Cuánto quieres enviar?')} />
                 
             </PendantsStack.Navigator>
         );

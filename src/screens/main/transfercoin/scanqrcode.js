@@ -15,7 +15,8 @@ const SacnQrCode = props => {
 
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
-        alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+        props.navigation.navigate('TransferCoin',{data});
+        // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
 
     if (hasPermission === null) {
