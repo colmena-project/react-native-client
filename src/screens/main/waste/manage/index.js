@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import styles from '../../../../constants/profileStyles';
 import AuthorizedScreen from '../../../../components/auth/AuthorizedScreen';
@@ -45,14 +45,15 @@ const ManageWasteActionsScreen = props => {
             {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
                 <View style={{ ...styles.scrollViewWrapper, justifyContent: 'center' }} >
                     <Text style={{ textAlign: 'center', fontFamily: 'Nunito-Regular', fontSize: 20, paddingHorizontal: 30, marginBottom: 20 }}>
-                        <Text style={{ fontWeight: 'bold' }}>@{user.get('user').get('username')}</Text> elegí el residuo a modificar
+                        {/* <Text style={{ fontWeight: 'bold' }}>@{user.get('user').get('username')}</Text> elegí el residuo a modificar */}
+                        <Text style={{ fontWeight: 'bold' }}>{user.get('user').get('firstName')}</Text> elegí el residuo a modificar
                     </Text>
-                    <View style={styles.wasteTabContainer}>
+                    <ScrollView style={styles.wasteTabContainer}>
                         {wasteTypes && wasteTypes.map(wasteType => {
-                            return <ManageWasteCategory key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
+                            return <ManageWasteCategory style={styles.cellItem} key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
                         })
                         }
-                    </View>
+                    </ScrollView>
                 </View >
             }
         </AuthorizedScreen>

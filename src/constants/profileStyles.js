@@ -149,12 +149,13 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     wasteTabContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '100%',
-        paddingVertical: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EDEDED'
+        display:'flex'
+        // flexDirection: 'column',
+        // justifyContent: 'space-around',
+        // width: '100%',
+        // // paddingVertical: 20,
+        // borderBottomWidth: 1,
+        // borderBottomColor: '#EDEDED'
     },
     locationTabContainer: {
         flexDirection: 'row',
@@ -224,10 +225,12 @@ const styles = StyleSheet.create({
     wasteItem: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: '40%',
+        // width: '100%',
         height: 165,
         padding: 10,
-        marginRight: 10,
+    },
+    cellItem:{
+        marginTop: 10,
     },
     impactTitle: {
         color: colors.colmenaGreen,
