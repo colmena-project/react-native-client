@@ -45,12 +45,18 @@ const SummaryScreen = props => {
                 <View style={styles.scrollViewWrapper}>
                     {containers && containers.length > 0 ?
                         <ScrollView style={{ paddingTop: 30 }}>
-                            <View style={styles.wasteTabContainer}>
+                            {/* <View style={styles.wasteTabContainer}>
                                 {wasteTypes && wasteTypes.map(wasteType => {
                                     return <ManageWasteCategory key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
                                 })
                                 }
-                            </View>
+                            </View> */}
+                             <ScrollView style={styles.wasteTab_Container} horizontal={true}>
+                                {wasteTypes && wasteTypes.map(wasteType => {
+                                    return <ManageWasteCategory key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
+                                })
+                                }
+                            </ScrollView>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                                 <View style={styles.wasteCardsContainer}>
                                     <Text style={styles.wasteTitle}>

@@ -6,6 +6,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
+    scrollView_Wrapper: {
+        backgroundColor: 'white',
+    },
     scrollView: {
         paddingLeft: 30,
         paddingRight: 30,
@@ -149,13 +152,15 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
     },
     wasteTabContainer: {
-        display:'flex'
-        // flexDirection: 'column',
-        // justifyContent: 'space-around',
-        // width: '100%',
-        // // paddingVertical: 20,
-        // borderBottomWidth: 1,
-        // borderBottomColor: '#EDEDED'
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        paddingVertical: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: '#EDEDED'
+    },
+    wasteTab_Container: {
+        height: 200
     },
     locationTabContainer: {
         flexDirection: 'row',
@@ -225,12 +230,13 @@ const styles = StyleSheet.create({
     wasteItem: {
         justifyContent: 'center',
         alignItems: 'center',
-        // width: '100%',
+        width: 200,
         height: 165,
         padding: 10,
     },
     cellItem:{
         marginTop: 10,
+        height : 200
     },
     impactTitle: {
         color: colors.colmenaGreen,

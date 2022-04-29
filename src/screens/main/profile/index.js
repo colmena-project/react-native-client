@@ -252,12 +252,12 @@ const UserProfile = props => {
                             <View>
                                 {containers && containers.length > 0 ?
                                 <View>
-                                    <View style={styles.wasteTabContainer}>
+                                    <ScrollView style={styles.wasteTab_Container} horizontal={true}>
                                         {wasteTypes && wasteTypes.map(wasteType => {
                                             return <ManageWasteCategory key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
                                         })
                                         }
-                                    </View>
+                                    </ScrollView>
                                     <View style={styles.locationInfo}>
                                         <EvilIcons name={'location'} size={35} color={'#4C4C4C'} />
                                         <Text style={styles.addressTexts}>{userAccount.addresses[0].city}, {userAccount.addresses[0].state}</Text>
