@@ -43,19 +43,22 @@ const ManageWasteActionsScreen = props => {
     return (
         <AuthorizedScreen>
             {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
-                <View style={{ ...styles.scrollView_Wrapper, justifyContent: 'center'}} >
-                    <Text style={{textAlign: 'center', fontFamily: 'Nunito-Regular', fontSize: 20, paddingHorizontal: 30, marginBottom: 20}}>
-                        {/* <Text style={{ fontWeight: 'bold' }}>@{user.get('user').get('username')}</Text> elegí el residuo a modificar */}
-                        <Text style={{ fontWeight: 'bold' }}>{user.get('user').get('firstName')}</Text> elegí el residuo a modificar
-                    </Text>
-                    
-                    <ScrollView style={styles.wasteTab_Container} horizontal={true}>
-                        {wasteTypes && wasteTypes.map(wasteType => {
-                            return <ManageWasteCategory key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
-                        })
-                        }
-                    </ScrollView>
-                </View >
+                <View style={{ ...styles.scrollViewWrapper, justifyContent: 'center'}} >
+                    <View style={{ ...styles.scrollView_Wrapper, justifyContent: 'center'}} >
+                        <Text style={{textAlign: 'center', fontFamily: 'Nunito-Regular', fontSize: 20, paddingHorizontal: 30, marginBottom: 20}}>
+                            {/* <Text style={{ fontWeight: 'bold' }}>@{user.get('user').get('username')}</Text> elegí el residuo a modificar */}
+                            <Text style={{ fontWeight: 'bold' }}>{user.get('user').get('firstName')}</Text> elegí el residuo a modificar
+                        </Text>
+                        
+                        <ScrollView style={styles.wasteTab_Container} horizontal={true}>
+                            {wasteTypes && wasteTypes.map(wasteType => {
+                                return <ManageWasteCategory key={wasteType.id} onPress={handleManageProductPress} wasteType={wasteType} containers={containers} />
+                            })
+                            }
+                        </ScrollView>
+                    </View >
+                </View>
+                
             }
         </AuthorizedScreen>
     );
