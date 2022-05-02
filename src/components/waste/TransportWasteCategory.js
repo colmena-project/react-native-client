@@ -22,7 +22,7 @@ const TransportWasteCategory = props => {
     }, [containers]);
 
     return (
-        <View style={{  }}>
+        <View style={{ width: 150}}>
             {filteredContainers && wasteType ?
                 <View style={{ alignItems: 'center', width: 200 }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>

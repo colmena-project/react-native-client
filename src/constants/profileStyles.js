@@ -159,6 +159,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#EDEDED'
     },
+    wasteTab_Residuos: {
+        
+    },
     wasteTab_Container: {
         height: 200
     },

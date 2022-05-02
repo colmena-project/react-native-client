@@ -8,6 +8,7 @@ import UserService from '../../../../services/User';
 import WasteService from '../../../../services/Waste';
 import styles from '../../../../constants/profileStyles';
 import colors from '../../../../constants/colors';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const PickWasteForTransport = props => {
 
@@ -77,13 +78,19 @@ const PickWasteForTransport = props => {
                 Elija las bolsas / cajas / botellas que desea transportar, viendo su código de identificación.
             </Text>
             <View style={{ ...styles.wasteTabContainer, flex: 1 }}>
-                {wasteTypes ? wasteTypes.map(wasteType => {
-                    return <TransportWasteCategory key={wasteType.id} wasteType={wasteType} containers={containers} handleToogleCheck={handleToogleCheck} />
-                })
+                {wasteTypes ? 
+                    <ScrollView style={{ ...styles.wasteTab_Residuos, flex: 1 }} horizontal={true} >
+                        {
+                            wasteTypes.map(wasteType => {
+                                return <TransportWasteCategory key={wasteType.id} wasteType={wasteType} containers={containers} handleToogleCheck={handleToogleCheck} />
+                            })
+                        }
+                    </ScrollView>                    
                     :
                     <ActivityIndicator style={{ height: 200, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} />
                 }
             </View>
+            
             <View style={componentStyle.footerContainer}>
                 <Text style={componentStyle.footerText}>
                     Estimado:
