@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     wasteItem: {
         justifyContent: 'center',
         alignItems: 'center',
-        width: 200,
+        width: 170,
         height: 165,
         padding: 10,
     },
