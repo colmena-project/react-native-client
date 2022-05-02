@@ -114,6 +114,7 @@ const ActivityWallet = props => {
                     setActivitySData(sactivity);
                     setActivityRData(ractivity);
                     setActivityData(allactivity);
+                    console.log("---------------------", allactivity)
                 })
                 .catch((error) =>{
                     setIsLoading(false);
@@ -184,6 +185,9 @@ const ActivityWallet = props => {
                         <View/>
                             <Text  style={{ color: '#ff0000', fontSize:15, fontFamily: 'Nunito-Regular' }}>                        
                                 -{oneActivity.amount}
+                            </Text>
+                            <Text  style={{ color: '#ff0000', fontSize:15, fontFamily: 'Nunito-Regular' }}>                        
+                                enviado
                             </Text>                  
                         <View/>
                     </View>            
@@ -221,7 +225,16 @@ const ActivityWallet = props => {
                         <View/>
                             <Text  style={{ color: '#21BDA3', fontSize:15, fontFamily: 'Nunito-Regular'}}>                        
                                 +{oneActivity.amount}
-                            </Text>                                              
+                            </Text>
+                            {oneActivity.from.name=="Colmena"?
+                                <Text  style={{ color: '#555', fontSize:13, fontFamily: 'Nunito-Regular'}}>                        
+                                    por materiales
+                                </Text>
+                                :
+                                <Text  style={{ color: '#555', fontSize:13, fontFamily: 'Nunito-Regular'}}>                        
+                                    por transporte
+                                </Text>
+                            }                                                                        
                         <View/>
                     </View>            
                 </View>
