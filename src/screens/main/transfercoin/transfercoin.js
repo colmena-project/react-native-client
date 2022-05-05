@@ -262,8 +262,8 @@ const TransferCoin = props => {
                         {/* {codeinput && */}
                             <DialogInput isDialogVisible={codeinput}
                                 title={"Código de verificación"}
-                                message={"Puede obtener el código de verificación por correo"}
-                                hintInput ={"ENTRADA DE SUGERENCIA"}
+                                message={"El código ha sido enviado a su correo"}
+                                hintInput ={"INGRESE EL CODIGO"}
                                 submitInput={ (inputText) => onSetPrivatekey(inputText)}
                                 closeDialog={ () => {setCodeInput(false)}}
                                 >
