@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useSelector } from 'react-redux';
 import RegisterWasteItem from '../../../../components/waste/RegisterWasteItem';
 import colors from '../../../../constants/colors';
@@ -27,7 +27,7 @@ const RegisterWasteScreen = props => {
                     Puedes registrar tus residuos y ver la retribución estimada en JellyCoins <Text style={{ fontWeight: 'bold' }}>jyc</Text> ingresando botellas / tapitas.
                 </Text>
 
-                <View style={{ width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1 }}>
+                <ScrollView style={{ width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1 }}>
                     {wasteTypes != null && wasteTypes.length > 0 ?
                         wasteTypes.map(wasteType => {
                             return <RegisterWasteItem key={wasteType.id} wasteType={wasteType} />
@@ -35,7 +35,7 @@ const RegisterWasteScreen = props => {
                         :
                         <View></View>
                     }
-                </View>
+                </ScrollView>
             </View>
             <View style={{ marginBottom: 20 }}>
                 <TouchableOpacity style={{ marginVertical: 10 }} onPress={handleNextButton} >

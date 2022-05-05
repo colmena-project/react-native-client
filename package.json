@@ -51,7 +51,8 @@
     "react-native-qrcode-svg": "6.0.3",
     "react-native-custom-qr-codes-expo": "2.2.0",
     "expo-camera": "~11.2.2",
-    "expo-barcode-scanner": "~10.2.2"
+    "expo-barcode-scanner": "~10.2.2",
+    "expo-updates": "~0.8.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

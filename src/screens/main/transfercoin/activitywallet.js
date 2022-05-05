@@ -114,7 +114,6 @@ const ActivityWallet = props => {
                     setActivitySData(sactivity);
                     setActivityRData(ractivity);
                     setActivityData(allactivity);
-                    console.log("---------------------", allactivity)
                 })
                 .catch((error) =>{
                     setIsLoading(false);
