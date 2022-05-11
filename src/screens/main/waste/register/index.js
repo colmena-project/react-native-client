@@ -15,7 +15,7 @@ const RegisterWasteScreen = props => {
 
     return (
         <View style={{ ...styles.scrollViewWrapper, justifyContent: 'space-between' }} >
-            <View>
+            <View style={{ ...styles.scrollViewWrapper, justifyContent: 'space-between' }}>
                 <Text style={{
                     textAlign: 'center',
                     paddingHorizontal: 40,
@@ -27,7 +27,7 @@ const RegisterWasteScreen = props => {
                     Puedes registrar tus residuos y ver la retribución estimada en JellyCoins <Text style={{ fontWeight: 'bold' }}>jyc</Text> ingresando botellas / tapitas.
                 </Text>
 
-                <ScrollView style={{ width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1 }}>
+                <ScrollView style={{ borderTopColor: '#EDEDED', borderTopWidth: 1, height:200}}>
                     {wasteTypes != null && wasteTypes.length > 0 ?
                         wasteTypes.map(wasteType => {
                             return <RegisterWasteItem key={wasteType.id} wasteType={wasteType} />

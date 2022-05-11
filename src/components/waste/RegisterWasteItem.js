@@ -26,7 +26,7 @@ const RegisterwasteType = props => {
             dispatch(registerWasteContainers({ id: wasteType.id, qty: qty - 1, name: wasteType }));
         }
     };
-
+    
     return (
         <View style={styles.container}>
             <View>
@@ -60,7 +60,7 @@ const RegisterwasteType = props => {
             </View>
             <View >
                 <View>
-                    <Text style={styles.retributionAmount}>100 jyc</Text>
+                    <Text style={styles.retributionAmount}>{wasteType.get('unit') == "gr"? wasteType.get('qty')/1000 : wasteType.get('qty')} jyc</Text>
                 </View>
                 <View>
                     <Text style={styles.retributionDesc}>Estimado</Text>
