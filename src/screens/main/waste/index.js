@@ -42,7 +42,7 @@ const WasteActions = props => {
 
     return (
         <>
-            {/* {recovers && recovers.length > 0 ?
+            {recovers && recovers.length > 0 ?
                 <ScrollView style={styles.scrollViewWrapper} >
                     <Text style={{
                         paddingHorizontal: 40,
@@ -76,7 +76,7 @@ const WasteActions = props => {
                         </TouchableOpacity>
                     </View>
                 </ScrollView >
-                : */}
+                :
                 <View style={styles.scrollViewWrapper} >
                     <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
                         <Image style={{ width: 400, height: 300, resizeMode: 'contain' }} source={require('../../../../assets/img/1st_time_waste.png')} />
@@ -98,8 +98,7 @@ const WasteActions = props => {
                             </Text>
                         </TouchableOpacity>
                     </View>
-                </View >
-                {/* } */}
+                </View >}
         </>
     );
 };
