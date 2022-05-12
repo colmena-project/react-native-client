@@ -24,7 +24,7 @@ const RegisterWasteScreen = props => {
                     fontFamily: 'Nunito-Regular',
                     color: '#7f7f7f'
                 }}>
-                    Puedes registrar tus residuos y ver la retribución estimada en JellyCoins <Text style={{ fontWeight: 'bold' }}>jyc</Text> ingresando botellas / tapitas.
+                    Puedes registrar tus residuos y ver la retribución estimada en JellyCoin <Text style={{ fontWeight: 'bold' }}>(JYC)</Text>.
                 </Text>
 
                 <ScrollView style={{ borderTopColor: '#EDEDED', borderTopWidth: 1, height:200}}>

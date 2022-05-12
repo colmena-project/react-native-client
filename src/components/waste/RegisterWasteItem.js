@@ -60,7 +60,7 @@ const RegisterwasteType = props => {
             </View>
             <View >
                 <View>
-                    <Text style={styles.retributionAmount}>{wasteType.get('unit') == "gr"? wasteType.get('qty')/1000 *10 : wasteType.get('qty')} jyc</Text>
+                    <Text style={styles.retributionAmount}>{wasteType.get('unit') == "gr"? wasteType.get('qty')/1000 *10*qty : wasteType.get('qty')*qty} jyc</Text>
                 </View>
                 <View>
                     <Text style={styles.retributionDesc}>Estimado</Text>
