@@ -45,7 +45,6 @@ const TransferCoinQR = props => {
     const fetchData = async () => {
         try {
             setIsLoading(true);
-            console.log("input data::")
             const parseAddress = new Parse.Query('Address');
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();
@@ -65,17 +64,14 @@ const TransferCoinQR = props => {
                 avatar:parseAccount.get('avatar'),
                 id:parseAccount.id
             });
-            console.log("input data::", inputs)
             setIsLoading(false);
         } catch (err) {
             setIsLoading(false);
-            console.log('Error!! ' + err);
         }
     };
 
     const refreshKey = async () =>{
         // Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo.\nSu ID de token es :: ' + "123123123sdfsdfsdf" +"\nDeberías recordar esta clave.");
-        console.log(inputs.walletId);
         fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+inputs.walletId+'/changekey', {
             method: 'GET',
             headers: {
@@ -84,7 +80,6 @@ const TransferCoinQR = props => {
             }
         })
         .then((json) => {
-            console.log(json);
         })
         .catch((error) =>{
             console.error(error);
@@ -94,16 +89,15 @@ const TransferCoinQR = props => {
 
     const onSetPrivatekey = async (inputText) =>{
         setCodeValue(inputText);
-        console.log(inputText);
+        
         let private_Key = "";
         let public_key = "";
         await ecc.randomKey().then(privateKey => {
-            console.log('Private Key:\t', privateKey) // wif
-            console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // EOSkey...
+            // console.log('Private Key:\t', privateKey) // wif
+            // console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // EOSkey...
             private_Key = privateKey;
             public_key = ecc.privateToPublic(privateKey);
             })
-        console.log(private_Key);
         fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+inputs.walletId+'/changekey', {
             method: 'POST',
             headers: {
@@ -119,7 +113,6 @@ const TransferCoinQR = props => {
         .then((response) => response.json())
         .then((json) => {
             setCodeInput(false);
-            console.log(json);
             setTokenKey(private_Key);
             AsyncStorage.setItem('privatekey', private_Key);
         })
@@ -169,7 +162,6 @@ const TransferCoinQR = props => {
                     .then((response) => response.json())
                     .then((json) => {
                         ToastAndroid.show('La transferencia de monedas se ha realizado correctamente!', ToastAndroid.LONG);
-                        console.log(json);
                         setIsLoading(false);
                     })
                     .catch((error) =>{

@@ -99,7 +99,7 @@ const WasteActions = props => {
                         </TouchableOpacity>
                     </View>
                 </View >
-            }
+                }
         </>
     );
 };
