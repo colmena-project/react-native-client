@@ -54,7 +54,7 @@ const CongratulationsScreen = props => {
                             fontFamily: 'Nunito-Regular',
                             color: '#5a5d6c'
                         }}>
-                            <Text style={{ fontWeight: 'bold' }}>@{account.get('user').get('username')}</Text>, verificá que la información es correcta!
+                            <Text style={{ fontWeight: 'bold' }}>{account.get('user').get('firstname')}</Text>, verificá que la información es correcta!
                 </Text>
                     </View>
 

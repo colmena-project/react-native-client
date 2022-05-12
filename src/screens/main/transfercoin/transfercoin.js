@@ -255,7 +255,7 @@ const TransferCoin = props => {
                             </View>                            
                         </View>
                         <TouchableOpacity onPress={handleTransfer}>
-                            <View style={{backgroundColor:"#21BDA3", width:185,paddingStart:60, paddingEnd:60, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10}}>
+                            <View style={{backgroundColor:"#21BDA3", width:185, paddingTop:15, paddingBottom:15, borderRadius:10, marginTop:10, alignItems:'center'}}>
                                 <Text style={{color:"#fff" , fontFamily: 'Nunito-Regular'}}>Continuar</Text>
                             </View>
                         </TouchableOpacity>
