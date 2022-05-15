@@ -11,16 +11,25 @@ const VerifyInfo = props => {
 
     const PPId = 'GIw8hv4Dle';
     const PETId = 'WTMdIFLUFV';
+    const VIDRIOId = 'ruWYuai4wM';
+    const ALUMINIOId = 'hcU1lilR5G';
+    const PAPELId = 'QgczEeCOLS';
+    
     const recyclingCenter = useSelector(state => state.transportInfo.to);
     const containersToTransport = useSelector(state => state.transportInfo.containers);
     const petContainers = containersToTransport.filter(container => container.get('type').id === PETId);
     const ppContainers = containersToTransport.filter(container => container.get('type').id === PPId);
+    const vidrioContainers = containersToTransport.filter(container => container.get('type').id === VIDRIOId);
+    const AluminioContainers = containersToTransport.filter(container => container.get('type').id === ALUMINIOId);
+    const PapelContainers = containersToTransport.filter(container => container.get('type').id === PAPELId);
     const user = useSelector(state => state.user);
     const materialRetribution = useSelector(state => state.transportInfo.materialRetribution);
     const [isLoading, setIsLoading] = useState(false);
     const [calculatingRetribution, setCalculatingRetribution] = useState(false);
     const [estimatedRetribution, setEstimatedRetribution] = useState(0);
     const dispatch = useDispatch();
+
+    console.log("------------------", containersToTransport)
 
     const calculateTransportRetribution = async () => {
         setCalculatingRetribution(true);
@@ -75,8 +84,8 @@ const VerifyInfo = props => {
                         <Text style={{ fontWeight: 'bold' }}>@{user.account.get('user').get('username')}</Text> verifica si la información del transporte es correcta.
                     </Text>
 
-                    <View style={componentStyle.wasteCategoriesContainer}>
-                        <View>
+                    <ScrollView horizontal={true}>
+                        <View style={{padding:5}}>
                             <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
                                 <Text style={componentStyle.wasteTypeTitle}>PET <Text style={{ fontSize: 14 }}></Text></Text>
                             </View>
@@ -90,7 +99,21 @@ const VerifyInfo = props => {
                                 }
                             </ScrollView>
                         </View>
-                        <View>
+                        <View style={{padding:5}}>
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                                <Text style={componentStyle.wasteTypeTitle}>Vidrio <Text style={{ fontSize: 14 }}></Text></Text>
+                            </View>
+                            <ScrollView>
+                                {vidrioContainers && vidrioContainers.length > 0 ?
+                                    vidrioContainers.map(container => {
+                                        return <Text key={container.id} style={componentStyle.wasteContainer}>{container.get('code')}</Text>
+                                    })
+                                    :
+                                    <View></View>
+                                }
+                            </ScrollView>
+                        </View>
+                        <View style={{padding:5}}>
                             <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
                                 <Text style={componentStyle.wasteTypeTitle}>Tapitas <Text style={{ fontSize: 14 }}></Text></Text>
                             </View>
@@ -104,7 +127,36 @@ const VerifyInfo = props => {
                                 }
                             </ScrollView>
                         </View>
-                    </View>
+                        <View style={{padding:5}}>
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                                <Text style={componentStyle.wasteTypeTitle}>Aluminio <Text style={{ fontSize: 14 }}></Text></Text>
+                            </View>
+                            <ScrollView>
+                                {AluminioContainers && AluminioContainers.length > 0 ?
+                                    AluminioContainers.map(container => {
+                                        return <Text key={container.id} style={componentStyle.wasteContainer}>{container.get('code')}</Text>
+                                    })
+                                    :
+                                    <View></View>
+                                }
+                            </ScrollView>
+                        </View>
+                        <View style={{padding:5}}>
+                            <View style={{ borderBottomWidth: 1, borderBottomColor: colors.separator }}>
+                                <Text style={componentStyle.wasteTypeTitle}>Papel <Text style={{ fontSize: 14 }}></Text></Text>
+                            </View>
+                            <ScrollView>
+                                {PapelContainers && PapelContainers.length > 0 ?
+                                    PapelContainers.map(container => {
+                                        return <Text key={container.id} style={componentStyle.wasteContainer}>{container.get('code')}</Text>
+                                    })
+                                    :
+                                    <View></View>
+                                }
+                            </ScrollView>
+                        </View>                       
+                    </ScrollView>
+                        
 
                     <View style={componentStyle.addressContainer}>
                         <View style={{ paddingRight: 10, paddingVertical: 10 }}>
@@ -157,6 +209,7 @@ const componentStyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
+
     wasteTypeTitle: {
         fontFamily: 'Nunito-SemiBold',
         fontSize: 22,

@@ -93,16 +93,17 @@ export default function validate(fieldName, value) {
         allowEmpty: false,
         message: '^Ingrese su contraseña.',
       },
-      // length: {
-      //   minimum: 4,
-      //   message: '^Contraseña no válida.',
-      // },
+      length: {
+        minimum: 8,
+        message: '^La contraseña debe ser mayor a 8 dígitos.',
+      },
       format: {
         pattern: /[a-zA-Z0-9]+/,
         flags: "i",
-        message: "^La contraseña debe ser mayor a 8 dígitos."
+        message: "^Contraseña no válida."
       },
     },
+
     oldPassword: {
       presence: {
         allowEmpty: false,

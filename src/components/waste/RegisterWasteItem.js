@@ -29,7 +29,7 @@ const RegisterwasteType = props => {
 
     return (
         <View style={styles.container}>
-            <View>
+            <View style={{flex:30, alignItems:'center'}}>
                 <View>
                     <Image style={styles.image} source={{ uri: wasteType.get('iconFile')._url }} />
                 </View>
@@ -37,7 +37,7 @@ const RegisterwasteType = props => {
                     <Text style={styles.wasteDesc}>{wasteType.get('name')} {wasteType.get('code')}</Text>
                 </View>
             </View>
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', flex:35, justifyContent:'center' }}>
                 <View>
                     <TouchableOpacity style={{ ...styles.operationBnt, backgroundColor: qty == 0 ? '#7f7f7f' : colors.colmenaGreen, }}
                         onPress={handleSubtractWaste}>
@@ -58,7 +58,7 @@ const RegisterwasteType = props => {
                     </TouchableOpacity>
                 </View>
             </View>
-            <View >
+            <View style={{flex:30, alignItems:'center'}}>
                 <View>
                     <Text style={styles.retributionAmount}>{wasteType.get('unit') == "gr"? wasteType.get('qty')/1000 *10*qty : wasteType.get('qty')*qty} jyc</Text>
                 </View>
