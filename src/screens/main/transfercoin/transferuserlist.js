@@ -36,7 +36,6 @@ const TransferUserList = props => {
                 }
                 
             });
-            console.log("list::", list);
             setUserList(list);
             setIsLoading(false);
         } catch (err) {

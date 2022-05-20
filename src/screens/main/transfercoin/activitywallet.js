@@ -37,7 +37,7 @@ const ActivityWallet = props => {
             setIsLoading(true);
             const parseAddress = new Parse.Query('Address');
             parseAddress.equalTo('default', true);
-            const userAddress = await parseAddress.first();
+            const userAddress = await parseAddress.first();            
             const parseAccount = await userAddress.get('account').fetch();
             setInputs({
                 ...inputs,

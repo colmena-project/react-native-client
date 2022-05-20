@@ -45,14 +45,13 @@ const TransferCoin = props => {
     const fetchData = async () => {
         try {
             setIsLoading(true);
-            const parseAddress = new Parse.Query('Address');
+            const parseAddress = new Parse.Query('Address');            
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();
-            const parseAccount = await userAddress.get('account').fetch();
-            if (parseAccount.get('avatar')) {
-                // setUserProfilePhoto(parseAccount.get('avatar')._url);
-            }
-            setUserAccount(parseAccount);
+            const parseAccount = await userAddress.get('account').fetch();            
+            // if (parseAccount.get('avatar')) {
+            //     // setUserProfilePhoto(parseAccount.get('avatar')._url);
+            // }
             setInputs({
                 ...inputs,
                 firstName: parseAccount.get('firstName'),
@@ -71,6 +70,7 @@ const TransferCoin = props => {
     };
 
     const refreshKey = async () =>{
+        console.log("----------------", inputs);
         // Alert.alert('CONFIRME SU EMAIL', 'Hemos enviado un email a su cuenta con el vínculo para confirmarlo.\nSu ID de token es :: ' + "123123123sdfsdfsdf" +"\nDeberías recordar esta clave.");
         fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+inputs.walletId+'/changekey', {
             method: 'GET',
@@ -88,7 +88,7 @@ const TransferCoin = props => {
     }
 
     const onSetPrivatekey = async (inputText) =>{
-        setCodeValue(inputText);
+        // setCodeValue(inputText);
         let private_Key = "";
         let public_key = "";
         await ecc.randomKey().then(privateKey => {
@@ -106,7 +106,7 @@ const TransferCoin = props => {
             body: JSON.stringify({
                 pubkey: public_key,
                 account: inputs.walletId,
-                code: inputText,                
+                code: inputText
             })
         })
         .then((response) => response.json())
