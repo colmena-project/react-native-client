@@ -137,15 +137,11 @@ const EditProfile = props => {
         let public_key = "";
         let eosuserid = "";
         await ecc.randomKey().then(privateKey => {
-            console.log('Private Key:\t', privateKey) // wif
-            console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // EOSkey...
+            // console.log('Private Key:\t', privateKey) // wif
+            // console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // EOSkey...
             private_Key = privateKey;
             public_key = ecc.privateToPublic(privateKey);
             })
-        console.log("-----privatekey-----", private_Key);
-        console.log("-----firstName-----", inputs.firstName);
-        console.log("-----lastName-----", inputs.lastName);
-        console.log("-----email-----", inputs.email);
 
         fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users', {
             method: 'POST',
