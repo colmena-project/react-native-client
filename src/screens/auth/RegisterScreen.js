@@ -112,6 +112,7 @@ const RegisterScreen = props => {
                 setIsloading(false);
             }else{
                 setWalletID(eosuserid);
+                console.log("userwalletid", eosuserid)
                 handleRegisterAccount(eosuserid,private_Key)
             }
         })

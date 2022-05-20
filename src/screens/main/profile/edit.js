@@ -9,7 +9,8 @@ import MapPicker from '../../../components/address/MapPicker';
 import colors from '../../../constants/colors';
 import validate from '../../../services/Validate';
 import { Feather } from '@expo/vector-icons';
-
+import Slugify from 'slugify';
+import ecc from 'eosjs-ecc-rn';
 
 const EditProfile = props => {
 
@@ -25,9 +26,11 @@ const EditProfile = props => {
         state: '',
         country: '',
         addressDescription: '',
+        walletId: '',
         coords: { latitude: -27.3715333, longitude: -55.9170078 }
     };
     const [inputs, setInputs] = useState(fields);
+    const [walletId, setWalletId] = useState('');
     const [errorMessages, setErrorMessages] = useState(fields);
     const [userAccount, setUserAccount] = useState(null);
     const [userAddress, setUserAddress] = useState(null);
@@ -60,12 +63,14 @@ const EditProfile = props => {
             setUserAccount(parseAccount);
             console.log(parseAccount);
             setUserAddress(userAddress);
+            setWalletId(parseAccount.get('walletId'));
             setInputs({
                 ...inputs,
                 firstName: parseAccount.get('firstName'),
                 lastName: parseAccount.get('lastName'),
                 nickname: parseAccount.get('nickname'),
                 email: parseAccount.get('user').get('email'),
+                walletId: parseAccount.get('walletId'),
                 aboutMe: parseAccount.get('aboutMe'),
                 street: userAddress.get('street'),
                 city: userAddress.get('city'),
@@ -125,6 +130,54 @@ const EditProfile = props => {
                 setIsLoading(false);
                 alert("Error: " + error.code + " " + error.message);
             });
+    };
+
+    const handleConnectWallet = async() => {
+        let private_Key = "";
+        let public_key = "";
+        let eosuserid = "";
+        await ecc.randomKey().then(privateKey => {
+            console.log('Private Key:\t', privateKey) // wif
+            console.log('Public Key:\t', ecc.privateToPublic(privateKey)) // EOSkey...
+            private_Key = privateKey;
+            public_key = ecc.privateToPublic(privateKey);
+            })
+        console.log("-----privatekey-----", private_Key);
+        console.log("-----firstName-----", inputs.firstName);
+        console.log("-----lastName-----", inputs.lastName);
+        console.log("-----email-----", inputs.email);
+
+        fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                pubkey: public_key,
+                data: {
+                name : inputs.firstName,
+                lastname : inputs.lastName,
+                email : inputs.email
+                }
+            })
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            eosuserid = json.userid;
+            console.log("userwalletid",json);
+            if(eosuserid === undefined){
+                setIsLoading(false);
+            }else{
+                setWalletId(eosuserid);
+                console.log("userwalletid", eosuserid)
+                handleSaveButton()
+            }
+        })
+        .catch((error) =>{
+            setIsLoading(false);
+            console.error(error);
+        });
     };
 
     const handleChangeAddress = async () => {
@@ -193,6 +246,7 @@ const EditProfile = props => {
                 userAccount.set('lastName', inputs.lastName);
                 userAccount.set('nickname', inputs.nickname);
                 userAccount.set('aboutMe', inputs.aboutMe);
+                userAccount.set('walletId', walletId);
                 userAddress.set('street', inputs.street);
                 userAddress.set('city', inputs.city);
                 userAddress.set('state', inputs.state);
@@ -264,6 +318,14 @@ const EditProfile = props => {
                                 />
                             }
                         </View>
+                        {walletId ?
+                        <></>:
+                            <TouchableOpacity onPress={handleConnectWallet} style={styles.changePassword}>
+                                <Text>Connect Wallet</Text>
+                                <MaterialIcons name={'chevron-right'} size={36} color={colors.colmenaGreen} />
+                            </TouchableOpacity>
+                        }
+                        
                         <Input
                             label={'Nombre/s'}
                             style={styles.input}
