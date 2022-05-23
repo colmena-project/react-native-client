@@ -18,8 +18,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "config":{
-        "googleMapsApiKey": "AIzaSyD1kOQgEmFVpVRaIKmQKdKFJ6IXyDHUUTU"        
+      "config": {
+        "googleMapsApiKey": "AIzaSyD1kOQgEmFVpVRaIKmQKdKFJ6IXyDHUUTU"
       }
     },
     "android": {
@@ -33,6 +33,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": ""
   }
 }

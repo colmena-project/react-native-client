@@ -111,7 +111,7 @@ const RegisterScreen = props => {
             if(eosuserid === undefined){
                 setIsloading(false);
             }else{
-                setWalletID(eosuserid);
+                // setWalletID(eosuserid);
                 console.log("userwalletid", eosuserid)
                 handleRegisterAccount(eosuserid,private_Key)
             }
@@ -140,10 +140,10 @@ const RegisterScreen = props => {
                 walletId: wallet_id,
                 defaultLanguage: 'es-AR',
                 address: {
-                    street: 'Test Street',
-                    city: 'Test City',
-                    state: 'Test State',
-                    country: 'Test Country',
+                    street: 'PYP, Av. Libertador Gral. San Martín 2527',
+                    city: 'Posadas',
+                    state: 'Misiones',
+                    country: 'Argentina',
                     description: 'Test description',
                     latLng
                 }
