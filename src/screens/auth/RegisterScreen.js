@@ -7,6 +7,7 @@ import validate from '../../services/Validate';
 import colors from '../../constants/colors';
 import Slugify from 'slugify';
 import ecc from 'eosjs-ecc-rn';
+import { FontAwesome } from '@expo/vector-icons'; 
 
 const RegisterScreen = props => {
 
@@ -28,6 +29,10 @@ const RegisterScreen = props => {
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
     const [isSelected, setIsSelected] = useState(false);
+
+    const [isShowPass, setIsShowPass] = useState(true)
+    const [isCShowPass, setIsCShowPass] = useState(true)
+
     const dispatch = useDispatch();
 
     const checkErrors = errors => {
@@ -229,7 +234,7 @@ const RegisterScreen = props => {
                                     onChangeText={value => handleInput('email', value)}
                                 />
                             </View>
-                            <View style={styles.input}>
+                            <View style={styles.input_password}>
                                 <Input
                                     label={'Contraseña'}
                                     style={styles.input}
@@ -237,14 +242,17 @@ const RegisterScreen = props => {
                                     keyboardType={'default'}
                                     autoCapitalize={'none'}
                                     autoCorrect={false}
-                                    secureTextEntry
+                                    secureTextEntry={isShowPass}
                                     value={inputs.password}
                                     error={errorMessages.password}
                                     onChangeText={value => handleInput('password', value)}
                                 />
+                                {isShowPass?
+                                <FontAwesome onPress={()=>setIsShowPass(false)} name="eye" size={24} color="black" />:
+                                <FontAwesome onPress={()=>setIsShowPass(true)} name="eye-slash" size={24} color="black" />}
                             </View>
 
-                            <View style={styles.input}>
+                            <View style={styles.input_password}>
                                 <Input
                                     label={'Confirmar contraseña'}
                                     style={styles.input}
@@ -252,11 +260,14 @@ const RegisterScreen = props => {
                                     keyboardType={'default'}
                                     autoCapitalize={'none'}
                                     autoCorrect={false}
-                                    secureTextEntry
+                                    secureTextEntry={isCShowPass}
                                     value={inputs.confirmPassword}
                                     error={errorMessages.confirmPassword}
                                     onChangeText={value => handlePasswordConfirm('confirmPassword', value)}
                                 />
+                                {isCShowPass?
+                                <FontAwesome onPress={()=>setIsCShowPass(false)} name="eye" size={24} color="black" />:
+                                <FontAwesome onPress={()=>setIsCShowPass(true)} name="eye-slash" size={24} color="black" />}
                             </View>
 
                         </View>
@@ -333,6 +344,12 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '100%',
+    },
+    input_password: {
+        width: '100%',
+        display:"flex",
+        flexDirection:"row",
+        alignItems:"center"
     },
     btnContainer: {
         marginVertical: 2,

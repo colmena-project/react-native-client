@@ -7,6 +7,7 @@ import validate from '../../services/Validate';
 import Installation from '../../services/Installation';
 import colors from '../../constants/colors';
 import Input from '../../components/form/Input';
+import { FontAwesome } from '@expo/vector-icons'; 
 
 const LoginScreen = props => {
 
@@ -29,6 +30,8 @@ const LoginScreen = props => {
     const [inputs, setInputs] = useState(fields);
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
+    const [isShowPass, setIsShowPass] = useState(true)
+
     const dispatch = useDispatch();
 
     const handleError = (field, value) => {
@@ -115,7 +118,7 @@ const LoginScreen = props => {
                                     onChangeText={value => handleInput('email', value)}
                                 />
                             </View>
-                            <View style={styles.input}>
+                            <View style={styles.input_password}>
                                 <Input
                                     label={'Contraseña'}
                                     style={styles.input}
@@ -123,10 +126,13 @@ const LoginScreen = props => {
                                     keyboardType={'default'}
                                     autoCapitalize={'none'}
                                     autoCorrect={false}
-                                    secureTextEntry
+                                    secureTextEntry={isShowPass}
                                     value={inputs.password}
                                     onChangeText={value => handleInput('password', value)}
                                 />
+                                {isShowPass?
+                                <FontAwesome onPress={()=>setIsShowPass(false)} name="eye" size={24} color="black" />:
+                                <FontAwesome onPress={()=>setIsShowPass(true)} name="eye-slash" size={24} color="black" />}
                             </View>
                         </View>
 
@@ -192,6 +198,12 @@ const styles = StyleSheet.create({
     },
     input: {
         width: '100%',
+    },
+    input_password: {
+        width: '100%',
+        display:"flex",
+        flexDirection:"row",
+        alignItems:"center"
     },
     btnContainer: {
         marginVertical: 2,
