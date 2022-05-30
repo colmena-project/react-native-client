@@ -81,7 +81,7 @@ const VerifyInfo = props => {
                 <View style={styles.scrollViewWrapper} >
 
                     <Text style={componentStyle.headerText}>
-                        <Text style={{ fontWeight: 'bold' }}>@{user.account.get('user').get('username')}</Text> verifica si la información del transporte es correcta.
+                        <Text style={{ fontWeight: 'bold' }}>{user.account.get('user').get('firstName')}</Text> verifica si la información del transporte es correcta.
                     </Text>
 
                     <ScrollView horizontal={true}>
