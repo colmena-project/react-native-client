@@ -172,7 +172,7 @@ const VerifyInfo = props => {
                     <View style={componentStyle.retributionContainer}>
                         <View style={componentStyle.estimatedContainer}>
                             <Text style={componentStyle.estimatedText}>
-                                Estimado:
+                            Retribución estimada:
                             </Text>
                             {calculatingRetribution ?
                                 <Text style={componentStyle.estimatedAmmount}>calculando...</Text>

@@ -129,7 +129,7 @@ const TransferCoin = props => {
                 setIsLoading(true);
                 fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/users/'+ inputs.walletId)
                 .then((response) => response.json())
-                .then((json) => {
+                .then(async (json) => {
                     const result = json.result;
                     let sb = new Serialize.SerialBuffer({textEncoder:encode, textDecoder:decode});
                     let value_str = Number.parseFloat(valuestr).toFixed(2)
@@ -141,7 +141,8 @@ const TransferCoin = props => {
                     sb.pushNumberAsUint64(result.last_seq_num);
                     sb.pushNumberAsUint64(1);
                     let buff = Buffer.from(sb.asUint8Array());
-                    let signature = ecc.sign(buff, tokenkey);
+                    let signature = await ecc.sign(buff, tokenkey);
+                    console.log("signature", signature)
         
                     fetch('https://api.sandbox.circularnetwork.io/v1/project/JYC/transfer', {
                         method: 'POST',
@@ -162,6 +163,7 @@ const TransferCoin = props => {
                     .then((json) => {
                         ToastAndroid.show('La transferencia de monedas se ha realizado correctamente!', ToastAndroid.LONG);
                         setIsLoading(false);
+                        console.log("aaaaaaaaaa", json)
                     })
                     .catch((error) =>{
                         ToastAndroid.show('Compruebe los valores de entrada!', ToastAndroid.LONG);

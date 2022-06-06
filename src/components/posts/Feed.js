@@ -33,7 +33,7 @@ const Feed = props => {
             <View style={styles.likesContainer}>
                 <Ionicons name={props.likes > 0 ? 'ios-heart' : 'ios-heart-empty'} size={18} color={props.likes > 0 ?'#fe87a5' : '#4c4c4c'} />
                 <Text style={styles.likesText}>
-                    {props.likes} Me gusta
+                    {props.likes}
                 </Text>
             </View>
             {/* <Text style={styles.hashTag}>
