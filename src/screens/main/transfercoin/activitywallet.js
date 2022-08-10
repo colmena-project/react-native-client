@@ -36,9 +36,13 @@ const ActivityWallet = props => {
         try {
             setIsLoading(true);
             const parseAddress = new Parse.Query('Address');
+            const transaction = new Parse.Query('Transaction');
+            transaction.descending('createdAt').equalTo('expiredAt', undefined);
+            const userTransactions = await transaction.find();
             parseAddress.equalTo('default', true);
             const userAddress = await parseAddress.first();            
             const parseAccount = await userAddress.get('account').fetch();
+            console.log("transaction history::::", userTransactions);
             setInputs({
                 ...inputs,
                 firstName: parseAccount.get('firstName'),
@@ -104,7 +108,7 @@ const ActivityWallet = props => {
                             tx_id: oneresult.tx_id,
                         }
                         allactivity.push(one_fields);
-                        if(one_fields.to.account_name == parseAccount.get('walletId')){                      
+                        if(one_fields.to.account_name == parseAccount.get('walletId')){
                             ractivity.push(one_fields);
                         }else{
                             sactivity.push(one_fields);
@@ -149,6 +153,11 @@ const ActivityWallet = props => {
         props.navigation.navigate('ScanQRCode');
     };
 
+    const transactiondate= (postdate)=>{
+        const date1 = new Date(postdate)
+        return postdate
+    }
+
     const renderItem = ({item: oneActivity}) => (
         <View>
             {oneActivity.from.account_name == inputs.walletId?
@@ -176,7 +185,7 @@ const ActivityWallet = props => {
                             {oneActivity.to.name}
                         </Text>
                         <Text width="100%" style={{ fontSize:12,fontFamily: 'Nunito-Regular'}}>
-                            {oneActivity.created_at}
+                            {transactiondate(oneActivity.created_at)}
                         </Text>
                         <View/>
                     </View>
@@ -186,8 +195,8 @@ const ActivityWallet = props => {
                                 -{oneActivity.amount}
                             </Text>
                             <Text  style={{ color: '#ff0000', fontSize:15, fontFamily: 'Nunito-Regular' }}>                        
-                                enviado
-                            </Text>                  
+                                {oneActivity.memo=="MATERIAL"?"MATERIAL": "TRANSPORT"}
+                            </Text>
                         <View/>
                     </View>            
                 </View>
@@ -216,7 +225,7 @@ const ActivityWallet = props => {
                             {oneActivity.from.name}
                         </Text>
                         <Text width="100%" style={{fontSize:12,fontFamily: 'Nunito-Regular'}}>
-                            {oneActivity.created_at}
+                            {transactiondate(oneActivity.created_at)}
                         </Text>
                         <View/>
                     </View>
@@ -225,17 +234,11 @@ const ActivityWallet = props => {
                             <Text  style={{ color: '#21BDA3', fontSize:15, fontFamily: 'Nunito-Regular'}}>                        
                                 +{oneActivity.amount}
                             </Text>
-                            {oneActivity.from.name=="Colmena"?
-                                <Text  style={{ color: '#555', fontSize:13, fontFamily: 'Nunito-Regular'}}>                        
-                                    por materiales
-                                </Text>
-                                :
-                                <Text  style={{ color: '#555', fontSize:13, fontFamily: 'Nunito-Regular'}}>                        
-                                    por transporte
-                                </Text>
-                            }                                                                        
+                                <Text  style={{ color: '#555', fontSize:15, fontFamily: 'Nunito-Regular'}}>                        
+                                    {oneActivity.memo=="MATERIAL"?"MATERIAL": "TRANSPORT"}
+                                </Text>                                                               
                         <View/>
-                    </View>            
+                    </View>
                 </View>
             }
         </View>

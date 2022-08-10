@@ -10,6 +10,30 @@ const Feed = props => {
         props.onPress(user);
     };
 
+    const handleDifference = () =>{
+        
+    }
+    const date1 = new Date(props.hashTags)
+    const date2 = new Date();
+
+    function getDifferenceInDays(date1, date2) {
+        const diffInMs = Math.abs(date2 - date1);
+        return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    }
+      
+    function getDifferenceInHours(date1, date2) {
+        const diffInMs = Math.abs(date2 - date1);
+        return Math.floor(diffInMs / (1000 * 60 * 60));
+    }
+      
+    function getDifferenceInMinutes(date1, date2) {
+        const diffInMs = Math.abs(date2 - date1);
+        return Math.floor(diffInMs / (1000 * 60));
+     }
+    function getDifferenceInSeconds(date1, date2) {
+        const diffInMs = Math.abs(date2 - date1);
+        return Math.floor(diffInMs / 1000);
+    }
     return (
         <View style={styles.feed}>
             <View style={styles.userName}>
@@ -43,7 +67,10 @@ const Feed = props => {
                 {props.feed}
             </Text>
             <Text style={{ ...styles.feedText, fontSize: 10 }}>
-                Hace 2d
+                Hace {getDifferenceInDays(date1, date2)>0? `${getDifferenceInDays(date1, date2)}d`: 
+                    getDifferenceInHours(date1, date2)>0?`${getDifferenceInHours(date1, date2)}h`:
+                    getDifferenceInMinutes(date1, date2)>0?`${getDifferenceInMinutes(date1, date2)}m`:
+                    `${getDifferenceInSeconds(date1, date2)}s`}
             </Text>
         </View>
     );

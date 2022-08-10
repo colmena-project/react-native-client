@@ -112,7 +112,7 @@ const RegisterScreen = props => {
         .then((response) => response.json())
         .then((json) => {
             eosuserid = json.userid;
-            console.log(eosuserid);
+            console.log("test", json);
             if(eosuserid === undefined){
                 setIsloading(false);
             }else{
