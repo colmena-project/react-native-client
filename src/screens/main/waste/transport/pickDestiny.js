@@ -1,0 +1,398 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Picker, ActivityIndicator } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { setRecyclingCenter } from '../../../../redux/waste/transport/actions';
+import { FontAwesome } from '@expo/vector-icons';
+import RCService from '../../../../services/RecyclingCenter';
+import AuthorizedScreen from '../../../../components/auth/AuthorizedScreen';
+import MapPicker from '../../../../components/address/MapPicker';
+import colors from '../../../../constants/colors';
+
+const PickDestinyScreen = props => {
+
+    const [cr, setCr] = useState(null);
+    const [crs, setCrs] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [crlatitude, setCrLatitude] = useState(-27.3715333);
+    const [crlongitude, setCrLongitude] = useState(-55.9170078);
+    const dispatch = useDispatch(0);
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        try {
+            const data = await RCService.fetchRecyclingCenters();
+            if (data) {
+                setCr(data[0])
+                setCrs(data);
+                setCrLatitude(data[0].get('latLng')?data[0].get('latLng').latitude:-27.3715333);
+                setCrLongitude(data[0].get('latLng')?data[0].get('latLng').longitude:-55.9170078);
+            }
+        } catch (error) {
+            console.log('Waste Service - fetchWasteTypes: ', error.message);
+        }
+        setIsLoading(false);
+    };
+
+    const handleCRSelected = async(value) => {
+        console.log(value);
+        await setCr(value);
+        showcrinfo()
+    };
+    const showcrinfo=()=>{
+        console.log("crinfo:::", cr)
+        setCrLatitude(cr.get('latLng')?cr.get('latLng').latitude:-27.3715333);
+        setCrLongitude(cr.get('latLng')?cr.get('latLng').longitude:-55.9170078);
+        
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const handleNextButton = () => {
+        dispatch(setRecyclingCenter(cr));
+        props.navigation.navigate('VerifyTransportInfo');
+    };
+
+    return (
+        <AuthorizedScreen>
+            {isLoading ? <ActivityIndicator style={{ flex: 1, alignItems: 'center' }} size={'large'} color={colors.colmenaGreen} /> :
+                <View style={styles.scrollViewWrapper} >
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', margin: 10 }}>
+                        <FontAwesome name="map-marker" color={'black'} size={30} />
+                        <View style={{ flex: 1, padding: 0, marginHorizontal: 10, borderBottomWidth: 1, borderBottomColor: colors.separator, color: colors.greyText }}>
+                            <Picker style={styles.picker}
+                                selectedValue={cr}
+                                onValueChange={value => handleCRSelected(value)}
+                            >
+                                {crs.map(cr => {
+                                    return <Picker.Item key={cr.id} label={cr.get('description')} value={cr} />
+                                })}
+                            </Picker>
+                        </View>
+                    </View>
+
+                    <View style={{ flex: 1, width: '100%', borderTopColor: '#EDEDED', borderTopWidth: 1, backgroundColor: 'green' }}>
+                        <MapPicker
+                            styles={{ height: '100%', marginTop: 0 }}
+                            coords={{ latitude:  crlatitude, longitude: crlongitude }}
+                            marker={<FontAwesome style={{ backgroundColor: 'white', borderRadius: 50 }} name={"circle-o"} color={colors.colmenaGreen} size={34} />}
+                            getCoords={console.log}
+                        />
+                    </View>
+
+                    <View style={{ position: 'absolute', bottom: 20, width: '100%', alignItems: 'center', justifyContent: 'center', }}>
+                        <TouchableOpacity onPress={handleNextButton} >
+                            <Text style={{ backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 5, borderRadius: 5, textAlign: 'center', color: colors.colmenaGreen, fontFamily: 'Nunito-Bold', fontSize: 16 }}>
+                                SIGUIENTE
+                            </Text>
+                        </TouchableOpacity>
+                    </View>                    
+                </View >
+            }
+        </AuthorizedScreen>
+    );
+};
+
+
+
+const styles = StyleSheet.create({
+    scrollViewWrapper: {
+        flex: 1,
+        padding: 0,
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        backgroundColor: colors.colmenaBackground,
+    },
+    scrollView: {
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingTop: 8,
+        flex: 1,
+    },
+    brand: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 40,
+    },
+    brandText: {
+        fontFamily: 'Nunito-SemiBold',
+        fontWeight: '300',
+        fontSize: 26,
+        color: colors.colmenaGrey,
+        marginLeft: 30,
+    },
+    headerIcons: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    profileHeader: {
+        width: '100%',
+        paddingVertical: 20,
+        paddingHorizontal: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#EDEDED'
+    },
+    profilePicture: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 15,
+    },
+    avatar: {
+        width: 60,
+        height: 60,
+        borderRadius: 50,
+        overflow: 'hidden',
+    },
+    name: {
+        fontFamily: 'Nunito-Regular',
+        fontSize: 12
+    },
+    locationInfo: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        marginTop: 5,
+    },
+    titleTexts: {
+        color: '#4C4C4C',
+        fontFamily: 'Nunito-Regular'
+    },
+    aboutMeInfo: {
+        margin: 5,
+    },
+    aboutMeText: {
+        textAlign: 'justify',
+        fontFamily: 'Nunito-Light',
+        color: '#4C4C4C',
+    },
+    btnContainer: {
+        width: '100%',
+        marginTop: 10,
+    },
+    editInfoBtn: {
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: colors.colmenaGreen,
+        borderRadius: 5,
+        paddingVertical: 5,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+    editInfoBtnText: {
+        textAlign: 'center',
+        color: colors.colmenaGreen,
+        fontFamily: 'Nunito-Regular',
+        fontSize: 16
+    },
+    activityContainer: {
+        flex: 3,
+        paddingHorizontal: 20
+    },
+    brandText: {
+        fontFamily: 'Nunito-SemiBold',
+        fontWeight: '300',
+        fontSize: 30,
+        color: colors.colmenaGrey,
+        marginLeft: 30,
+    },
+    activityTitle: {
+        fontFamily: 'Nunito-SemiBold',
+        fontWeight: '300',
+        fontSize: 30,
+        color: colors.colmenaGrey,
+        marginLeft: 30,
+        fontSize: 18,
+        color: '#4C4C4C',
+        paddingVertical: 10,
+        marginLeft: 0,
+        marginTop: 15
+    },
+    activityExtraInfo: {
+        fontFamily: 'Nunito-SemiBold',
+        fontWeight: '300',
+        fontSize: 30,
+        color: colors.colmenaGrey,
+        marginLeft: 30,
+        fontSize: 18,
+        color: '#4C4C4C',
+        paddingVertical: 10,
+        marginLeft: 0,
+        marginTop: 15
+    },
+    activityExtraInfoDetail: {
+        fontSize: 12,
+        fontFamily: 'Nunito-Light',
+        marginLeft: 10,
+    },
+    tabBarContainer: {
+        flex: 1,
+    },
+    tabBar: {  // Íconos de los tabs
+        flexDirection: 'row',
+        marginTop: 15,
+    },
+    tabItem: {
+        flex: 1,
+        alignItems: 'flex-start',
+        padding: 10,
+        marginLeft: 0,
+        borderBottomWidth: 3,
+    },
+    tabContent: {
+        flex: 1,
+        justifyContent: 'flex-start',
+    },
+
+
+    wasteTabContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        paddingVertical: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: '#EDEDED'
+    },
+    locationTabContainer: {
+        flexDirection: 'row',
+        paddingVertical: 20,
+        paddingHorizontal: 30,
+        borderBottomWidth: 1,
+        borderBottomColor: '#EDEDED'
+    },
+
+
+    wasteInfoContainer: {
+        flexDirection: 'row',
+        borderBottomWidth: 1,
+        borderBottomColor: '#EDEDED'
+    },
+    wasteCardsContainer: {
+        paddingVertical: 20,
+        paddingLeft: 20,
+    },
+    wasteTitle: {
+        fontFamily: 'Nunito-SemiBold',
+        fontSize: 18,
+        color: '#4c4c4c',
+        marginBottom: 10,
+    },
+    wasteCardTitle: {
+        fontFamily: 'Nunito-SemiBold',
+        fontSize: 10,
+        color: '#6E7989',
+        backgroundColor: '#D8DAE0',
+        paddingVertical: 2,
+        paddingHorizontal: 10,
+        borderRadius: 3,
+        marginBottom: 5,
+        textTransform: 'uppercase',
+    },
+    wasteDescription: {
+        textAlign: 'left',
+        fontFamily: 'Nunito-Regular',
+        fontSize: 16,
+        color: '#4C4C4C',
+    },
+    impactDescription: {
+        textAlign: 'left',
+        fontFamily: 'Nunito-Regular',
+        fontSize: 16,
+        color: '#4C4C4C',
+    },
+    wasteCard: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 115,
+        height: 165,
+        padding: 10,
+        marginRight: 10,
+        borderRadius: 5,
+        backgroundColor: 'white',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 3,
+    },
+    wasteItem: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '40%',
+        height: 165,
+        padding: 10,
+        marginRight: 10,
+    },
+    impactTitle: {
+        color: colors.colmenaGreen,
+        fontFamily: 'Nunito-Regular',
+        fontSize: 20
+    },
+    impactImage: {
+        width: 60,
+        height: 60,
+        resizeMode: 'contain'
+    },
+    wasteImage: {
+        width: 100,
+        height: 100,
+        resizeMode: 'contain'
+    },
+    impactDescription: {
+        textAlign: 'center',
+        fontFamily: 'Nunito-Regular',
+        fontSize: 16,
+        color: '#4C4C4C',
+    },
+    activityContainer: {
+        flex: 3,
+        paddingHorizontal: 20
+    },
+    activityTitle: {
+        fontFamily: 'Nunito-SemiBold',
+        fontWeight: '300',
+        fontSize: 30,
+        color: colors.colmenaGrey,
+        marginLeft: 30,
+        fontSize: 18,
+        color: '#4C4C4C',
+        paddingVertical: 10,
+        marginLeft: 0,
+        marginTop: 15
+    },
+    activityExtraInfo: {
+        fontFamily: 'Nunito-SemiBold',
+        fontWeight: '300',
+        fontSize: 30,
+        color: colors.colmenaGrey,
+        marginLeft: 30,
+        fontSize: 18,
+        color: '#4C4C4C',
+        paddingVertical: 10,
+        marginLeft: 0,
+        marginTop: 15
+    },
+    activityExtraInfoDetail: {
+        fontSize: 12,
+        fontFamily: 'Nunito-Light',
+        marginLeft: 10,
+    },
+
+
+});
+
+export default PickDestinyScreen;

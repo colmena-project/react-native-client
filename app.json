@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Colmena",
+    "slug": "Colmena",
+    "version": "3.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/colmena_icon.png",
+    "splash": {
+      "image": "./assets/colmena_splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#21BDA3"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyD1kOQgEmFVpVRaIKmQKdKFJ6IXyDHUUTU"
+      }
+    },
+    "android": {
+      "package": "com.colmena.colmenapp",
+      "versionCode": 4,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD1kOQgEmFVpVRaIKmQKdKFJ6IXyDHUUTU"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": ""
+  }
+}

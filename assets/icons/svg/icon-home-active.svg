@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="375" height="96" viewBox="0 0 375 96">
+  <defs>
+    <filter id="Rectangle_9" x="-23.5" y="-26.5" width="426" height="147" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="-1" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="8.5" result="blur"/>
+      <feFlood flood-opacity="0.075"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <clipPath id="clip-path">
+      <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Rectangle_9)">
+        <rect id="Rectangle_9-2" data-name="Rectangle 9" width="375" height="96" fill="#d1d1d1" stroke="#979797" stroke-miterlimit="10" stroke-width="1"/>
+      </g>
+    </clipPath>
+  </defs>
+  <g id="Enmascarar_grupo_1" data-name="Enmascarar grupo 1" clip-path="url(#clip-path)">
+    <path id="iconmonstr-home-6" d="M19.092,15.274v9.092H13.637V18.91H8.182v5.455H2.727V15.274H0L10.91,4.364l10.91,10.91ZM18.183,9.9V5.273H15.456v1.9Z" transform="translate(32.058 16.636)" fill="none" stroke="#5ebfa5" stroke-width="2"/>
+  </g>
+</svg>
